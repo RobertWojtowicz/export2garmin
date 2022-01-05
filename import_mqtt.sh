@@ -1,13 +1,13 @@
 # Data acquisition from MQTT broker
 user=admin
 passwd=password
-path=$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
 
 # Version Info
 echo 'Mi Body Composition Scale 2 Garmin Connect v2.3'
 echo ''
 
 # Create a data backup file
+path=$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
 if [ ! -f $path/backup.csv ] ; then
 	echo '* Create a data backup file, checking for new data'
 	echo 'Weight;Impedance;Units;User;Unix_time;Readable_time;Bat_in_V;Bat_in_%' > $path/backup.csv
