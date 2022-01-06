@@ -111,7 +111,7 @@ Mi Body Composition Scale 2 Garmin Connect v2.3
 * Importing and calculating data to upload
 * Data upload to Garmin Connect is complete
 ```
-- If there is an error upload to Garmin Connect, data will be sent again in a minute, upload errors and other operations are saved in temp.log file:
+- If there is an error upload to Garmin Connect, data will be sent again on the next execution, upload errors and other operations are saved in temp.log file:
 ```
 $ cat /home/robert/temp.log
 ... uploading weight
