@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import Xiaomi_Scale_Body_Metrics
 import csv
 import os
