@@ -2,9 +2,9 @@
 
 ## 1. Introduction
 - This project is based on the following projects:
-  - https://github.com/rando-calrissian/esp32_xiaomi_mi_2_hass;
-  - https://github.com/lolouk44/xiaomi_mi_scale;
   - https://github.com/davidkroell/bodycomposition;
+  - https://github.com/lolouk44/xiaomi_mi_scale;
+  - https://github.com/rando-calrissian/esp32_xiaomi_mi_2_hass;
 - It allows the Mi Body Composition Scale 2 to be fully automatically synchronized to Garmin Connect, the following parameters:
   - BMI;
   - Body Fat;
@@ -24,7 +24,8 @@
   - ESP32 module operates in a deep sleep and wakes up every 7 minutes, queries scale for data, the process can be started immediately via the reset button;
   - ESP32 module sends the acquired data via the MQTT protocol to the MQTT broker installed on the server;
   - body weight and impedance data on the server are appropriately processed by scripts;
-  - processed data are sent by the program bodycomposition to Garmin Connect;
+  - processed data are sent by the program bodycomposition to Garmin Connect:<br>
+  ![alt text](https://github.com/RobertWojtowicz/miscale2garmin/blob/master/pic/garmin_connect.png)
   - raw data from the scale is backed up on the server in backup.csv file;
   - backup.csv file can be imported e.g. for analysis into Excel:<br>
   ![alt text](https://github.com/RobertWojtowicz/miscale2garmin/blob/master/pic/example_data.png)
@@ -37,10 +38,10 @@
 
 ## 4. Bluetooth gateway to WiFi (via MQTT) on ESP32
 - Use Arduino IDE to compile and upload software to ESP32, following board and libraries required:
-  - PubSubClient: https://github.com/knolleary/pubsubclient;
   - Arduino ESP32: https://github.com/espressif/arduino-esp32;
-  - Timestamps: https://github.com/alve89/Timestamps;
   - Battery 18650 Stats: https://github.com/danilopinotti/Battery18650Stats;
+  - PubSubClient: https://github.com/knolleary/pubsubclient;
+  - Timestamps: https://github.com/alve89/Timestamps;
 - How to install board and library in Arduino IDE?:
   - board **(_WARNING_, use version 1.0.4, newer is unstable)**: https://docs.espressif.com/projects/arduino-esp32/en/latest/installing.html;
   - libraries: https://www.arduino.cc/en/Guide/Libraries;
@@ -99,18 +100,8 @@ password_file /etc/mosquitto/passwd
 
 ## 6. Configuring scripts
 - First script is "import_mqtt.sh", you need to complete data: "user", "passwd", which are related to the MQTT broker;
-- Add script import_mqtt.sh to CRON to run it every 1 minute: ```*/1 * * * * /home/robert/import_mqtt.sh```;
 - Second script is "export_garmin.py", you must complete data in the "user" section: sex, height in cm, birthdate in dd-mm-yyyy, email and password to Garmin Connect, max_weight in kg, min_weight in kg;
 - Script "export_garmin.py" supports multiple users with individual weights ranges, we can link multiple accounts with Garmin Connect;
-- After weighing, your data will be automatically upload to Garmin Connect:<br>
-![alt text](https://github.com/RobertWojtowicz/miscale2garmin/blob/master/pic/garmin_connect.png)
-- If there is an error upload to Garmin Connect, data will be sent again in a minute, upload errors and other operations are saved in a temporary file, e.g. "/home/robert/temp.log":
-```
-$ cat /home/robert/temp.log
-... uploading weight
-Mi Body Composition Scale 2 Garmin Connect v2.3
-Processed file: 1641199035.tlog
-```
 - Script import_mqtt.sh has implemented debug mode, you can verify if everything is working properly, just execute it from console:
 ```
 $ /home/robert/import_mqtt.sh
@@ -120,4 +111,13 @@ Mi Body Composition Scale 2 Garmin Connect v2.3
 * Importing and calculating data to upload
 * Data upload to Garmin Connect is complete
 ```
+- If there is an error upload to Garmin Connect, data will be sent again in a minute, upload errors and other operations are saved in temp.log file:
+```
+$ cat /home/robert/temp.log
+... uploading weight
+Mi Body Composition Scale 2 Garmin Connect v2.3
+Processed file: 1641199035.tlog
+```
+- Finally, if everything works correctly add script import_mqtt.sh to CRON to run it every 1 minute: ```*/1 * * * * /home/robert/import_mqtt.sh```.
+
 <a href="https://www.buymeacoffee.com/RobertWojtowicz" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
