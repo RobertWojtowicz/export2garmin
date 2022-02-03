@@ -60,7 +60,7 @@ chmod +x bodycomposition import_ble.sh scanner_ble.py export_garmin.py
 ```
 
 ### 3.3. Configuring scripts
-- First script is "scanner_ble.sh", you need to complete data: "scale_mac_addr", which is related to the MAC address of the scale;
+- First script is "scanner_ble.py", you need to complete data: "scale_mac_addr", which is related to the MAC address of the scale;
 - Script "scanner_ble.py" has implemented debug mode, you can verify if everything is working properly, just execute it from console:
 ```
 $ python3 /home/robert/miscale2garmin-3.0/scanner_ble.py
