@@ -9,16 +9,14 @@ path=`cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd`
 if [ ! -f $path/backup.csv ] ; then
 	echo '* Create a data backup file, checking for new data'
 	echo 'Weight;Impedance;Unix_time;Readable_time' > $path/backup.csv
-else
-	echo '* Data backup file exists, checking for new data'
+else echo '* Data backup file exists, checking for new data'
 fi
 
 # Checking device, create file with import data
 if [ -z `hcitool dev | awk 'NR>1 {print $2}'` ] ; then
 	echo '* No BLE device detected'
-else
-	read_all=`python3 $path/scanner_ble.py | awk 'END{print}'`
-	read_unixtime=`echo $read_all | awk -F "\"*;\"*" 'END{print $3}'`
+else read_all=`python3 $path/scanner_ble.py | awk 'END{print}'`
+	 read_unixtime=`echo $read_all | awk -F "\"*;\"*" 'END{print $3}'`
 	if [ -z $read_unixtime ] ; then
 		echo '* No BLE data from scale or incomplete'
 	elif grep -q $read_unixtime $path/backup.csv ; then

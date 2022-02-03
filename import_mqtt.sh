@@ -13,8 +13,7 @@ path=`cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd`
 if [ ! -f $path/backup.csv ] ; then
 	echo '* Create a data backup file, checking for new data'
 	echo 'Weight;Impedance;Unix_time;Readable_time;Bat_in_V;Bat_in_%' > $path/backup.csv
-else
-	echo '* Data backup file exists, checking for new data'
+else echo '* Data backup file exists, checking for new data'
 fi
 
 # Create file with import data
