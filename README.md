@@ -6,7 +6,7 @@
   - https://github.com/wiecosystem/Bluetooth;
   - https://github.com/lolouk44/xiaomi_mi_scale;
   - https://github.com/rando-calrissian/esp32_xiaomi_mi_2_hass;
-- It allows the Mi Body Composition Scale 2 to be fully automatically synchronized to Garmin Connect, the following parameters:
+- It allows the Mi Body Composition Scale 2 (model: XMTZC05HM) to be fully automatically synchronized to Garmin Connect, the following parameters:
   - BMI;
   - Body Fat;
   - Body Water;
@@ -120,7 +120,9 @@ Processed file: 1641199035.tlog
   - libraries: https://www.arduino.cc/en/Guide/Libraries;
 - Preparing Arduino IDE to upload the project to ESP32, go to Tools and select:
   - Board: > ESP32 Arduino > "WEMOS LOLIN32";
+  - Upload Speed: "921600";
   - CPU Frequency: > "80MHz (WiFi / BT)" for better energy saving;
+  - Flash Frequency: "80Mhz";
   - Partition Scheme: > "No OTA (Large APP)";
   - Port: > "COM" on which ESP32 board is detected;
 - The following information must be entered before compiling code (esp32.ino) in Arduino IDE:
@@ -130,7 +132,7 @@ Processed file: 1641199035.tlog
   - connection parameters MQTT ("mqtt_server", "mqtt_port", "mqtt_userName", "mqtt_userPass");
 - Debug and other comments:
   - Project is prepared to work with the ESP32 board with the charging module (red LED indicates charging). I based my version on the Li-ion 18650 battery;
-  - Program for ESP32 has implemented UART debug mode, you can verify if everything is working properly:
+  - Program for ESP32 has implemented UART debug mode (baud rate must be set to 115200), you can verify if everything is working properly:
   ```
   Mi Body Composition Scale 2 Garmin Connect v3.0 (esp32.ino)
   
@@ -182,7 +184,7 @@ chmod +x bodycomposition import_mqtt.sh export_garmin.py
 
 ### 4.4. Configuring scripts
 - First script is "import_mqtt.sh", you need to complete data: "user", "passwd", which are related to the MQTT broker;
-- Second script is "export_garmin.py", you must complete data in the "users" section: sex, height in cm, birthdate in dd-mm-yyyy, email and password to Garmin Connect, max_weight in kg, min_weight in kg;
+- Second script is "export_garmin.py", you must complete data in the "users" section: "sex", "height" in cm, "birthdate" in dd-mm-yyyy, "email" and "password" to Garmin Connect, "max_weight" in kg, "min_weight" in kg;
 - Script "export_garmin.py" supports multiple users with individual weights ranges, we can link multiple accounts with Garmin Connect;
 - Script "import_mqtt.sh" has implemented debug mode, you can verify if everything is working properly, just execute it from console:
 ```
