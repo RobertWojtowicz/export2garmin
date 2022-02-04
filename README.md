@@ -130,7 +130,7 @@ Processed file: 1641199035.tlog
   - connection parameters MQTT ("mqtt_server", "mqtt_port", "mqtt_userName", "mqtt_userPass");
 - Debug and other comments:
   - Project is prepared to work with the ESP32 board with the charging module (red LED indicates charging). I based my version on the Li-ion 18650 battery;
-  - Program for ESP32 has implemented UART debug mode, you can verify if everything is working properly:
+  - Program for ESP32 has implemented UART debug mode (baud rate must be set to 115200), you can verify if everything is working properly:
   ```
   Mi Body Composition Scale 2 Garmin Connect v3.0 (esp32.ino)
   
