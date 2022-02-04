@@ -39,18 +39,18 @@ class miScale(btle.DefaultDelegate):
             print("  BLE device found with address: " + (dev.addr) + ", non-target device")
 
     def run(self):
-        if len(os.popen("hcitool dev | awk 'NR>1 {print $2}'").read()) != 0:
+        if len(os.popen("hcitool dev | awk 'NR>1 {print $2}'").read()) == 0:
+            print("* No BLE device detected") 
+        else:  
             scanner = btle.Scanner()
             scanner.withDelegate(self)
             scanner.start()
             print("* Starting BLE scan:")
-        
+
             # Scan for 10 seconds
             scanner.process(10)
             scanner.stop()
             print("* Finished BLE scan")
-        else:
-            print("* No BLE device detected")        
 
 scale = miScale()
 scale.run()
