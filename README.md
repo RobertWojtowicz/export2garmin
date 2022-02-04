@@ -120,7 +120,9 @@ Processed file: 1641199035.tlog
   - libraries: https://www.arduino.cc/en/Guide/Libraries;
 - Preparing Arduino IDE to upload the project to ESP32, go to Tools and select:
   - Board: > ESP32 Arduino > "WEMOS LOLIN32";
+  - Upload Speed: "921600";
   - CPU Frequency: > "80MHz (WiFi / BT)" for better energy saving;
+  - Flash Frequency: "80Mhz";
   - Partition Scheme: > "No OTA (Large APP)";
   - Port: > "COM" on which ESP32 board is detected;
 - The following information must be entered before compiling code (esp32.ino) in Arduino IDE:
