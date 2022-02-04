@@ -184,7 +184,7 @@ chmod +x bodycomposition import_mqtt.sh export_garmin.py
 
 ### 4.4. Configuring scripts
 - First script is "import_mqtt.sh", you need to complete data: "user", "passwd", which are related to the MQTT broker;
-- Second script is "export_garmin.py", you must complete data in the "users" section: sex, height in cm, birthdate in dd-mm-yyyy, email and password to Garmin Connect, max_weight in kg, min_weight in kg;
+- Second script is "export_garmin.py", you must complete data in the "users" section: "sex", "height" in cm, "birthdate" in dd-mm-yyyy, "email" and "password" to Garmin Connect, "max_weight" in kg, "min_weight" in kg;
 - Script "export_garmin.py" supports multiple users with individual weights ranges, we can link multiple accounts with Garmin Connect;
 - Script "import_mqtt.sh" has implemented debug mode, you can verify if everything is working properly, just execute it from console:
 ```
