@@ -6,7 +6,7 @@
   - https://github.com/wiecosystem/Bluetooth;
   - https://github.com/lolouk44/xiaomi_mi_scale;
   - https://github.com/rando-calrissian/esp32_xiaomi_mi_2_hass;
-- It allows the Mi Body Composition Scale 2 to be fully automatically synchronized to Garmin Connect, the following parameters:
+- It allows the Mi Body Composition Scale 2 (model: XMTZC05HM) to be fully automatically synchronized to Garmin Connect, the following parameters:
   - BMI;
   - Body Fat;
   - Body Water;
