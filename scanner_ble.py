@@ -1,8 +1,8 @@
 #!/usr/bin/python
 
 import datetime
-from bluepy import btle
 import os
+from bluepy import btle
 
 # Version Info
 print("Mi Body Composition Scale 2 Garmin Connect v3.0 (scanner_ble.py)")
