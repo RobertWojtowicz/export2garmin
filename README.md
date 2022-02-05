@@ -31,7 +31,7 @@
 ## 3. BLE VERSION
 ### 3.1. How does this work ?
 - After weighing, Mi Body Composition Scale 2 is active for 15 minutes on bluetooth transmission;
-- USB bluetooth device (or internal e.g. Raspberry Pi, tested with USB bluetooth versions 4.0 and 5.0) scans for BLE device every 1 minute for 20 seconds and queries scale for data;
+- USB bluetooth device (or internal e.g. Raspberry Pi, tested with USB bluetooth versions 4.0 and 5.0) scans for BLE device every 1 minute for 10 seconds and queries scale for data;
 - Body weight and impedance data on the server are appropriately processed by scripts;
 - Processed data are sent by the program bodycomposition to Garmin Connect;
 - Raw data from the scale is backed up on the server in backup.csv file;
@@ -102,7 +102,7 @@ Processed file: 1641199035.tlog
 ## 4. ESP32 VERSION
 ### 4.1. How does this work ?
 - After weighing, Mi Body Composition Scale 2 is active for 15 minutes on bluetooth transmission;
-- ESP32 module operates in a deep sleep and wakes up every 7 minutes, scans for BLE device for 20 seconds and queries scale for data, process can be started immediately via the reset button;
+- ESP32 module operates in a deep sleep and wakes up every 7 minutes, scans for BLE device for 10 seconds and queries scale for data, process can be started immediately via the reset button;
 - ESP32 module sends the acquired data via the MQTT protocol to the MQTT broker installed on the server;
 - Body weight and impedance data on the server are appropriately processed by scripts;
 - Processed data are sent by the program bodycomposition to Garmin Connect;
