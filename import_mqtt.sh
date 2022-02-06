@@ -41,6 +41,8 @@ if [ -f $path/*.tlog ] ; then
 		echo '* Upload to Garmin Connect has failed, check temp.log for error details'
 	elif grep -q 'There' $path/temp.log ; then
 		echo '* Upload to Garmin Connect has failed, check temp.log for error details'
+	elif grep -q 'Exec' $path/temp.log ; then
+		echo '* Upload to Garmin Connect has failed, check temp.log for error details'
 	else cat $path/$move >> $path/backup.csv
 		rm $path/$move
 		echo '* Data upload to Garmin Connect is complete'
