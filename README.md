@@ -51,7 +51,7 @@ sudo pip install bluepy
 ```
 ExecStart=/usr/lib/bluetooth/bluetoothd --noplugin=sap
 ```
-- Download and extract to your home directory (e.g. "/home/robert/"), make a files executable (note: choose correct version of boodycomposition depending on your computer, e.g. "_Linux_x86_64.tar.gz"):
+- Download and extract to your home directory (e.g. "/home/robert/"), make a files executable (**_NOTE_: choose correct version of boodycomposition depending on your computer**, e.g. "_Linux_x86_64.tar.gz"):
 ```
 wget https://github.com/RobertWojtowicz/miscale2garmin/archive/refs/tags/3.0.tar.gz -O - | tar -xz
 cd miscale2garmin-3.0
@@ -174,7 +174,7 @@ listener 1883
 allow_anonymous false
 password_file /etc/mosquitto/passwd
 ```
-- Download and extract to your home directory (e.g. "/home/robert/"), make a files executable (note: choose correct version of boodycomposition depending on your computer, e.g. "_Linux_x86_64.tar.gz"):
+- Download and extract to your home directory (e.g. "/home/robert/"), make a files executable (**_NOTE_: choose correct version of boodycomposition depending on your computer**, e.g. "_Linux_x86_64.tar.gz"):
 ```
 wget https://github.com/RobertWojtowicz/miscale2garmin/archive/refs/tags/3.0.tar.gz -O - | tar -xz
 cd miscale2garmin-3.0
