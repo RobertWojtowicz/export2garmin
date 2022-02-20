@@ -41,7 +41,6 @@ String publish_data;
 WiFiClient espClient;
 PubSubClient mqtt_client(espClient);
 
-uint8_t unNoImpedanceCount = 0;
 int16_t stoi(String input, uint16_t index1) {
     return (int16_t)(strtol(input.substring(index1, index1+2).c_str(), NULL, 16));
 }
@@ -168,15 +167,9 @@ void ScanBLE() {
     }
     float weight = stoi2(hex, 22) * 0.005;
     float impedance = stoi2(hex, 18);
-    if (unNoImpedanceCount < 3 && impedance <= 0) {
-      errorLED_scan();
-    }
-    
-    unNoImpedanceCount = 0;
-    int time_unix = ts.getTimestampUNIX(stoi2(hex, 4), stoi(hex, 8), stoi(hex, 10), stoi(hex, 12), stoi(hex, 14), stoi(hex, 16));  
-    String time = String(String(stoi2(hex, 4)) + "-" + String(stoi(hex, 8)) + "-" + String(stoi(hex, 10)) + " " + String(stoi(hex, 12)) + ":" + String(stoi(hex, 14)) + ":" + String(stoi(hex, 16)));
-
-    if (weight > 0) {
+    if (impedance > 0) {
+      int time_unix = ts.getTimestampUNIX(stoi2(hex, 4), stoi(hex, 8), stoi(hex, 10), stoi(hex, 12), stoi(hex, 14), stoi(hex, 16));  
+      String time = String(String(stoi2(hex, 4)) + "-" + String(stoi(hex, 8)) + "-" + String(stoi(hex, 10)) + " " + String(stoi(hex, 12)) + ":" + String(stoi(hex, 14)) + ":" + String(stoi(hex, 16)));
       
       // LED blinking for 0.75 second, indicate finish reading BLE data
       Serial.println("* Reading BLE data complete, finished BLE scan");
@@ -206,7 +199,10 @@ void ScanBLE() {
       mqtt_client.publish(mqtt_topic_attributes.c_str(), publish_data.c_str(), true);
       Serial.print("* Publishing MQTT data: ");
       Serial.println(publish_data.c_str());
-    }  
+    }
+    else {
+      errorLED_scan();
+    }
   }
 }
 
