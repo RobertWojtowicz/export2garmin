@@ -53,16 +53,14 @@ for user in users:
 # Calcuating body metrics and send data to Garmin Connect
 if selected_user is not None:
 	lib = Xiaomi_Scale_Body_Metrics.bodyMetrics(weight, selected_user.height, selected_user.age, selected_user.sex, int(miimpedance))
-	bone_percentage = (lib.getBoneMass() / weight) * 100
-	muscle_percentage = (lib.getMuscleMass() / weight) * 100
 	message = (path) + '/bodycomposition upload '
-	message += '--bone ' + "{:.2f}".format(bone_percentage) + ' '
+	message += '--bone-mass ' + "{:.2f}".format(lib.getBoneMass()) + ' '
 	message += '--bmi ' + "{:.2f}".format(lib.getBMI()) + ' '
 	message += '--email ' + selected_user.email + ' '
 	message += '--fat ' + "{:.2f}".format(lib.getFatPercentage()) + ' '
 	message += '--hydration ' + "{:.2f}".format(lib.getWaterPercentage()) + ' '
 	message += '--metabolic-age ' + "{:.0f}".format(lib.getMetabolicAge()) + ' '
-	message += '--muscle ' + "{:.2f}".format(muscle_percentage) + ' '
+	message += '--muscle-mass ' + "{:.2f}".format(lib.getMuscleMass()) + ' '
 	message += '--password ' + selected_user.password + ' '
 	message += '--physique-rating ' + "{:.2f}".format(lib.getBodyType()) + ' '
 	message += '--unix-timestamp ' + mitdatetime + ' '
