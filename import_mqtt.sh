@@ -33,15 +33,7 @@ fi
 if [ -f $path/*.tlog ] ; then
 	python3 -B $path/export_garmin.py > $path/temp.log 2>&1
 	move=`awk -F ": " '/Processed file:/{print $2}' $path/temp.log`
-	if grep -q 'Error' $path/temp.log ; then
-		echo '* Upload to Garmin Connect has failed, check temp.log for error details'
-	elif grep -q 'panic' $path/temp.log ; then
-		echo '* Upload to Garmin Connect has failed, check temp.log for error details'
-	elif grep -q 'denied' $path/temp.log ; then
-		echo '* Upload to Garmin Connect has failed, check temp.log for error details'
-	elif grep -q 'There' $path/temp.log ; then
-		echo '* Upload to Garmin Connect has failed, check temp.log for error details'
-	elif grep -q 'Exec' $path/temp.log ; then
+	if grep -q 'Error\|panic\|denied\|There\|Exec' $path/temp.log ; then
 		echo '* Upload to Garmin Connect has failed, check temp.log for error details'
 	else cat $path/$move >> $path/backup.csv
 		rm $path/$move
