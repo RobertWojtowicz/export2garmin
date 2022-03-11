@@ -207,4 +207,7 @@ Processed file: 1641199035.tlog
 */1 * * * * /home/robert/miscale2garmin-3.0/import_mqtt.sh
 ```
 
+### 5. Mobile App
+I don't plan to create a mobile app, but I encourage you to take advantage of another project: https://github.com/lswiderski/mi-scale-exporter
+
 <a href="https://www.buymeacoffee.com/RobertWojtowicz" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
