@@ -56,7 +56,7 @@ ExecStart=/usr/lib/bluetooth/bluetoothd --noplugin=sap
 wget https://github.com/RobertWojtowicz/miscale2garmin/archive/refs/tags/3.0.tar.gz -O - | tar -xz
 cd miscale2garmin-3.0
 wget https://github.com/davidkroell/bodycomposition/releases/download/v1.7.0/bodycomposition_1.7.0_Linux_x86_64.tar.gz -O - | tar -xz bodycomposition
-chmod +x bodycomposition import_ble.sh scanner_ble.py export_garmin.py
+chmod +x bodycomposition import_ble.sh scanner_ble.py export_garmin.py /usr/local/lib/python3.9/dist-packages/bluepy/btle.py
 ```
 
 ### 3.3. Configuring scripts
