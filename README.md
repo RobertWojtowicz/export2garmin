@@ -16,7 +16,7 @@
   - Skeletal Muscle Mass;
   - Time;
   - Visceral Fat;
-  - Weight **_(kg units only)_**;
+  - Weight (**_NOTE:_ kg units only**);
 - Synchronization diagram from Mi Body Composition Scale 2 to Garmin Connect:
 
 ![alt text](https://github.com/RobertWojtowicz/miscale2garmin/blob/master/pic/workflow.png)
@@ -51,7 +51,7 @@ sudo pip install bluepy
 ```
 ExecStart=/usr/lib/bluetooth/bluetoothd --noplugin=sap
 ```
-- Download and extract to your home directory (e.g. "/home/robert/"), make a files executable (**_NOTE_: choose correct version of boodycomposition depending on your computer**, e.g. "_Linux_x86_64.tar.gz"):
+- Download and extract to your home directory (e.g. "/home/robert/"), make a files executable (**_NOTE:_ choose correct version of boodycomposition depending on your computer**, e.g. "_Linux_x86_64.tar.gz"):
 ```
 wget https://github.com/RobertWojtowicz/miscale2garmin/archive/refs/tags/3.0.tar.gz -O - | tar -xz
 cd miscale2garmin-3.0
@@ -116,7 +116,7 @@ Processed file: 1641199035.tlog
   - PubSubClient: https://github.com/knolleary/pubsubclient;
   - Timestamps: https://github.com/alve89/Timestamps;
 - How to install board and library in Arduino IDE?:
-  - board **(_WARNING_, use version 1.0.4, newer is unstable)**: https://docs.espressif.com/projects/arduino-esp32/en/latest/installing.html;
+  - board (**_NOTE:_ use version 1.0.4, newer is unstable**): https://docs.espressif.com/projects/arduino-esp32/en/latest/installing.html;
   - libraries: https://www.arduino.cc/en/Guide/Libraries;
 - Preparing Arduino IDE to upload the project to ESP32, go to Tools and select:
   - Board: > ESP32 Arduino > "WEMOS LOLIN32";
@@ -174,7 +174,7 @@ listener 1883
 allow_anonymous false
 password_file /etc/mosquitto/passwd
 ```
-- Download and extract to your home directory (e.g. "/home/robert/"), make a files executable (**_NOTE_: choose correct version of boodycomposition depending on your computer**, e.g. "_Linux_x86_64.tar.gz"):
+- Download and extract to your home directory (e.g. "/home/robert/"), make a files executable (**_NOTE:_ choose correct version of boodycomposition depending on your computer**, e.g. "_Linux_x86_64.tar.gz"):
 ```
 wget https://github.com/RobertWojtowicz/miscale2garmin/archive/refs/tags/3.0.tar.gz -O - | tar -xz
 cd miscale2garmin-3.0
