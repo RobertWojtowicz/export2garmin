@@ -29,7 +29,7 @@ else read_all=`python3 -B $path/scanner_ble.py | awk 'END{print}'`
 fi
 
 # Calculate data and export to Garmin Connect, logging, handling errors, backup file
-if [ -f $path/*.tlog ] ; then
+if compgen -D "$path/*.tlog" ; then
 	python3 -B $path/export_garmin.py > $path/temp.log 2>&1
 	move=`awk -F ": " '/Processed file:/{print $2}' $path/temp.log`
 	if grep -q 'Error\|panic\|denied\|There\|Exec' $path/temp.log ; then
