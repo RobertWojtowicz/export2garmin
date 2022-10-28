@@ -1,8 +1,8 @@
 # Mi Body Composition Scale 2 Garmin Connect
 
 ## 1. Introduction
-- This project works only on Linux operating system, Windows is not supported;
-- It is possible to run Linux operating system as a virtual machine on Windows;
+- This project works only on Linux, Windows is not supported;
+- It is possible to run Linux as a virtual machine on Windows;
 - This project is based on following projects:
   - https://github.com/davidkroell/bodycomposition;
   - https://github.com/wiecosystem/Bluetooth;
