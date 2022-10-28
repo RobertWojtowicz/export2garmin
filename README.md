@@ -50,7 +50,7 @@
 - Raw and calculated data from scale is backed up on server in backup.csv file;
 - backup.csv file can be imported e.g. for analysis into Excel.
 
-### 4.2. Preparing Linux system
+### 4.2. Preparing operating system
 - How to run USB bluetooth adapter? read section [5. How to increase BLE range?](https://github.com/RobertWojtowicz/miscale2garmin/blob/master/README.md#5-how-to-increase-ble-range-)
 - Minimum hardware and software requirements are: 1CPU, 512MB RAM, 2GB disk space, network connection, Raspberry Pi OS or Debian operating system;
 - Update your system and then install following modules:
@@ -219,7 +219,7 @@ sudo reboot
 
 ![alt text](https://github.com/RobertWojtowicz/miscale2garmin/blob/master/pic/esp32.jpg)
 
-### 6.3. Preparing Linux system
+### 6.3. Preparing operating system
 - Minimum hardware and software requirements are: 1CPU, 512MB RAM, 2GB disk space, network connection, Raspberry Pi OS or Debian operating system;
 - Update your system and then install following modules:
 ```
