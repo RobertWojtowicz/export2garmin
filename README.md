@@ -35,11 +35,11 @@
 - Launch Zepp Life App, go to scale (Profile > My devices > Mi Body Composition Scale 2);
 - Start scale and select Clear data in App;
 - Take a new weight measurement with App, App should synchronize date and time;
-- 2 times a year it is necessary to perform synchronization due to change from winter to summer time and then vice versa. Another way is to change time offset in import_data.sh file (offset parameter);
+- 2 times a year it is necessary to perform synchronization due to change from winter to summer time and then vice versa;
+- If time is still not synchronized correctly, check NTP synchronization on server or change time offset in import_data.sh file (offset parameter);
 - You should also synchronize scale after replacing batteries;
 - Script import_data.sh detects same weighing done in less than 30 seconds (protection against duplicates);
-- Script import_data.sh have time difference detection of more than 20 minutes (between scale data and os);
-- If time is still not synchronized correctly, check NTP synchronization on server or change time offset in import_data.sh file (offset parameter).
+- Script import_data.sh have time difference detection of more than 20 minutes (between scale data and os).
 
 ## 4. BLE VERSION
 ### 4.1. How does this work?
