@@ -208,11 +208,11 @@ class bodyMetrics:
             factor = 1
 
         if self.getMuscleMass() > self.scales.getMuscleMassScale()[1]:
-            return 2 + (factor * 3)
+            return 3 + (factor * 3)
         elif self.getMuscleMass() < self.scales.getMuscleMassScale()[0]:
-            return (factor * 3)
-        else:
             return 1 + (factor * 3)
+        else:
+            return 2 + (factor * 3)
 
     # Get Metabolic Age
     def getMetabolicAge(self):
