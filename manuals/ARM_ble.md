@@ -6,7 +6,7 @@
 ```
 sudo apt-get update
 sudo apt-get upgrade -y
-sudo apt-get install wget python3 bc bluetooth python3-pip libglib2.0-dev -y
+sudo apt-get install wget python3 bc bluetooth python3-pip libglib2.0-dev unzip -y
 sudo pip install bluepy
 ```
 - Modify file ```sudo nano /etc/systemd/system/bluetooth.target.wants/bluetooth.service```:
@@ -14,13 +14,14 @@ sudo pip install bluepy
 ExecStart=/usr/lib/bluetooth/bluetoothd --noplugin=sap
 ```
 - Download and extract to your home directory (e.g. "/home/robert/"), make a files executable, choose correct version of boodycomposition depending on your operating system:
-  - Raspberry Pi OS | Debian 11 (32-bit) use _Linux_armv6.tar.gz
-  - Raspberry Pi OS | Debian 11 (64-bit) use _Linux_arm64.tar.gz
+  - Raspberry Pi OS | Debian 11 (32-bit) use linux-arm.zip
+  - Raspberry Pi OS | Debian 11 (64-bit) use linux-arm64.zip
 ```
 wget https://github.com/RobertWojtowicz/miscale2garmin/archive/refs/tags/5.tar.gz -O - | tar -xz
 cd miscale2garmin-5
-wget https://github.com/davidkroell/bodycomposition/releases/download/v1.7.0/bodycomposition_1.7.0_Linux_x86_64.tar.gz -O - | tar -xz bodycomposition
-sudo chmod 755 bodycomposition import_data.sh scanner_ble.py export_garmin.py
+wget https://github.com/lswiderski/yet-another-garmin-connect-client/releases/download/cli-v0.0.1/linux-arm.zip
+unzip -j linux-arm.zip linux-arm/YAGCC && rm linux-arm.zip
+sudo chmod 755 YAGCC import_data.sh scanner_ble.py export_garmin.py
 sudo setcap 'cap_net_raw,cap_net_admin+eip' /usr/local/lib/python3.9/dist-packages/bluepy/bluepy-helper
 ```
 
@@ -45,7 +46,7 @@ Mi Body Composition Scale 2 Garmin Connect v5.3 (scanner_ble.py)
 - Script "import_data.sh" has implemented debug mode, you can verify if everything is working properly, just execute it from console:
 ```
 $ /home/robert/miscale2garmin-5/import_data.sh
-Mi Body Composition Scale 2 Garmin Connect v5.5 (import_data.sh)
+Mi Body Composition Scale 2 Garmin Connect v5.9 (import_data.sh)
 
 * backup.csv file exists, check if temp.log exists
 * temp.log file exists, checking for new data
@@ -58,9 +59,9 @@ Mi Body Composition Scale 2 Garmin Connect v5.5 (import_data.sh)
 - If there is an error upload to Garmin Connect, data will be sent again on next execution, upload errors and other operations are saved in temp.log file:
 ```
 $ cat /home/robert/miscale2garmin-5/temp.log
-... uploading weight
+Uploaded
 
-Mi Body Composition Scale 2 Garmin Connect v5.3 (export_garmin.py)
+Mi Body Composition Scale 2 Garmin Connect v5.9 (export_garmin.py)
 
 * Import data: 1672412076;58.1;526
 * Calculated data: 07.01.2023;19:09;58.1;19.6;13.8;47.5;2.6;59.2;7;6;22;526;email@email.com;07.01.2023;19:21

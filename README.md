@@ -4,7 +4,7 @@
 - This project works **only on Linux**, Windows is not supported;
 - It is possible to run Linux as a virtual machine on Windows and use passthrough mechanism;
 - This project is based on following projects:
-  - https://github.com/davidkroell/bodycomposition;
+  - https://github.com/lswiderski/yet-another-garmin-connect-client;
   - https://github.com/wiecosystem/Bluetooth;
   - https://github.com/lolouk44/xiaomi_mi_scale;
   - https://github.com/rando-calrissian/esp32_xiaomi_mi_2_hass;
@@ -48,7 +48,7 @@
 - After weighing, Mi Body Composition Scale 2 is active for 15 minutes on bluetooth transmission;
 - USB bluetooth adapter or internal module (tested with bluetooth versions 4.0/4.1 and 5.0/5.1/5.3) scans for BLE device every 1 minute for 10 seconds and queries scale for data;
 - Body weight and impedance data on server are appropriately processed by scripts;
-- Processed data are sent by program bodycomposition to Garmin Connect;
+- Processed data are sent by program YAGCC to Garmin Connect;
 - Raw and calculated data from scale is backed up on server in backup.csv file;
 - backup.csv file can be imported e.g. for analysis into Excel.
 
@@ -61,7 +61,7 @@
 - ESP32 module operates in a deep sleep and wakes up every 7 minutes, scans for BLE device for 10 seconds and queries scale for data, process can be started immediately via reset button;
 - ESP32 module sends acquired data via MQTT protocol to MQTT broker installed on server;
 - Body weight and impedance data on server are appropriately processed by scripts;
-- Processed data are sent by program bodycomposition to Garmin Connect;
+- Processed data are sent by program YAGCC to Garmin Connect;
 - Raw and calculated data from scale is backed up on server in backup.csv file;
 - backup.csv file can be imported e.g. for analysis into Excel.
 

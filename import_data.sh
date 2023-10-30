@@ -9,7 +9,7 @@ user=admin
 offset=0
 
 # Version Info
-echo "Mi Body Composition Scale 2 Garmin Connect v5.6 (import_data.sh)"
+echo "Mi Body Composition Scale 2 Garmin Connect v5.9 (import_data.sh)"
 echo ""
 
 # Creating backup.csv and temp.log file
@@ -124,6 +124,7 @@ else echo "* Calculating data from import $import_no, upload to Garmin Connect"
 		sed -i "s/to_import;$import_no/failed;$import_no/" $path/backup.csv
 	else echo "* Data upload to Garmin Connect is complete"
 		echo "* Saving calculated data from import $import_no to backup.csv file"
+		rm -rf $path/tmp
 		calc_data=`awk -F ": " '/Calculated data:/{print $2}' $path/temp.log`
 		import_data=`awk -F ": " '/Import data:/{print $2}' $path/temp.log`
 		sed -i "s/failed;$import_data/uploaded;$import_no;$calc_data;$time_shift/; s/to_import;$import_data/uploaded;$import_no;$calc_data;$time_shift/" $path/backup.csv

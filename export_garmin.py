@@ -8,7 +8,7 @@ import datetime
 
 # Version Info
 print("")
-print("Mi Body Composition Scale 2 Garmin Connect v5.3 (export_garmin.py)")
+print("Mi Body Composition Scale 2 Garmin Connect v5.9 (export_garmin.py)")
 print("")
 
 class User():
@@ -54,7 +54,7 @@ for user in users:
 # Calcuating body metrics and send data to Garmin Connect
 if selected_user is not None:
 	lib = Xiaomi_Scale_Body_Metrics.bodyMetrics(weight, selected_user.height, selected_user.age, selected_user.sex, int(miimpedance))
-	message = (path) + '/bodycomposition upload '
+	message = (path) + '/YAGCC uploadbodycomposition '
 	message += '--password ' + selected_user.password + ' '
 	message += '--weight ' + "{:.1f}".format(weight) + ' '
 	message += '--unix-timestamp ' + mitdatetime + ' '
