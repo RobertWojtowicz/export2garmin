@@ -13,8 +13,7 @@ sudo pip install bluepy --break-system-packages
 ```
 ExecStart=/usr/lib/bluetooth/bluetoothd --noplugin=sap --experimental
 ```
-- Download and extract to your home directory (e.g. "/home/robert/"), make a files executable, choose correct version of boodycomposition depending on your operating system:
-  - Debian 12 (64-bit) use linux-x64.zip
+- Download and extract to your home directory (e.g. "/home/robert/"), make a files executable:
 ```
 wget https://github.com/RobertWojtowicz/miscale2garmin/archive/refs/tags/5.tar.gz -O - | tar -xz
 cd miscale2garmin-5

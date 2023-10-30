@@ -62,7 +62,7 @@ listener 1883
 allow_anonymous false
 password_file /etc/mosquitto/passwd
 ```
-- Download and extract to your home directory (e.g. "/home/robert/"), make a files executable, choose correct version of boodycomposition depending on your operating system:
+- Download and extract to your home directory (e.g. "/home/robert/"), make a files executable, choose correct version of YAGCC depending on your operating system:
   - Raspberry Pi OS | Debian 11 (32-bit) use linux-arm.zip
   - Raspberry Pi OS | Debian 11 (64-bit) use linux-arm64.zip
 ```
