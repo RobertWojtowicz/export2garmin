@@ -111,7 +111,7 @@ if grep -q "failed\|to_import" $path/backup.csv ; then
 	fi
 fi
 
-# Handling errors, save calculated data to backup.csv file
+# Handling errors, save calculated data to backup.csv file, deleting tmp directory of YAGCC program
 if [ -z $import_no ] ; then
 	echo "* There is no new data to upload to Garmin Connect"
 else echo "* Calculating data from import $import_no, upload to Garmin Connect"
