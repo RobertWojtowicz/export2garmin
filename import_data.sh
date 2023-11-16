@@ -4,6 +4,7 @@
 mqtt=off
 password=password
 user=admin
+timenow="date +%d/%m/%Y-%H:%M:%S"
 
 # Time offset parameter, in seconds, default is 0. Change to e.g. -3600 or 3600
 offset=0
@@ -15,25 +16,25 @@ echo ""
 # Creating backup.csv and temp.log file
 path=`cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd`
 if [ ! -f $path/backup.csv ] ; then
-	echo "* Creating backup.csv file, check if temp.log exists"
+	echo $($timenow) "* Creating backup.csv file, check if temp.log exists"
 	if [ $mqtt == "off" ] ; then
 		echo "Data Status;Unix Time;Date;Time;Weight [kg];Change [kg];BMI;Body Fat [%];Skeletal Muscle Mass [kg];Bone Mass [kg];Body Water [%];Physique Rating;Visceral Fat;Metabolic Age [years];Impedance;Email User;Upload Date;Upload Time;Difference Time [s]" > $path/backup.csv
 	else echo "Data Status;Unix Time;Date;Time;Weight [kg];Change [kg];BMI;Body Fat [%];Skeletal Muscle Mass [kg];Bone Mass [kg];Body Water [%];Physique Rating;Visceral Fat;Metabolic Age [years];Impedance;Email User;Upload Date;Upload Time;Difference Time [s];Battery [V];Battery [%]" > $path/backup.csv
 	fi
-else echo "* backup.csv file exists, check if temp.log exists"
+else echo $($timenow) "* backup.csv file exists, check if temp.log exists"
 fi
 if [ ! -f $path/temp.log ] ; then
-	echo "* Creating temp.log file, checking for new data"
+	echo $($timenow) "* Creating temp.log file, checking for new data"
 	echo > $path/temp.log
-else echo "* temp.log file exists, checking for new data"
+else echo $($timenow) "* temp.log file exists, checking for new data"
 fi
 
 # Importing raw data from source (BLE or MQTT)
 if [ $mqtt == "off" ] ; then
-	echo "* Importing data from a BLE scanner"
+	echo $($timenow) "* Importing data from a BLE scanner"
 	read_all=`python3 -B $path/scanner_ble.py`
 	read_scale=`echo $read_all | awk '{sub(/.*BLE scan/, ""); print substr($1,1)}'`
-else echo "* Importing data from an MQTT broker"
+else echo $($timenow) "* Importing data from an MQTT broker"
 	read_scale=`mosquitto_sub -h localhost -t 'data' -u $user -P $password -C 1 -W 10`
 fi
 
@@ -42,26 +43,26 @@ unixtime_scale=`echo $read_scale | awk -F ";" '{print $1}'`
 if [ -z $unixtime_scale ] ; then
 	if [ $mqtt == "off" ] ; then
 		if echo $read_all | grep -q "device" ; then
-			echo "* No BLE data from scale or incomplete, check BLE scanner"
+			echo $($timenow) "* No BLE data from scale or incomplete, check BLE scanner"
 			if grep -q "bluetooth" $path/temp.log ; then
 				sed -i "/bluetooth/d" $path/temp.log
 			fi
 		else
 			if [ ! -f $path/temp.log ] ; then
-				echo "* No BLE devices found to scan, restarting bluetooth service" 2>&1 | tee $path/temp.log
+				echo $($timenow) "* No BLE devices found to scan, restarting bluetooth service" 2>&1 | tee $path/temp.log
 				sudo systemctl restart bluetooth
 				read_scale=`python3 -B $path/scanner_ble.py | awk 'END{print}'`
 				unixtime_scale=`echo $read_scale | awk -F ";" '{print $1}'`
 			elif grep -q "bluetooth" $path/temp.log ; then
-				echo "* Again, no BLE devices found to scan"
+				echo $($timenow) "* Again, no BLE devices found to scan"
 			else
-				echo "* No BLE devices found to scan, restarting bluetooth service" 2>&1 | tee $path/temp.log
+				echo $($timenow) "* No BLE devices found to scan, restarting bluetooth service" 2>&1 | tee $path/temp.log
 				sudo systemctl restart bluetooth
 				read_scale=`python3 -B $path/scanner_ble.py | awk 'END{print}'`
 				unixtime_scale=`echo $read_scale | awk -F ";" '{print $1}'`
 			fi
 		fi
-	else echo "* No MQTT data, check connection to MQTT broker or ESP32"
+	else echo $($timenow) "* No MQTT data, check connection to MQTT broker or ESP32"
 	fi
 fi
 
@@ -78,22 +79,22 @@ if [ ! -z $unixtime_scale ] ; then
 		time_dif=$(( $offset_unixtime - $time_tag ))
 		absolute_dif=`echo ${time_dif#-}`
 		if (( $absolute_dif < 30 )) ; then
-			echo "* $time_dif s time difference, same or similar data already exists in backup.csv file"
+			echo $($timenow) "* $time_dif s time difference, same or similar data already exists in backup.csv file"
 		else absolute_shift=`echo ${time_shift#-}`
 			if (( $absolute_shift > 1200 )) ; then
-				echo "* $time_shift s time difference, synchronize date and time scale"
-				echo "* Time offset is set to $offset s"
-				echo "* Deleting import $offset_unixtime from backup.csv file"
+				echo $($timenow) "* $time_shift s time difference, synchronize date and time scale"
+				echo $($timenow) "* Time offset is set to $offset s"
+				echo $($timenow) "* Deleting import $offset_unixtime from backup.csv file"
 				sed -i "/$offset_unixtime/d" $path/backup.csv
-			else echo "* Saving import $offset_unixtime to backup.csv file"
+			else echo $($timenow) "* Saving import $offset_unixtime to backup.csv file"
 				echo $offset_scale >> $path/backup.csv
 			fi
 		fi
 	else absolute_shift=`echo ${time_shift#-}`
 		if (( $absolute_shift > 1200 )) ; then
-			echo "* $time_shift s time difference, synchronize date and time scale"
-			echo "* Time offset is set to $offset s"
-		else echo "* Saving import $offset_unixtime to backup.csv file"
+			echo $($timenow) "* $time_shift s time difference, synchronize date and time scale"
+			echo $($timenow) "* Time offset is set to $offset s"
+		else echo $($timenow) "* Saving import $offset_unixtime to backup.csv file"
 			echo $offset_scale >> $path/backup.csv
 		fi
 	fi
@@ -102,7 +103,7 @@ fi
 # Calculating data and upload to Garmin Connect, logging to temp.log file
 if grep -q "failed\|to_import" $path/backup.csv ; then
 	if grep -q "bluetooth" $path/temp.log ; then
-		echo "* No BLE devices found to scan, restarting bluetooth service" > $path/temp.log
+		echo $($timenow) "* No BLE devices found to scan, restarting bluetooth service" > $path/temp.log
 		python3 -B $path/export_garmin.py >> $path/temp.log 2>&1
 		import_no=`awk -F ": " '/Import data:/{print substr($2,1,10)}' $path/temp.log`
 	else
@@ -113,17 +114,17 @@ fi
 
 # Handling errors, save calculated data to backup.csv file, deleting tmp directory of YAGCC program
 if [ -z $import_no ] ; then
-	echo "* There is no new data to upload to Garmin Connect"
-else echo "* Calculating data from import $import_no, upload to Garmin Connect"
+	echo $($timenow) "* There is no new data to upload to Garmin Connect"
+else echo $($timenow) "* Calculating data from import $import_no, upload to Garmin Connect"
 	if grep -q "There" $path/temp.log ; then
-		echo "* There is no user with given weight, check users section in export_garmin.py"
-		echo "* Deleting import $import_no from backup.csv file"
+		echo $($timenow) "* There is no user with given weight, check users section in export_garmin.py"
+		echo $($timenow) "* Deleting import $import_no from backup.csv file"
 		sed -i "/$import_no/d" $path/backup.csv
 	elif grep -q "Error\|panic\|denied\|There\|Exec\|found" $path/temp.log ; then
-		echo "* Upload to Garmin Connect has failed, check temp.log for error details"
+		echo $($timenow) "* Upload to Garmin Connect has failed, check temp.log for error details"
 		sed -i "s/to_import;$import_no/failed;$import_no/" $path/backup.csv
-	else echo "* Data upload to Garmin Connect is complete"
-		echo "* Saving calculated data from import $import_no to backup.csv file"
+	else echo $($timenow) "* Data upload to Garmin Connect is complete"
+		echo $($timenow) "* Saving calculated data from import $import_no to backup.csv file"
 		rm -rf $path/tmp
 		calc_data=`awk -F ": " '/Calculated data:/{print $2}' $path/temp.log`
 		import_data=`awk -F ": " '/Import data:/{print $2}' $path/temp.log`
