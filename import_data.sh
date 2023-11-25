@@ -9,7 +9,7 @@ user=admin
 offset=0
 
 # Version Info
-echo "Mi Body Composition Scale 2 Garmin Connect v6.0 (import_data.sh)"
+echo "Mi Body Composition Scale 2 Garmin Connect v6.1 (import_data.sh)"
 echo ""
 
 # Creating backup.csv and temp.log file
@@ -120,7 +120,7 @@ else echo "$($timenow) * Calculating data from import $import_no, upload to Garm
 		echo "$($timenow) * There is no user with given weight, check users section in export_garmin.py"
 		echo "$($timenow) * Deleting import $import_no from backup.csv file"
 		sed -i "/$import_no/d" $path/backup.csv
-	elif grep -q "Error\|panic\|denied\|There\|Exec\|found" $path/temp.log ; then
+	elif grep -q "Error\|panic\|denied\|There\|Exec\|found\|fault" $path/temp.log ; then
 		echo "$($timenow) * Upload to Garmin Connect has failed, check temp.log for error details"
 		sed -i "s/to_import;$import_no/failed;$import_no/" $path/backup.csv
 	else echo "$($timenow) * Data upload to Garmin Connect is complete"
