@@ -48,7 +48,7 @@
 ![alt text](https://github.com/RobertWojtowicz/miscale2garmin/blob/master/manuals/esp32.jpg)
 
 ### 4.2.2. Preparing operating system
-- Minimum hardware and software requirements are: 1CPU, 512MB RAM, 2GB disk space, network connection, Raspberry Pi OS | Debian 11 operating system;
+- Minimum hardware and software requirements are: 1CPU (ARMv7+), 512MB RAM, 2GB disk space, network connection, Raspberry Pi OS | Debian 11 operating system;
 - Update your system and then install following modules:
 ```
 sudo apt-get update

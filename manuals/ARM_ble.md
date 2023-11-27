@@ -1,7 +1,7 @@
 ## 4.1. ARM_BLE VERSION
 ### 4.1.1. Preparing operating system
-- How to run USB bluetooth adapter on a Raspberry Pi Zero W? read section [4.1.3. How to increase BLE range](https://github.com/RobertWojtowicz/miscale2garmin/blob/master/manuals/ARM_ble.md#413-how-to-increase-ble-range)
-- Minimum hardware and software requirements are: 1CPU, 512MB RAM, 2GB disk space, network connection, Raspberry Pi OS | Debian 11 operating system;
+- How to run USB bluetooth adapter on a Raspberry Pi 02W? read section [4.1.3. How to increase BLE range](https://github.com/RobertWojtowicz/miscale2garmin/blob/master/manuals/ARM_ble.md#413-how-to-increase-ble-range)
+- Minimum hardware and software requirements are: 1CPU (ARMv7+), 512MB RAM, 2GB disk space, network connection, Raspberry Pi OS | Debian 11 operating system;
 - Update your system and then install following modules:
 ```
 sudo apt-get update
@@ -72,7 +72,7 @@ Mi Body Composition Scale 2 Garmin Connect v5.9 (export_garmin.py)
 
 ### 4.1.3. How to increase BLE range
 - Purchase a cheap USB bluetooth 5.0/5.1 adapter with external antenna (tested on RTL8761B chipset, manufacturer Zexmte);
-- Purchase an OTG cable (micro USB male to USB Type-A female), connect bluetooth to Raspberry Pi Zero W;
+- Purchase an OTG cable (micro USB male to USB Type-A female), connect bluetooth to Raspberry Pi 02W;
 - Bluetooth adapter should have a removable RP-SMA antenna;
 - You will have option to change if standard RP-SMA antenna included with bluetooth adapter gives too little range;
 - Sometimes if you increase antenna range, scan time is too short to find your scale (too many devices around), you should increase scan_time parameter in scanner_ble.py script;
@@ -85,13 +85,13 @@ wget https://github.com/Realtek-OpenSource/android_hardware_realtek/raw/rtk1395/
 ```
 dtoverlay=disable-bt
 ```
-- Move to destination folder (add an extra letter "u" in driver name), restart Raspberry Pi Zero W:
+- Move to destination folder (add an extra letter "u" in driver name), restart Raspberry Pi 02W:
 ```
 sudo mv rtl8761b_config /lib/firmware/rtl_bt/rtl8761bu_config.bin
 sudo mv rtl8761b_fw /lib/firmware/rtl_bt/rtl8761bu_fw.bin
 sudo reboot
 ```
-- Sample photo with test configuration, on left Raspberry Pi Zero W:
+- Sample photo with test configuration, on left Raspberry Pi 0W:
 
 ![alt text](https://github.com/RobertWojtowicz/miscale2garmin/blob/master/manuals/usb.jpg)
 

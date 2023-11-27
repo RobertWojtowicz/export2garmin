@@ -54,7 +54,7 @@
 
 **Select your platform and go to instructions:**
 - [x86 e.g. virtual machine (support for Debian 12)](https://github.com/RobertWojtowicz/miscale2garmin/blob/master/manuals/x86_ble.md);
-- [ARM e.g. Raspberry Pi Zero W (support for Debian 11)](https://github.com/RobertWojtowicz/miscale2garmin/blob/master/manuals/ARM_ble.md).
+- [ARMv7+ e.g. Raspberry Pi (support only for 0W2, 2-5 on Debian 11)](https://github.com/RobertWojtowicz/miscale2garmin/blob/master/manuals/ARM_ble.md).
 
 ### 4.2. ESP32 VERSION
 - After weighing, Mi Body Composition Scale 2 is active for 15 minutes on bluetooth transmission;
@@ -67,7 +67,7 @@
 
 **Select your platform and go to instructions:**
 - [x86 e.g. virtual machine (support for Debian 12)](https://github.com/RobertWojtowicz/miscale2garmin/blob/master/manuals/x86_esp32.md);
-- [ARM e.g. Raspberry Pi Zero W (support for Debian 11)](https://github.com/RobertWojtowicz/miscale2garmin/blob/master/manuals/ARM_esp32.md).
+- [ARMv7+ e.g. Raspberry Pi (support only for 0W2, 2-5 on Debian 11)](https://github.com/RobertWojtowicz/miscale2garmin/blob/master/manuals/ARM_esp32.md).
 
 ## 5. Mobile App
 I don't plan to create a mobile app, but I encourage you to take advantage of another projects:
