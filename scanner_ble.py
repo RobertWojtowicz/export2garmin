@@ -34,7 +34,11 @@ class miScale(btle.DefaultDelegate):
                     data = bytes.fromhex(value[4:])
                     ctrlByte1 = data[1]
                     hasImpedance = ctrlByte1 & (1<<1)
-                    Weight = (((data[12] & 0xFF) << 8) | (data[11] & 0xFF)) * 0.005
+                    if value[4:6] == '03':
+                        lb_weight = int((value[28:30] + value[26:28]), 16) * 0.01
+                        Weight = round(lb_weight / 2.2046, 1)
+                    else:
+                        Weight = (((data[12] & 0xFF) << 8) | (data[11] & 0xFF)) * 0.005
                     Impedance = ((data[10] & 0xFF) << 8) | (data[9] & 0xFF)
                     if hasImpedance:
                         Unix_time = int(dt.timestamp(dt.strptime(f"{int((data[3] << 8) | data[2])},{int(data[4])},{int(data[5])},{int(data[6])},{int(data[7])},{int(data[8])}", "%Y,%m,%d,%H,%M,%S")))
