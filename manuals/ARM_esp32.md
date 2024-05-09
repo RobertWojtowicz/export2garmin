@@ -1,0 +1,116 @@
+## 4.2. ARM_ESP32 VERSION
+### 4.2.1. ESP32 configuration (bluetooth gateway to WiFi/MQTT)
+- Use Arduino IDE to compile and upload software to ESP32, following board and libraries required:
+  - Arduino ESP32: https://github.com/espressif/arduino-esp32;
+  - Battery 18650 Stats: https://github.com/danilopinotti/Battery18650Stats;
+  - PubSubClient: https://github.com/knolleary/pubsubclient;
+  - Timestamps: https://github.com/alve89/Timestamps;
+- How to install board and library in Arduino IDE?:
+  - board (**_NOTE:_ use version 1.0.4, newer is unstable**): https://docs.espressif.com/projects/arduino-esp32/en/latest/installing.html;
+  - libraries: https://www.arduino.cc/en/Guide/Libraries;
+- Preparing Arduino IDE to upload project to ESP32, go to Tools and select:
+  - Board: > ESP32 Arduino > "WEMOS LOLIN32";
+  - Upload Speed: "921600";
+  - CPU Frequency: > "80MHz (WiFi / BT)" for better energy saving;
+  - Flash Frequency: "80Mhz";
+  - Partition Scheme: > "No OTA (Large APP)";
+  - Port: > "COM" on which ESP32 board is detected;
+- Following information must be entered before compiling code (esp32.ino) in Arduino IDE:
+  - MAC address of scale read from Zepp Life App ("scale_mac_addr"), if you don't know MAC address read section [2. Getting MAC address of Mi Body Composition Scale 2 / disable weigh small object](https://github.com/RobertWojtowicz/miscale2garmin/tree/master#2-getting-mac-address-of-mi-body-composition-scale-2--disable-weigh-small-object);
+  - parameters of your WiFi network ("ssid", "password");
+  - other settings ("led_pin", "Battery18650Stats");
+  - connection parameters MQTT ("mqtt_server", "mqtt_port", "mqtt_userName", "mqtt_userPass");
+- Debug and comments:
+  - Project is prepared to work with ESP32 board with charging module (red LED indicates charging). I based my version on Li-ion 18650 battery;
+  - Program for ESP32 has implemented UART debug mode (baud rate must be set to 115200), you can verify if everything is working properly:
+  ```
+  Mi Body Composition Scale 2 Garmin Connect v7.0 (esp32.ino)
+  
+  * Starting BLE scan:
+   BLE device found with address: 3f:f1:3e:a6:4d:00, non-target device
+   BLE device found with address: 42:db:e4:c4:5c:d4, non-target device
+   BLE device found with address: 24:fc:e5:8f:ce:bf, non-target device
+   BLE device found with address: 00:00:00:00:00:00 <= target device
+  * Reading BLE data complete, finished BLE scan
+  * Connecting to WiFi: connected
+   IP address: 192.168.4.18
+  * Connecting to MQTT: connected
+  * Publishing MQTT data: 1672412076;58.4;521;3.5;5
+  * Waiting for next scan, going to sleep
+  ```
+  - After switching device on, blue LED will light up for a moment to indicate that module has started successfully;
+  - If data are acquired correctly in next step, blue LED will flash for a moment 2 times;
+  - If there is an error, e.g. data is incomplete, no connection to WiFi network or MQTT broker, blue LED will light up for 5 seconds;
+  - Program implements voltage measurement and battery level, which are sent toger with scale data in topic MQTT;
+  - Device has 2 buttons, first green is reset button (monostable), red is battery power switch (bistable);
+- Sample photo of finished module with ESP32 (Wemos LOLIN D32 Pro) and Li-ion 18650 battery (LG 3600mAh, LGDBM361865):
+
+![alt text](https://github.com/RobertWojtowicz/miscale2garmin/blob/master/manuals/esp32.jpg)
+
+### 4.2.2. Preparing operating system
+- Minimum hardware and software requirements are: 1CPU (ARMv7+), 512MB RAM, 8GB disk space, network connection, Raspberry Pi OS | Debian 12 operating system;
+- Update your system and then install following modules:
+```
+$ sudo apt-get update && sudo apt-get upgrade -y
+$ sudo apt-get install wget python3 bc mosquitto mosquitto-clients python3-pip -y
+$ sudo pip3 install garminconnect --break-system-packages
+```
+- You need to set up a password for MQTT (password must be same as in ESP32): ```sudo mosquitto_passwd -c /etc/mosquitto/passwd admin```;
+- Create a configuration file for Mosquitto: ```sudo nano /etc/mosquitto/mosquitto.conf``` and enter following parameters:
+```
+listener 1883
+allow_anonymous false
+password_file /etc/mosquitto/passwd
+```
+- Download and extract to your home directory (e.g. "/home/robert/"), make a files executable:
+```
+$ wget https://github.com/RobertWojtowicz/miscale2garmin/archive/refs/tags/7.tar.gz -O - | tar -xz
+$ cd miscale2garmin-7
+$ sudo chmod 755 import_tokens.py import_data.sh export_garmin.py
+```
+
+### 4.2.3. Configuring scripts
+- First script is "import_data.sh", you need to complete data: "user", "password" which are related to MQTT broker, "mqtt" set to "on";
+- Second script is "import_tokens.py" is used to export Oauth1 and Oauth2 tokens of your account from Garmin Connect;
+- Script "import_tokens.py" has support for login with or without MFA;
+- Once a year, tokens must be exported again, due to their expiration;
+- When you run "import_tokens.py" script, you need to provide a login and password and possibly a code from MFA:
+```
+$ python3 /home/robert/miscale2garmin-7/import_tokens.py
+Mi Body Composition Scale 2 Garmin Connect v7.2 (import_tokens.py)
+
+28.04.2024-11:58:44 * Login e-mail: email@email.com
+28.04.2024-11:58:50 * Enter password:
+28.04.2024-11:58:57 * MFA/2FA one-time code: 000000
+28.04.2024-11:59:17 * Oauth tokens saved correctly
+```
+- Third script is "export_garmin.py", you must complete data in "users" section: sex, height in cm, birthdate in dd-mm-yyyy and email to Garmin Connect, max_weight in kg, min_weight in kg;
+- Script "export_garmin.py" supports multiple users with individual weights ranges, we can link multiple accounts with Garmin Connect;
+- Script "import_data.sh" has implemented debug mode, you can verify if everything is working properly, just execute it from console:
+```
+$ /home/robert/miscale2garmin-6/import_data.sh
+Mi Body Composition Scale 2 Garmin Connect v7.4 (import_data.sh)
+
+18.11.2023-22:49:58 * backup.csv file exists, check if temp.log exists
+18.11.2023-22:49:58 * temp.log file exists, checking for new data
+18.11.2023-22:49:58 * Importing data from an MQTT broker
+18.11.2023-22:50:01 * Saving import 1700344090 to backup.csv file
+18.11.2023-22:50:06 * Calculating data from import 1700344090, upload to Garmin Connect
+18.11.2023-22:50:06 * Data upload to Garmin Connect is complete
+18.11.2023-22:50:06 * Saving calculated data from import 1700344090 to backup.csv file
+```
+- If there is an error upload to Garmin Connect, data will be sent again on next execution, upload errors and other operations are saved in temp.log file:
+```
+$ cat /home/robert/miscale2garmin-7/temp.log
+Mi Body Composition Scale 2 Garmin Connect v7.4 (export_garmin.py)
+
+* Import data: 1672412076;58.1;526
+* Calculated data: 09.05.2024;12:29;55.9;18.9;12.5;46.4;2.5;60.1;7;5;24;1228;50.7;64.4;to_gain:5.9;23.0;589;email@email.com;09.05.2024;12:31
+```
+- Finally, if everything works correctly add script import_mqtt.sh to CRON to run it every 1 minute ```sudo crontab -e```:
+```
+*/1 * * * * /home/robert/miscale2garmin-7/import_data.sh
+```
+
+### If you like my work, you can buy me a coffee
+<a href="https://www.buymeacoffee.com/RobertWojtowicz" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
