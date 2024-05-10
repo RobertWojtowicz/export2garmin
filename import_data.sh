@@ -18,8 +18,8 @@ timenow="date +%d.%m.%Y-%H:%M:%S"
 if [ ! -f $path/backup.csv ] ; then
 	echo "$($timenow) * Creating backup.csv file, check if temp.log exists"
 	if [ $mqtt == "off" ] ; then
-		echo "Data Status;Unix Time;Date;Time;Weight [kg];Change [kg];BMI;Body Fat [%];Skeletal Muscle Mass [kg];Bone Mass [kg];Body Water [%];Physique Rating;Visceral Fat;Metabolic Age [years];BMR [kCal];LBM [kg];Ideal Weight [kg];Fat Mass To Ideal [type:kg];Protein [%];Impedance;Email User;Upload Date;Upload Time;Difference Time [s]" > $path/backup.csv
-	else echo "Data Status;Unix Time;Date;Time;Weight [kg];Change [kg];BMI;Body Fat [%];Skeletal Muscle Mass [kg];Bone Mass [kg];Body Water [%];Physique Rating;Visceral Fat;Metabolic Age [years];BMR [kCal];LBM [kg];Ideal Weight [kg];Fat Mass To Ideal [type:kg];Protein [%];Impedance;Email User;Upload Date;Upload Time;Difference Time [s];Battery [V];Battery [%]" > $path/backup.csv
+		echo "Data Status;Unix Time;Date;Time;Weight [kg];Change [kg];BMI;Body Fat [%];Skeletal Muscle Mass [kg];Bone Mass [kg];Body Water [%];Physique Rating;Visceral Fat;Metabolic Age [years];BMR [kCal];LBM [kg];Ideal Wieght [kg];Fat Mass To Ideal [type:mass kg];Protein [%];Impedance;Email User;Upload Date;Upload Time;Difference Time [s]" > $path/backup.csv
+	else echo "Data Status;Unix Time;Date;Time;Weight [kg];Change [kg];BMI;Body Fat [%];Skeletal Muscle Mass [kg];Bone Mass [kg];Body Water [%];Physique Rating;Visceral Fat;Metabolic Age [years];BMR [kCal];LBM [kg];Ideal Wieght [kg];Fat Mass To Ideal [type:mass kg];Protein [%];Impedance;Email User;Upload Date;Upload Time;Difference Time [s];Battery [V];Battery [%]" > $path/backup.csv
 	fi
 else echo "$($timenow) * backup.csv file exists, check if temp.log exists"
 fi
