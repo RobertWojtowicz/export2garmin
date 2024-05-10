@@ -84,7 +84,7 @@ Mi Body Composition Scale 2 Garmin Connect v7.2 (import_tokens.py)
 28.04.2024-11:58:57 * MFA/2FA one-time code: 000000
 28.04.2024-11:59:17 * Oauth tokens saved correctly
 ```
-- Third script is "export_garmin.py", you must complete data in "users" section: sex, height in cm, birthdate in dd-mm-yyyy and email to Garmin Connect, max_weight in kg, min_weight in kg;
+- Third script is "export_garmin.py", you must complete data in "users" section: sex, height in cm, birthdate in dd-mm-yyyy and login e-mail to Garmin Connect, max_weight in kg, min_weight in kg;
 - Script "export_garmin.py" supports multiple users with individual weights ranges, we can link multiple accounts with Garmin Connect;
 - Script "import_data.sh" has implemented debug mode, you can verify if everything is working properly, just execute it from console:
 ```

@@ -28,8 +28,8 @@ class User():
         return today.year - calc_date.year
 
 # Adding all users (sex, height in cm, birthdate in dd-mm-yyyy, login e-mail to Garmin Connect, max_weight in kg, min_weight in kg)
-users = [User("male", 172, '02-04-1984', "email", 65, 53),
-         User("male", 188, '02-04-1984', "email", 92, 85)]
+users = [User("male", 172, '02-04-1984', "email@email.com", 65, 53),
+         User("male", 188, '02-04-1984', "email@email.com", 92, 85)]
 
 # Import file as csv
 path = os.path.dirname(__file__)
