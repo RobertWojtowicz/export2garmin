@@ -19,7 +19,7 @@
   - Visceral Fat;
   - Metabolic Age;
   - BMR (Basal Metabolic Rate);
-- Backup.csv file also contains other calculated data (can be imported e.g. for analysis into Excel):
+- Backup.csv file also contains other calculated parameters (can be imported e.g. for analysis into Excel):
   - LBM (Lean Body Mass);
   - Ideal Weight;
   - Fat Mass To Ideal;
