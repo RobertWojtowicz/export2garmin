@@ -9,7 +9,7 @@ $ sudo pip3 install bluepy garminconnect --break-system-packages
 ```
 - Modify file ```sudo nano /etc/systemd/system/bluetooth.target.wants/bluetooth.service```:
 ```
-ExecStart=/usr/lib/bluetooth/bluetoothd --noplugin=sap --experimental
+ExecStart=/usr/libexec/bluetooth/bluetoothd --noplugin=sap --experimental
 ```
 - Download and extract to your home directory (e.g. "/home/robert/"), make a files executable:
 ```
