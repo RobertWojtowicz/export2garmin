@@ -65,7 +65,7 @@ void StartESP32() {
   // Initializing serial port for debugging purposes, version info
   Serial.begin(115200);
   Serial.println("");
-  Serial.println("Mi Body Composition Scale 2 Garmin Connect v7.0 (esp32.ino)");
+  Serial.println("Export 2 Garmin Connect v1.0 (esp32.ino)");
   Serial.println("");
 }
 
