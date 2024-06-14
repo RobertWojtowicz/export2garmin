@@ -6,7 +6,7 @@ echo ""
 
 # Creating miscale_backup.csv and temp.log file
 path=`cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd`
-source $path/user/export2garmin.cfg
+export $(grep miscale_mqtt $path/user/export2garmin.cfg)
 timenow="date +%d.%m.%Y-%H:%M:%S"
 if [ ! -f $path/user/miscale_backup.csv ] ; then
 	header="Data Status;Unix Time;Date;Time;Weight [kg];Change [kg];BMI;Body Fat [%];Skeletal Muscle Mass [kg];Bone Mass [kg];Body Water [%];Physique Rating;Visceral Fat;Metabolic Age [years];BMR [kCal];LBM [kg];Ideal Wieght [kg];Fat Mass To Ideal [type:mass kg];Protein [%];Impedance;Login e-mail;Upload Date;Upload Time;Difference Time [s]"
