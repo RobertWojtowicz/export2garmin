@@ -6,12 +6,12 @@ echo ""
 
 # Creating miscale_backup.csv and temp.log file
 path=`cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd`
-export $(grep miscale_mqtt $path/user/export2garmin.cfg)
+export $(grep import_data $path/user/export2garmin.cfg)
 timenow="date +%d.%m.%Y-%H:%M:%S"
 if [ ! -f $path/user/miscale_backup.csv ] ; then
 	header="Data Status;Unix Time;Date;Time;Weight [kg];Change [kg];BMI;Body Fat [%];Skeletal Muscle Mass [kg];Bone Mass [kg];Body Water [%];Physique Rating;Visceral Fat;Metabolic Age [years];BMR [kCal];LBM [kg];Ideal Wieght [kg];Fat Mass To Ideal [type:mass kg];Protein [%];Impedance;Login e-mail;Upload Date;Upload Time;Difference Time [s]"
 	echo "$($timenow) * Creating miscale_backup.csv file, check if temp.log exists"
-	if [ $miscale_mqtt == "off" ] ; then
+	if [ $import_data_mqtt == "off" ] ; then
 		echo "$header" > $path/user/miscale_backup.csv
 	else echo "$header;Battery [V];Battery [%]" > $path/user/miscale_backup.csv
 	fi
@@ -24,18 +24,18 @@ else echo "$($timenow) * temp.log file exists, checking for new data"
 fi
 
 # Importing raw data from source (BLE or MQTT)
-if [ $miscale_mqtt == "off" ] ; then
+if [ $import_data_mqtt == "off" ] ; then
 	echo "$($timenow) * Importing data from a BLE scanner"
 	read_all=`python3 -B $path/bin/miscale_ble.py`
 	read_scale=`echo $read_all | awk '{sub(/.*BLE scan/, ""); print substr($1,1)}'`
 else echo "$($timenow) * Importing data from an MQTT broker"
-	read_scale=`mosquitto_sub -h localhost -t 'data' -u $miscale_mqtt_user -P $miscale_mqtt_passwd -C 1 -W 10`
+	read_scale=`mosquitto_sub -h localhost -t 'data' -u $import_data_user -P $import_data_passwd -C 1 -W 10`
 fi
 
 # Checking if BLE scanner detects BLE devices, print to temp.log file, restart service, reimport
 unixtime_scale=`echo $read_scale | awk -F ";" '{print $1}'`
 if [ -z $unixtime_scale ] ; then
-	if [ $miscale_mqtt == "off" ] ; then
+	if [ $import_data_mqtt == "off" ] ; then
 		if echo $read_all | grep -q "device" ; then
 			echo "$($timenow) * No BLE data from scale or incomplete, check BLE scanner"
 			if grep -q "bluetooth" $path/temp.log ; then
@@ -63,7 +63,7 @@ fi
 # Checking raw data and time, save correct raw data to miscale_backup.csv file
 if [ ! -z $unixtime_scale ] ; then
 	time_zone=`date +%z | awk '{print substr($1,1,3)}'`
-	offset_unixtime=$(( $unixtime_scale + $time_zone * 3600 + $offset ))
+	offset_unixtime=$(( $unixtime_scale + $time_zone * 3600 + $import_data_offset ))
 	offset_scale=${read_scale/${unixtime_scale}/to_import;${offset_unixtime}}
 	cut_scale=`echo $offset_unixtime | awk '{print substr($1,1,8)}'`
 	unixtime_os=`date +%s`

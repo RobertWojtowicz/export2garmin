@@ -33,7 +33,7 @@ users = []
 with open(path + '/user/export2garmin.cfg', 'r') as file:
     for line in file:
         line = line.strip()
-        if line.startswith('miscale_user'):
+        if line.startswith('miscale_export_user'):
             user_data = eval(line.split('=')[1].strip())
             users.append(User(*user_data))
 
