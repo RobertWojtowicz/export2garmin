@@ -8,7 +8,7 @@ from datetime import datetime as dt
 from garminconnect import Garmin
 
 # Version Info
-print("Mi Body Composition Scale 2 Garmin Connect v7.4 (export_garmin.py)")
+print("Export 2 Garmin Connect v1.0 (miscale_export.py)")
 print("")
 
 class User():
@@ -27,16 +27,21 @@ class User():
         calc_date = datetime.datetime.strptime(self.birthdate, "%d-%m-%Y")
         return today.year - calc_date.year
 
-# Adding all users (sex, height in cm, birthdate in dd-mm-yyyy, login e-mail to Garmin Connect, max_weight in kg, min_weight in kg)
-users = [User("male", 172, '02-04-1984', "email@email.com", 65, 53),
-         User("male", 188, '02-04-1984', "email@email.com", 92, 85)]
+# Importing user variables from a file
+path = os.path.dirname(os.path.dirname(__file__))
+users = []
+with open(path + '/user/export2garmin.cfg', 'r') as file:
+    for line in file:
+        line = line.strip()
+        if line.startswith('miscale_user'):
+            user_data = eval(line.split('=')[1].strip())
+            users.append(User(*user_data))
 
-# Import file as csv
-path = os.path.dirname(__file__)
+# Import weight and impedance variables from a file
 weight = 0
 miimpedance = 0
 mitdatetime = 0
-with open(path + '/backup.csv', 'r') as csv_file:
+with open(path + '/user/miscale_backup.csv', 'r') as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=';')
     for row in csv_reader:
         if str(row[0]) in ["failed", "to_import"]:
@@ -58,9 +63,9 @@ if selected_user is not None:
     bmi = lib.getBMI()
     percent_fat = lib.getFatPercentage()
     muscle_mass = lib.getMuscleMass()
-    bone_mass = lib.getBoneMass()    
+    bone_mass = lib.getBoneMass()
     percent_hydration = lib.getWaterPercentage()
-    physique_rating = lib.getBodyType()    
+    physique_rating = lib.getBodyType()
     visceral_fat_rating = lib.getVisceralFat()
     metabolic_age = lib.getMetabolicAge()
     basal_met = lib.getBMR()
@@ -71,7 +76,7 @@ if selected_user is not None:
     print(f"* Calculated data: {formatted_time};{weight:.1f};{bmi:.1f};{percent_fat:.1f};{muscle_mass:.1f};{bone_mass:.1f};{percent_hydration:.1f};{physique_rating:.0f};{visceral_fat_rating:.0f};{metabolic_age:.0f};{basal_met:.0f};{lib.getLBMCoefficient():.1f};{lib.getIdealWeight():.1f};{lib.getFatMassToIdeal()};{lib.getProteinPercentage():.1f};{miimpedance:.0f};{selected_user.email};{datetime.datetime.now().strftime('%d.%m.%Y;%H:%M')}")
 
     # Login to Garmin Connect
-    dir_path = os.path.expanduser(path + '/' + selected_user.email)
+    dir_path = os.path.expanduser(path + '/user/' + selected_user.email)
     with open(dir_path, "r") as token_file:
         tokenstore = token_file.read()
     garmin = Garmin()

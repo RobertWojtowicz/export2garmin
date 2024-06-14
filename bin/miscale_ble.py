@@ -6,24 +6,25 @@ from datetime import datetime as dt
 from bluepy import btle
 
 # Version Info
-print("Mi Body Composition Scale 2 Garmin Connect v7.2 (scanner_ble.py)")
+print("Export 2 Garmin Connect v1.0 (miscale_ble.py)")
 print("")
 
-# Scale MAC address, please use lowercase letters
-scale_mac_addr = "00:00:00:00:00:00"
+# Importing bluetooth variables from a file
+path = os.path.dirname(os.path.dirname(__file__))
+with open(path + '/user/export2garmin.cfg', 'r') as file:
+    for line in file:
+        line = line.strip()
+        if line.startswith('miscale_ble'):
+            name, value = line.split('=')
+            globals()[name.strip()] = value.strip()
+miscale_ble_time = int(miscale_ble_time)
 unique_dev_addresses = []
-
-# HCI number assigned to BLE scanner, default is 0 (hci0). Change as you have multiple devices to e.g. 1 (hci1)
-hci_num = 0
-
-# Scanning time, in seconds
-scan_time = 10
 
 # Reading data from a scale using a BLE scanner
 class miScale(btle.DefaultDelegate):
     def __init__(self):
         btle.DefaultDelegate.__init__(self)
-        self.address = scale_mac_addr
+        self.address = str(miscale_ble_mac)
     def handleDiscovery(self, dev, isNewDev, isNewData):
         if dev.addr == self.address:
             for (adType, desc, value) in dev.getScanData():
@@ -52,14 +53,14 @@ class miScale(btle.DefaultDelegate):
                 unique_dev_addresses.append(dev.addr)
                 print("  BLE device found with address: " + dev.addr + ", non-target device")
     def run(self):
-        if len(os.popen(f"hcitool dev | awk '/hci{hci_num}/ {{print $2}}'").read()) == 0:
+        if len(os.popen(f"hcitool dev | awk '/hci{miscale_ble_hci}/ {{print $2}}'").read()) == 0:
             print(datetime.datetime.now().strftime("%d.%m.%Y-%H:%M:%S") + " * BLE scanner not detected")
-        else:
-            scanner = btle.Scanner(hci_num)
+        else: 
+            scanner = btle.Scanner(miscale_ble_hci)
             scanner.withDelegate(self)
             scanner.start()
             print(datetime.datetime.now().strftime("%d.%m.%Y-%H:%M:%S") + " * Starting BLE scan:")
-            scanner.process(scan_time)
+            scanner.process(miscale_ble_time)
             scanner.stop()
             print(datetime.datetime.now().strftime("%d.%m.%Y-%H:%M:%S") + " * Finished BLE scan")
 

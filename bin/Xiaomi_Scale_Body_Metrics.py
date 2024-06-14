@@ -1,4 +1,4 @@
-# Mi Body Composition Scale 2 Garmin Connect v7.4
+# Export 2 Garmin Connect v1.0
 
 from math import floor
 import sys

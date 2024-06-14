@@ -8,7 +8,7 @@ from garth.exc import GarthHTTPError
 from garminconnect import Garmin, GarminConnectAuthenticationError
 
 # Version Info
-print("Mi Body Composition Scale 2 Garmin Connect v7.2 (import_tokens.py)")
+print("Export 2 Garmin Connect v1.0 (import_tokens.py)")
 print("")
 
 # Get user credentials
@@ -28,9 +28,9 @@ def init_api():
         garmin.login()
 
 # Create Oauth1 and Oauth2 tokens as base64 encoded string
-        tokenstore_base64 = os.path.dirname(__file__)
+        tokenstore_base64 = os.path.dirname(os.path.dirname(__file__))
         token_base64 = garmin.garth.dumps()
-        dir_path = os.path.expanduser(tokenstore_base64 + '/' + email)
+        dir_path = os.path.expanduser(tokenstore_base64 + '/user/' + email)
         with open(dir_path, "w") as token_file:
             token_file.write(token_base64)
         print(datetime.datetime.now().strftime("%d.%m.%Y-%H:%M:%S") + " * Oauth tokens saved correctly")
