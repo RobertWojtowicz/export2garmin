@@ -14,7 +14,7 @@ ExecStart=/usr/libexec/bluetooth/bluetoothd --noplugin=sap --experimental
 - Download and extract to your home directory (e.g. "/home/robert/"), make a files executable:
 ```
 $ wget https://github.com/RobertWojtowicz/miscale2garmin/archive/refs/tags/7.tar.gz -O - | tar -xz
-$ cd miscale2garmin-7
+$ cd export2garmin-7
 $ sudo chmod 755 import_tokens.py import_data.sh scanner_ble.py export_garmin.py
 $ sudo chmod 555 /etc/bluetooth
 $ sudo setcap 'cap_net_raw,cap_net_admin+eip' /usr/local/lib/python3.11/dist-packages/bluepy/bluepy-helper
@@ -25,7 +25,7 @@ $ sudo setcap 'cap_net_raw,cap_net_admin+eip' /usr/local/lib/python3.11/dist-pac
 - If you have multiple BLE devices, check which device should scan scale with command ```sudo hcitool dev``` and set hci_num parameter in "scanner_ble.py" script;
 - Script "scanner_ble.py" has implemented debug mode, you can verify if everything is working properly, just execute it from console:
 ```
-$ python3 /home/robert/miscale2garmin-7/scanner_ble.py
+$ python3 /home/robert/export2garmin-7/scanner_ble.py
 Mi Body Composition Scale 2 Garmin Connect v7.2 (scanner_ble.py)
 
 18.11.2023-23:23:30 * Starting BLE scan:
@@ -41,7 +41,7 @@ Mi Body Composition Scale 2 Garmin Connect v7.2 (scanner_ble.py)
 - Once a year, tokens must be exported again, due to their expiration;
 - When you run "import_tokens.py" script, you need to provide a login and password and possibly a code from MFA:
 ```
-$ python3 /home/robert/miscale2garmin-7/import_tokens.py
+$ python3 /home/robert/export2garmin-7/import_tokens.py
 Mi Body Composition Scale 2 Garmin Connect v7.2 (import_tokens.py)
 
 28.04.2024-11:58:44 * Login e-mail: email@email.com
@@ -53,7 +53,7 @@ Mi Body Composition Scale 2 Garmin Connect v7.2 (import_tokens.py)
 - Script "export_garmin.py" supports multiple users with individual weights ranges, we can link multiple accounts with Garmin Connect;
 - Script "import_data.sh" has implemented debug mode, you can verify if everything is working properly, just execute it from console:
 ```
-$ /home/robert/miscale2garmin-7/import_data.sh
+$ /home/robert/export2garmin-7/import_data.sh
 Mi Body Composition Scale 2 Garmin Connect v7.4 (import_data.sh)
 
 18.11.2023-22:49:58 * backup.csv file exists, check if temp.log exists
@@ -66,7 +66,7 @@ Mi Body Composition Scale 2 Garmin Connect v7.4 (import_data.sh)
 ```
 - If there is an error upload to Garmin Connect, data will be sent again on next execution, upload errors and other operations are saved in temp.log file:
 ```
-$ cat /home/robert/miscale2garmin-7/temp.log
+$ cat /home/robert/export2garmin-7/temp.log
 Mi Body Composition Scale 2 Garmin Connect v7.4 (export_garmin.py)
 
 * Import data: 1672412076;58.1;526
@@ -74,7 +74,7 @@ Mi Body Composition Scale 2 Garmin Connect v7.4 (export_garmin.py)
 ```
 - Finally, if everything works correctly add script import_ble.sh to CRON to run it every 1 minute ```sudo crontab -e```:
 ```
-*/1 * * * * /home/robert/miscale2garmin-7/import_data.sh
+*/1 * * * * /home/robert/export2garmin-7/import_data.sh
 ```
 
 ### 4.1.3. How to increase BLE range
