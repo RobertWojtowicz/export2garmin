@@ -72,8 +72,8 @@ if selected_user is not None:
 
     # Print to temp.log file
     formatted_time = datetime.datetime.fromtimestamp(int(mitdatetime)).strftime("%d.%m.%Y;%H:%M")
-    print(f"* Import data: {mitdatetime};{weight:.1f};{miimpedance:.0f}")
-    print(f"* Calculated data: {formatted_time};{weight:.1f};{bmi:.1f};{percent_fat:.1f};{muscle_mass:.1f};{bone_mass:.1f};{percent_hydration:.1f};{physique_rating:.0f};{visceral_fat_rating:.0f};{metabolic_age:.0f};{basal_met:.0f};{lib.getLBMCoefficient():.1f};{lib.getIdealWeight():.1f};{lib.getFatMassToIdeal()};{lib.getProteinPercentage():.1f};{miimpedance:.0f};{selected_user.email};{datetime.datetime.now().strftime('%d.%m.%Y;%H:%M')}")
+    print(f"MISCALE * Import data: {mitdatetime};{weight:.1f};{miimpedance:.0f}")
+    print(f"MISCALE * Calculated data: {formatted_time};{weight:.1f};{bmi:.1f};{percent_fat:.1f};{muscle_mass:.1f};{bone_mass:.1f};{percent_hydration:.1f};{physique_rating:.0f};{visceral_fat_rating:.0f};{metabolic_age:.0f};{basal_met:.0f};{lib.getLBMCoefficient():.1f};{lib.getIdealWeight():.1f};{lib.getFatMassToIdeal()};{lib.getProteinPercentage():.1f};{miimpedance:.0f};{selected_user.email};{datetime.datetime.now().strftime('%d.%m.%Y;%H:%M')}")
 
     # Login to Garmin Connect
     dir_path = os.path.expanduser(path + '/user/' + selected_user.email)
@@ -87,5 +87,5 @@ if selected_user is not None:
 
 # Print to temp.log file
 else:
-    print(f"* Import data: {mitdatetime};{weight:.1f};{miimpedance:.0f}")
-    print("* There is no user with given weight, check users section in export_garmin.py")
+    print(f"MISCALE * Import data: {mitdatetime};{weight:.1f};{miimpedance:.0f}")
+    print("MISCALE * There is no user with given weight, check users section in export2garmin.cfg")
