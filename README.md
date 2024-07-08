@@ -1,12 +1,14 @@
-# Mi Body Composition Scale and Omron blood pressure 2 Garmin Connect
+# Mi Body Composition Scale & Omron blood pressure 2 Garmin Connect
 
 ## 1. Introduction
 - This project is based on following projects:
   - https://github.com/cyberjunky/python-garminconnect;
   - https://github.com/wiecosystem/Bluetooth;
+  - https://github.com/userx14/omblepy;
   - https://github.com/lolouk44/xiaomi_mi_scale;
   - https://github.com/dorssel/usbipd-win;
   - https://github.com/rando-calrissian/esp32_xiaomi_mi_2_hass;
+### 1.1. Miscale module:
 - Allows fully automatic synchronization of Mi Body Composition Scale 2 (tested on XMTZC05HM) directly to Garmin Connect, with following parameters:
   - Date and Time;
   - Weight (**_NOTE:_ kg units only**);
@@ -18,13 +20,22 @@
   - Physique Rating;
   - Visceral Fat;
   - Metabolic Age;
-- Backup.csv file also contains other calculated parameters (can be imported e.g. for analysis into Excel):
+- Miscale_backup.csv file also contains other calculated parameters (can be imported e.g. for analysis into Excel):
   - BMR (Basal Metabolic Rate);
   - LBM (Lean Body Mass);
   - Ideal Weight;
   - Fat Mass To Ideal;
   - Protein;
-- Supports multiple users with individual weights ranges, we can link multiple accounts with Garmin Connect.
+- Supports multiple users with individual weights ranges, we can link multiple accounts with Garmin Connect;
+### 1.2. Omron module: 
+- Allows fully automatic synchronization of Omron blood pressure (tested on HEM-7322T/M700 Intelli IT) directly to Garmin Connect, with following parameters:
+- Date and Time;
+- DIA (Diastolic Blood Pressure);
+- SYS (Systolic Blood Pressure);
+- BPM (Beats Per Minute);
+- Omron_backup.csv file also contains other parameters (can be imported e.g. for analysis into Excel):
+- MOV;
+- IHB (Irregular Heart Beat).
 
 ## 2. Getting MAC address of Mi Body Composition Scale 2 / disable weigh small object
 - Install Zepp Life App on your mobile device from Play Store;
