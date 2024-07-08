@@ -1,4 +1,4 @@
-# Mi Body Composition Scale 2 Garmin Connect
+# Mi Body Composition Scale and Omron blood pressure 2 Garmin Connect
 
 ## 1. Introduction
 - This project is based on following projects:
