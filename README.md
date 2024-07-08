@@ -29,13 +29,13 @@
 - Supports multiple users with individual weights ranges, we can link multiple accounts with Garmin Connect;
 ### 1.2. Omron module: 
 - Allows fully automatic synchronization of Omron blood pressure (tested on HEM-7322T/M700 Intelli IT) directly to Garmin Connect, with following parameters:
-- Date and Time;
-- DIA (Diastolic Blood Pressure);
-- SYS (Systolic Blood Pressure);
-- BPM (Beats Per Minute);
+  - Date and Time;
+  - DIA (Diastolic Blood Pressure);
+  - SYS (Systolic Blood Pressure);
+  - BPM (Beats Per Minute);
 - Omron_backup.csv file also contains other parameters (can be imported e.g. for analysis into Excel):
-- MOV;
-- IHB (Irregular Heart Beat).
+  - MOV;
+  - IHB (Irregular Heart Beat).
 
 ## 2. Getting MAC address of Mi Body Composition Scale 2 / disable weigh small object
 - Install Zepp Life App on your mobile device from Play Store;
