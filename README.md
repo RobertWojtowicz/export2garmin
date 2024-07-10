@@ -34,7 +34,7 @@
   - SYS (Systolic Blood Pressure);
   - BPM (Beats Per Minute);
 - Omron_backup.csv file also contains other parameters (can be imported e.g. for analysis into Excel):
-  - MOV;
+  - MOV (Movement Detection);
   - IHB (Irregular Heart Beat).
 
 ## 2. Getting MAC address of Mi Body Composition Scale 2 / disable weigh small object
