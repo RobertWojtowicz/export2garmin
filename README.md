@@ -43,7 +43,7 @@
 - Retrieve scale's MAC address from Zepp Life App (Profile > My devices > Mi Body Composition Scale 2);
 - Turn off weigh small object in Zepp Life App (Profile > My devices > Mi Body Composition Scale 2) for better measurement quality:
 
-![alt text](https://github.com/RobertWojtowicz/miscale2garmin/blob/master/manuals/settings.png)
+![alt text](https://github.com/RobertWojtowicz/export2garmin/blob/master/manuals/settings.png)
 
 ## 3. Setting correct date and time in Mi Body Composition Scale 2
 - Launch Zepp Life App, go to scale (Profile > My devices > Mi Body Composition Scale 2);
@@ -58,7 +58,7 @@
 ## 4. How does this work
 - Synchronization diagram from Mi Body Composition Scale 2 to Garmin Connect:
 
-![alt text](https://github.com/RobertWojtowicz/miscale2garmin/blob/master/manuals/workflow.png)
+![alt text](https://github.com/RobertWojtowicz/export2garmin/blob/master/manuals/workflow.png)
 
 ### 4.1. BLE VERSION
 - After weighing, Mi Body Composition Scale 2 is active for 15 minutes on bluetooth transmission;
@@ -68,9 +68,9 @@
 - Raw and calculated data from scale is backed up on server in backup.csv file.
 
 **Select your platform and go to instructions:**
-- [x86 - Debian 12](https://github.com/RobertWojtowicz/miscale2garmin/blob/master/manuals/x86_ble.md);
-- [x86 - Windows 11](https://github.com/RobertWojtowicz/miscale2garmin/blob/master/manuals/x86_ble_win.md);
-- [ARM - Raspberry Pi OS | Debian 12](https://github.com/RobertWojtowicz/miscale2garmin/blob/master/manuals/ARM_ble.md).
+- [x86 - Debian 12](https://github.com/RobertWojtowicz/export2garmin/blob/master/manuals/x86_ble.md);
+- [x86 - Windows 11](https://github.com/RobertWojtowicz/export2garmin/blob/master/manuals/x86_ble_win.md);
+- [ARM - Raspberry Pi OS | Debian 12](https://github.com/RobertWojtowicz/export2garmin/blob/master/manuals/ARM_ble.md).
 
 ### 4.2. ESP32 VERSION
 - After weighing, Mi Body Composition Scale 2 is active for 15 minutes on bluetooth transmission;
@@ -81,9 +81,9 @@
 - Raw and calculated data from scale is backed up on server in backup.csv file.
 
 **Select your platform and go to instructions:**
-- [x86 - Debian 12](https://github.com/RobertWojtowicz/miscale2garmin/blob/master/manuals/x86_esp32.md);
-- [x86 - Windows 11](https://github.com/RobertWojtowicz/miscale2garmin/blob/master/manuals/x86_esp32_win.md);
-- [ARM - Raspberry Pi OS | Debian 12](https://github.com/RobertWojtowicz/miscale2garmin/blob/master/manuals/ARM_esp32.md).
+- [x86 - Debian 12](https://github.com/RobertWojtowicz/export2garmin/blob/master/manuals/x86_esp32.md);
+- [x86 - Windows 11](https://github.com/RobertWojtowicz/export2garmin/blob/master/manuals/x86_esp32_win.md);
+- [ARM - Raspberry Pi OS | Debian 12](https://github.com/RobertWojtowicz/export2garmin/blob/master/manuals/ARM_esp32.md).
 
 ## 5. Mobile App
 I don't plan to create a mobile app, but I encourage you to take advantage of another projects:

@@ -34,19 +34,19 @@ Ethernet 1         {192.168.4.18}
 ```
 - In powershell, create a virtual machine generation 2 (1vCPU, 1024MB RAM, 8GB disk space, default NAT network connection, mount iso with Debian 12):
 ```
-PS> New-VM -Name "miscale2garmin" -MemoryStartupBytes 1GB -Path "C:\" -NewVHDPath "C:\miscale2garmin\miscale2garmin.vhdx" -NewVHDSizeBytes 8GB -Generation 2 -SwitchName "Default Switch"
-PS> Add-VMDvdDrive -VMName "miscale2garmin" -Path "C:\Users\robert\Downloads\debian-12-amd64-netinst.iso"
-PS> Set-VMMemory "miscale2garmin" -DynamicMemoryEnabled $false
-PS> Set-VMFirmware "miscale2garmin" -EnableSecureBoot Off -BootOrder $(Get-VMDvdDrive -VMName "miscale2garmin"), $(Get-VMHardDiskDrive -VMName "miscale2garmin"), $(Get-VMNetworkAdapter -VMName "miscale2garmin")
-PS> Set-VM -Name "miscale2garmin" –AutomaticStartAction Start -AutomaticStopAction ShutDown
+PS> New-VM -Name "export2garmin" -MemoryStartupBytes 1GB -Path "C:\" -NewVHDPath "C:\export2garmin\export2garmin.vhdx" -NewVHDSizeBytes 8GB -Generation 2 -SwitchName "Default Switch"
+PS> Add-VMDvdDrive -VMName "export2garmin" -Path "C:\Users\robert\Downloads\debian-12-amd64-netinst.iso"
+PS> Set-VMMemory "export2garmin" -DynamicMemoryEnabled $false
+PS> Set-VMFirmware "export2garmin" -EnableSecureBoot Off -BootOrder $(Get-VMDvdDrive -VMName "export2garmin"), $(Get-VMHardDiskDrive -VMName "export2garmin"), $(Get-VMNetworkAdapter -VMName "export2garmin")
+PS> Set-VM -Name "export2garmin" –AutomaticStartAction Start -AutomaticStopAction ShutDown
 ```
 - Start Hyper-V console from powershell and install Debian 12 (default disk partitioning with minimal components, SSH server is enough):
 ```
-PS> vmconnect.exe 192.168.4.18 miscale2garmin
+PS> vmconnect.exe 192.168.4.18 export2garmin
 ```
 - After installing system in powershell check IP address of guest to be able to log in easily via SSH:
 ```
-PS> get-vm -Name "miscale2garmin" | Select -ExpandProperty Networkadapters | Select IPAddresses
+PS> get-vm -Name "export2garmin" | Select -ExpandProperty Networkadapters | Select IPAddresses
 IPAddresses
 -----------
 {172.17.76.18, fe80::215:5dff:fe04:c801}
@@ -85,7 +85,7 @@ WantedBy=multi-user.target
 $ sudo systemctl enable usbip-attach
 $ sudo systemctl start usbip-attach
 ```
-- Go to next part of instructions skipping section 4.1.3. [x86 - Debian 12](https://github.com/RobertWojtowicz/miscale2garmin/blob/master/manuals/x86_ble.md).
+- Go to next part of instructions skipping section 4.1.3. [x86 - Debian 12](https://github.com/RobertWojtowicz/export2garmin/blob/master/manuals/x86_ble.md).
 
 ## If you like my work, you can buy me a coffee
 <a href="https://www.buymeacoffee.com/RobertWojtowicz" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>

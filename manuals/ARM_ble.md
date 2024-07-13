@@ -13,19 +13,21 @@ ExecStart=/usr/libexec/bluetooth/bluetoothd --noplugin=sap --experimental
 ```
 - Download and extract to your home directory (e.g. "/home/robert/"), make a files executable:
 ```
-$ wget https://github.com/RobertWojtowicz/miscale2garmin/archive/refs/tags/7.tar.gz -O - | tar -xz
-$ cd miscale2garmin-7
-$ sudo chmod 755 import_tokens.py import_data.sh scanner_ble.py export_garmin.py
+$ wget https://github.com/RobertWojtowicz/export2garmin/archive/refs/heads/master.tar.gz -O - | tar -xz
+$ cd export2garmin-master
+$ sudo chmod 755 import_data.sh
 $ sudo chmod 555 /etc/bluetooth
 $ sudo setcap 'cap_net_raw,cap_net_admin+eip' /usr/local/lib/python3.11/dist-packages/bluepy/bluepy-helper
 ```
 
 ### 4.1.2. Configuring scripts
-- First script is "scanner_ble.py", you need to complete data: "scale_mac_addr", which is related to MAC address of scale, if you don't know MAC address read section [2. Getting MAC address of Mi Body Composition Scale 2 / disable weigh small object](https://github.com/RobertWojtowicz/miscale2garmin/tree/master#2-getting-mac-address-of-mi-body-composition-scale-2--disable-weigh-small-object);
-- If you have multiple BLE devices, check which device should scan scale with command ```sudo hcitool dev``` and set hci_num parameter in "scanner_ble.py" script;
-- Script "scanner_ble.py" has implemented debug mode, you can verify if everything is working properly, just execute it from console:
+- Configuration is stored in `user/export2garmin.cfg` file.
+- You need to complete data: `miscale_ble_mac`, which is related to MAC address of scale, if you don't know MAC address read section [2. Getting MAC address of Mi Body Composition Scale 2 / disable weigh small object](https://github.com/RobertWojtowicz/export2garmin/tree/master#2-getting-mac-address-of-mi-body-composition-scale-2--disable-weigh-small-object);
+- If you have multiple BLE devices, check which device should scan scale with command ```sudo hcitool dev``` and set `miscale_ble_hci` parameter;
+- Additionally, you must complete data in `miscale_export_user*` section: sex, height in cm, birthdate in dd-mm-yyyy and login e-mail to Garmin Connect, max_weight in kg, min_weight in kg;
+- Script `miscale/miscale_ble.py` has implemented debug mode, you can verify if everything is working properly, just execute it from console:
 ```
-$ python3 /home/robert/miscale2garmin-7/scanner_ble.py
+$ python3 /home/robert/export2garmin-master/miscale/miscale_ble.py
 Mi Body Composition Scale 2 Garmin Connect v7.2 (scanner_ble.py)
 
 18.11.2023-23:23:30 * Starting BLE scan:
@@ -36,12 +38,12 @@ Mi Body Composition Scale 2 Garmin Connect v7.2 (scanner_ble.py)
 18.11.2023-23:23:34 * Reading BLE data complete, finished BLE scan
 1672412076;58.4;521
 ```
-- Second script is "import_tokens.py" is used to export Oauth1 and Oauth2 tokens of your account from Garmin Connect;
-- Script "import_tokens.py" has support for login with or without MFA;
+- Second script is `user/import_tokens.py` is used to export Oauth1 and Oauth2 tokens of your account from Garmin Connect;
+- Script `user/import_tokens.py` has support for login with or without MFA;
 - Once a year, tokens must be exported again, due to their expiration;
-- When you run "import_tokens.py" script, you need to provide a login and password and possibly a code from MFA:
+- When you run `user/import_tokens.py` script, you need to provide a login and password and possibly a code from MFA:
 ```
-$ python3 /home/robert/miscale2garmin-7/import_tokens.py
+$ python3 /home/robert/export2garmin-master/user/import_tokens.py
 Mi Body Composition Scale 2 Garmin Connect v7.2 (import_tokens.py)
 
 28.04.2024-11:58:44 * Login e-mail: email@email.com
@@ -49,11 +51,10 @@ Mi Body Composition Scale 2 Garmin Connect v7.2 (import_tokens.py)
 28.04.2024-11:58:57 * MFA/2FA one-time code: 000000
 28.04.2024-11:59:17 * Oauth tokens saved correctly
 ```
-- Third script is "export_garmin.py", you must complete data in "users" section: sex, height in cm, birthdate in dd-mm-yyyy and login e-mail to Garmin Connect, max_weight in kg, min_weight in kg;
-- Script "export_garmin.py" supports multiple users with individual weights ranges, we can link multiple accounts with Garmin Connect;
+- Script `miscale/miscale_export.py` supports multiple users with individual weights ranges, we can link multiple accounts with Garmin Connect;
 - Script "import_data.sh" has implemented debug mode, you can verify if everything is working properly, just execute it from console:
 ```
-$ /home/robert/miscale2garmin-7/import_data.sh
+$ /home/robert/export2garmin-master/import_data.sh
 Mi Body Composition Scale 2 Garmin Connect v7.4 (import_data.sh)
 
 18.11.2023-22:49:58 * backup.csv file exists, check if temp.log exists
@@ -66,7 +67,7 @@ Mi Body Composition Scale 2 Garmin Connect v7.4 (import_data.sh)
 ```
 - If there is an error upload to Garmin Connect, data will be sent again on next execution, upload errors and other operations are saved in temp.log file:
 ```
-$ cat /home/robert/miscale2garmin-7/temp.log
+$ cat /home/robert/export2garmin-master/temp.log
 Mi Body Composition Scale 2 Garmin Connect v7.4 (export_garmin.py)
 
 * Import data: 1672412076;58.1;526
@@ -74,7 +75,7 @@ Mi Body Composition Scale 2 Garmin Connect v7.4 (export_garmin.py)
 ```
 - Finally, if everything works correctly add script import_ble.sh to CRON to run it every 1 minute ```sudo crontab -e```:
 ```
-*/1 * * * * /home/robert/miscale2garmin-7/import_data.sh
+*/1 * * * * /home/robert/export2garmin-master/import_data.sh
 ```
 
 ### 4.1.3. How to increase BLE range
@@ -89,7 +90,7 @@ dtoverlay=disable-bt
 ```
 - Sample photo with test configuration, on left Raspberry Pi 0W:
 
-![alt text](https://github.com/RobertWojtowicz/miscale2garmin/blob/master/manuals/usb.jpg)
+![alt text](https://github.com/RobertWojtowicz/export2garmin/blob/master/manuals/usb.jpg)
 
 ### If you like my work, you can buy me a coffee
 <a href="https://www.buymeacoffee.com/RobertWojtowicz" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
