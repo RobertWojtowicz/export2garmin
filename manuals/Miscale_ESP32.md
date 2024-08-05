@@ -33,7 +33,7 @@
   - Partition Scheme: > "No OTA (Large APP)";
   - Port: > "COM" on which ESP32 board is detected.
 - Following information must be entered before compiling code (esp32.ino) in Arduino IDE:
-  - MAC address of scale read from Zepp Life App ("scale_mac_addr"), if you don't know MAC address read section 2.2.1;
+  - MAC address of scale read from Zepp Life App ("scale_mac_addr"), if you don't know MAC address read section [2.2.1.](https://github.com/RobertWojtowicz/export2garmin/blob/master/manuals/Miscale_ESP32.md#221-getting-mac-address-of-mi-body-composition-scale-2--disable-weigh-small-object);
   - Parameters of your WiFi network ("ssid", "password");
   - Other settings ("led_pin", "Battery18650Stats");
   - Connection parameters MQTT ("mqtt_server", "mqtt_port", "mqtt_userName", "mqtt_userPass");

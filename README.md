@@ -11,7 +11,7 @@
 
 ### 1.1. Miscale module:
 - Allows fully automatic synchronization of Mi Body Composition Scale 2 (tested on XMTZC05HM) directly to Garmin Connect, with following parameters:
-  - Date and Time (measurement);
+  - Date and Time (measurement, from device);
   - Weight (**_NOTE:_ kg units only**);
   - BMI (Body Mass Index);
   - Body Fat;
@@ -37,7 +37,7 @@
 
 ### 1.2. Omron module: 
 - Allows fully automatic synchronization of Omron blood pressure (tested on M4/HEM-7155T and M7/HEM-7322T Intelli IT) directly to Garmin Connect, with following parameters:
-  - Date and Time (measurement);
+  - Date and Time (measurement, from device);
   - DIA (Diastolic Blood Pressure);
   - SYS (Systolic Blood Pressure);
   - BPM (Beats Per Minute).

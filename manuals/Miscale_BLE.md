@@ -39,7 +39,7 @@ $ sudo setcap 'cap_net_raw,cap_net_admin+eip' /usr/local/lib/python3.11/dist-pac
 ### 2.1.4. Configuring scripts
 - Configuration is stored in `user/export2garmin.cfg` file (make changes e.g. via `sudo nano`):
   - To enable Miscale module, set "on" in "switch_miscale" parameter;
-  - Fill in "miscale_ble_mac" parameter, which is related to MAC address of scale, if you don't know MAC address read section 2.1.1.;
+  - Fill in "miscale_ble_mac" parameter, which is related to MAC address of scale, if you don't know MAC address read section [2.1.1.](https://github.com/RobertWojtowicz/export2garmin/blob/master/manuals/Miscale_BLE.md#211-getting-mac-address-of-mi-body-composition-scale-2--disable-weigh-small-object);
   - If you have multiple BLE devices, check which device should scan scale with command `sudo hcitool dev` and set "miscale_ble_hci" parameter;
   - Additionally, you must complete data in "miscale_export_user*" section: sex, height in cm, birthdate in dd-mm-yyyy and login e-mail to Garmin Connect, max_weight in kg, min_weight in kg.
 - Script `miscale/miscale_ble.py` has implemented debug mode, you can verify if everything is working properly, just execute it from console:
