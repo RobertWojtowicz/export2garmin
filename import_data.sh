@@ -251,10 +251,10 @@ while [ $loop_count -eq 0 ] || [ $i -lt $loop_count ] ; do
 					echo "$($timenow) OMRON * Data upload to Garmin Connect is complete"
 					echo "$($timenow) OMRON * Saving calculated data from import $omron_import to omron_backup.csv file"
 					omron_import_data=`awk -F ": " '/OMRON /*/ Import data:/{print $2}' /dev/shm/temp.log`
-					omron_data_time=`awk -F ": " '/OMRON /*/ Export date time:/{print $2}' /dev/shm/temp.log`
+					omron_date_time=`awk -F ": " '/OMRON /*/ Export date time:/{print $2}' /dev/shm/temp.log`
 					omron_os_unixtime=`date +%s`
 					omron_time_shift=$(( $omron_os_unixtime - $omron_import ))
-					sed -i "s/failed;$omron_import_data/uploaded;omron_import_data;$omron_data_time;$omron_time_shift/; s/to_import;$omron_import_data/uploaded;$omron_import_data;$omron_data_time;$omron_time_shift/" $path/user/omron_backup.csv
+					sed -i "s/failed;$omron_import_data/uploaded;omron_import_data;$omron_date_time;$omron_time_shift/; s/to_import;$omron_import_data/uploaded;$omron_import_data;$omron_date_time;$omron_time_shift/" $path/user/omron_backup.csv
 				else
 					echo "$($timenow) OMRON * Upload to Garmin Connect has failed, check temp.log for error details"
 					sed -i "s/to_import;$omron_import/failed;$omron_import/" $path/user/omron_backup.csv
@@ -262,10 +262,10 @@ while [ $loop_count -eq 0 ] || [ $i -lt $loop_count ] ; do
 			else echo "$($timenow) OMRON * Data upload to Garmin Connect is complete"
 				echo "$($timenow) OMRON * Saving calculated data from import $omron_import to omron_backup.csv file"
 				omron_import_data=`awk -F ": " '/OMRON /*/ Import data:/{print $2}' /dev/shm/temp.log`
-				omron_data_time=`awk -F ": " '/OMRON /*/ Export date time:/{print $2}' /dev/shm/temp.log`
+				omron_date_time=`awk -F ": " '/OMRON /*/ Export date time:/{print $2}' /dev/shm/temp.log`
 				omron_os_unixtime=`date +%s`
 				omron_time_shift=$(( $omron_os_unixtime - $omron_import ))
-				sed -i "s/failed;$omron_import_data/uploaded;omron_import_data;$omron_data_time;$omron_time_shift/; s/to_import;$omron_import_data/uploaded;$omron_import_data;$omron_data_time;$omron_time_shift/" $path/user/omron_backup.csv
+				sed -i "s/failed;$omron_import_data/uploaded;omron_import_data;$omron_date_time;$omron_time_shift/; s/to_import;$omron_import_data/uploaded;$omron_import_data;$omron_date_time;$omron_time_shift/" $path/user/omron_backup.csv
 			fi
 		fi
 		unset $(compgen -v | grep '^omron_')
