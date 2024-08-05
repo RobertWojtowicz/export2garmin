@@ -28,7 +28,7 @@
   - Fat Mass To Ideal;
   - Protein;
   - Data Status (to_import, failed, uploaded);
-  - Unix Time (measurement);
+  - Unix Time (based on Date and Time);
   - Email User (used account for Garmin Connect);
   - Upload Date and Upload Time (to Garmin Connect);
   - Difference Time (between measuring and uploading);
@@ -45,7 +45,7 @@
   - MOV (Movement Detection);
   - IHB (Irregular Heart Beat);
   - Data Status (to_import, failed, uploaded);
-  - Unix Time (measurement);
+  - Unix Time (based on Date and Time);
   - Email User (used account for Garmin Connect);
   - Upload Date and Upload Time (to Garmin Connect);
   - Difference Time (between measuring and uploading).
