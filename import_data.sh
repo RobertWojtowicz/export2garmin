@@ -87,7 +87,7 @@ while [ $loop_count -eq 0 ] || [ $i -lt $loop_count ] ; do
 						miscale_read=`python3 -B $path/miscale/miscale_ble.py | awk 'END{print}'`
 						miscale_unixtime=`echo $miscale_read | awk -F ";" '{print $1}'`
 					fi
-				fi			
+				fi
 
 			fi
 		fi
@@ -174,7 +174,7 @@ while [ $loop_count -eq 0 ] || [ $i -lt $loop_count ] ; do
 	if [ $switch_omron == "on" ] ; then
 		export $(grep omron_ $path/user/export2garmin.cfg)
 		echo "$(timenow) OMRON * Module is on"
-  
+
 		# Creating omron_backup.csv and temp.log file
 		if [ ! -f $path/user/omron_backup.csv ] ; then
 			echo "Data Status;Unix Time;Email User;Date [dd.mm.yyyy];Time [hh:mm:ss];Systolic [mmHg];Diastolic [mmHg];Heart Rate [bpm];MOV;IHB;Upload Date [dd.mm.yyyy];Upload Time [hh:mm:ss];Difference Time [s]" > $path/user/omron_backup.csv
