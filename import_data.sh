@@ -39,7 +39,7 @@ while [ $loop_count -eq 0 ] || [ $i -lt $loop_count ] ; do
   
 		# Creating miscale_backup.csv and temp.log file
 		if [ ! -f $path/user/miscale_backup.csv ] ; then
-			header="Data Status;Unix Time;Date;Time;Weight [kg];Change [kg];BMI;Body Fat [%];Skeletal Muscle Mass [kg];Bone Mass [kg];Body Water [%];Physique Rating;Visceral Fat;Metabolic Age [years];BMR [kCal];LBM [kg];Ideal Wieght [kg];Fat Mass To Ideal [type:mass kg];Protein [%];Impedance;Login e-mail;Upload Date;Upload Time;Difference Time [s]"
+			header="Data Status;Unix Time;Date [dd.mm.yyyy];Time [hh:mm:ss];Weight [kg];Change [kg];BMI;Body Fat [%];Skeletal Muscle Mass [kg];Bone Mass [kg];Body Water [%];Physique Rating;Visceral Fat;Metabolic Age [years];BMR [kCal];LBM [kg];Ideal Wieght [kg];Fat Mass To Ideal [type:mass kg];Protein [%];Impedance;Login e-mail;Upload Date [dd.mm.yyyy];Upload Time [hh:mm:ss];Difference Time [s]"
 			echo "$($timenow) MISCALE * Creating miscale_backup.csv file, check if temp.log exists"
 			if [ $switch_mqtt == "on" ] ; then
 				echo "$header;Battery [V];Battery [%]" > $path/user/miscale_backup.csv
@@ -177,7 +177,7 @@ while [ $loop_count -eq 0 ] || [ $i -lt $loop_count ] ; do
   
 		# Creating omron_backup.csv and temp.log file
 		if [ ! -f $path/user/omron_backup.csv ] ; then
-			echo "Data Status;Unix Time;Email User;Date;Time;DIA;SYS;BPM;MOV;IHB;Upload Date;Upload Time;Difference Time [s]" > $path/user/omron_backup.csv
+			echo "Data Status;Unix Time;Email User;Date [dd.mm.yyyy];Time [hh:mm:ss];Systolic [mmHg];Diastolic [mmHg];Heart Rate [bpm];MOV;IHB;Upload Date [dd.mm.yyyy];Upload Time [hh:mm:ss];Difference Time [s]" > $path/user/omron_backup.csv
 			echo "$($timenow) OMRON * Creating omron_backup.csv file, check if temp.log exists"
 		else echo "$($timenow) OMRON * omron_backup.csv file exists, check if temp.log exists"
 		fi
