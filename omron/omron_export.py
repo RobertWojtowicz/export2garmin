@@ -14,9 +14,9 @@ print("")
 path = os.path.dirname(os.path.dirname(__file__))
 unixtime = 0
 emailuser = ""
-DIA = 0
-SYS = 0
-BPM = 0
+diastolic = 0
+systolic = 0
+pulse = 0
 
 with open(path + '/user/omron_backup.csv', 'r') as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=';')
@@ -26,14 +26,14 @@ with open(path + '/user/omron_backup.csv', 'r') as csv_file:
             emailuser = str(row[2])
             omrondate = str(row[3])
             omrontime = str(row[4])
-            DIA = int(row[5])
-            SYS = int(row[6])
-            BPM = int(row[7])
+            diastolic = int(row[5])
+            systolic = int(row[6])
+            pulse = int(row[7])
             MOV = int(row[8])
             IHB = int(row[9])
-            
+
             # Print to temp.log file
-            print(f"OMRON * Import data: {unixtime};{emailuser};{omrondate};{omrontime};{DIA:.0f};{SYS:.0f};{BPM:.0f};{MOV:.0f};{IHB:.0f}")
+            print(f"OMRON * Import data: {unixtime};{emailuser};{omrondate};{omrontime};{diastolic:.0f};{systolic:.0f};{pulse:.0f};{MOV:.0f};{IHB:.0f}")
             print(f"OMRON * Export date time: {datetime.datetime.now().strftime('%d.%m.%Y;%H:%M')}")
 
             # Login to Garmin Connect
@@ -44,6 +44,6 @@ with open(path + '/user/omron_backup.csv', 'r') as csv_file:
                 garmin.login(tokenstore)
 
                 # Upload data to Garmin Connect
-                garmin.set_blood_pressure(timestamp=dt.fromtimestamp(unixtime).isoformat(),diastolic=DIA,systolic=SYS,pulse=BPM)
+                garmin.set_blood_pressure(timestamp=dt.fromtimestamp(unixtime).isoformat(),diastolic=diastolic,systolic=systolic,pulse=pulse)
                 print("OMRON * Upload status: OK")
             break
