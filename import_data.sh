@@ -6,7 +6,7 @@ echo ""
 
 # Blocking multiple instances of same script process
 timenow() {
-timenow="date +%d.%m.%Y-%H:%M:%S"
+    date +%d.%m.%Y-%H:%M:%S
 }
 
 remove_lock() {
