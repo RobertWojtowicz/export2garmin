@@ -8,16 +8,13 @@ echo ""
 timenow() {
     date +%d.%m.%Y-%H:%M:%S
 }
-
 remove_lock() {
     rm -f "/dev/shm/export.lock"
 }
-
 another_instance() {
 	echo "$(timenow) EXPORT * Another instance running"
 	exit 1
 }
-
 lockfile -r 0 -l 60 "/dev/shm/export.lock" || another_instance
 trap remove_lock EXIT
 
@@ -29,7 +26,6 @@ loop_count=1
 if [ "$1" == "-l" ] ; then
     loop_count=0
 fi
-
 i=0
 while [ $loop_count -eq 0 ] || [ $i -lt $loop_count ] ; do
 	((i++))
