@@ -19,24 +19,21 @@ path=`cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd`
 export $(grep switch_ $path/user/export2garmin.cfg)
 
 # Create a loop, "-l" parameter executes loop indefinitely
+loop_count=1
 if [ "$1" == "-l" ] ; then
     loop_count=0
-else
-    loop_count=1
 fi
 i=0
 while [ $loop_count -eq 0 ] || [ $i -lt $loop_count ] ; do
 	((i++))
 
 	# Cleaning temp.log file after last startup
-	if [ -s /dev/shm/temp.log ] ; then
-		> /dev/shm/temp.log
-	fi
-	
+    [ -s /dev/shm/temp.log ] && > /dev/shm/temp.log
+
 	# Mi Body Composition Scale 2
 	if [ $switch_miscale == "on" ] ; then
 		echo "$($timenow) MISCALE * Module is on"
-  
+
 		# Creating miscale_backup.csv and temp.log file
 		if [ ! -f $path/user/miscale_backup.csv ] ; then
 			header="Data Status;Unix Time;Date [dd.mm.yyyy];Time [hh:mm:ss];Weight [kg];Change [kg];BMI;Body Fat [%];Skeletal Muscle Mass [kg];Bone Mass [kg];Body Water [%];Physique Rating;Visceral Fat;Metabolic Age [years];BMR [kCal];LBM [kg];Ideal Wieght [kg];Fat Mass To Ideal [type:mass kg];Protein [%];Impedance;Login e-mail;Upload Date [dd.mm.yyyy];Upload Time [hh:mm:ss];Difference Time [s]"
