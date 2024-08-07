@@ -23,35 +23,35 @@ source <(grep switch_ $path/user/export2garmin.cfg)
 
 # Create a loop, "-l" parameter executes loop indefinitely
 loop_count=1
-[ "$1" == "-l" ] && loop_count=0
+[[ "$1" == "-l" ]] && loop_count=0
 i=0
-while [ $loop_count -eq 0 ] || [ $i -lt $loop_count ] ; do
+while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 	((i++))
 
 	# Cleaning temp.log file after last startup
-    [ -s /dev/shm/temp.log ] && > /dev/shm/temp.log
+    [[ -s /dev/shm/temp.log ]] && > /dev/shm/temp.log
 
 	# Mi Body Composition Scale 2
-	if [ $switch_miscale == "on" ] ; then
+	if [[ $switch_miscale == "on" ]] ; then
 		miscale_backup=$path/user/miscale_backup.csv
 		echo "$(timenow) MISCALE * Module is on"
 
 		# Creating miscale_backup.csv and temp.log file
-		if [ ! -f $miscale_backup ] ; then
+		if [[ ! -f $miscale_backup ]] ; then
 			miscale_header="Data Status;Unix Time;Date [dd.mm.yyyy];Time [hh:mm:ss];Weight [kg];Change [kg];BMI;Body Fat [%];Skeletal Muscle Mass [kg];Bone Mass [kg];Body Water [%];Physique Rating;Visceral Fat;Metabolic Age [years];BMR [kCal];LBM [kg];Ideal Wieght [kg];Fat Mass To Ideal [type:mass kg];Protein [%];Impedance;Login e-mail;Upload Date [dd.mm.yyyy];Upload Time [hh:mm:ss];Difference Time [s]"
-			[ $switch_mqtt == "on" ] && miscale_header="$miscale_header;Battery [V];Battery [%]"
+			[[ $switch_mqtt == "on" ]] && miscale_header="$miscale_header;Battery [V];Battery [%]"
 			echo "$(timenow) MISCALE * Creating miscale_backup.csv file, check if temp.log exists"
 			echo $miscale_header > $miscale_backup
 		else echo "$(timenow) MISCALE * miscale_backup.csv file exists, check if temp.log exists"
 		fi
-		if [ ! -f /dev/shm/temp.log ] ; then
+		if [[ ! -f /dev/shm/temp.log ]] ; then
 			echo "$(timenow) MISCALE * Creating temp.log file, checking for new data"
 			echo > /dev/shm/temp.log
 		else echo "$(timenow) MISCALE * temp.log file exists, checking for new data"
 		fi
 
 		# Importing raw data from source (BLE or MQTT)
-		if [ $switch_mqtt == "on" ] ; then
+		if [[ $switch_mqtt == "on" ]] ; then
   			source <(grep miscale_mqtt_ $path/user/export2garmin.cfg)
 			echo "$(timenow) MISCALE * Importing data from an MQTT broker"
 			miscale_read=$(mosquitto_sub -h localhost -t 'data' -u "$miscale_mqtt_user" -P "$miscale_mqtt_passwd" -C 1 -W 10)
@@ -62,17 +62,15 @@ while [ $loop_count -eq 0 ] || [ $i -lt $loop_count ] ; do
 
 		# Checking if BLE scanner detects BLE devices, print to temp.log file, restart service, reimport
 		miscale_unixtime=$(echo $miscale_read | awk -F ";" '{print $1}')
-		if [ -z $miscale_unixtime ] ; then
-			if [ $switch_mqtt == "on" ] ; then
+		if [[ -z $miscale_unixtime ]] ; then
+			if [[ $switch_mqtt == "on" ]] ; then
 				echo "$(timenow) MISCALE * No MQTT data, check connection to MQTT broker or ESP32"
 			else
 				if echo $miscale_read_all | grep -q "device" ; then
 					echo "$(timenow) MISCALE * No BLE data from scale or incomplete, check BLE scanner"
-					if grep -q "bluetooth" /dev/shm/temp.log ; then
-						sed -i "/bluetooth/d" /dev/shm/temp.log
-					fi
+					grep -q "bluetooth" /dev/shm/temp.log && sed -i "/bluetooth/d" /dev/shm/temp.log
 				else
-					if [ ! -f /dev/shm/temp.log ] ; then
+					if [[ ! -f /dev/shm/temp.log ]] ; then
 						echo "$(timenow) MISCALE * No BLE devices found to scan, restarting bluetooth service" 2>&1 | tee /dev/shm/temp.log
 						sudo systemctl restart bluetooth.service
 						miscale_read=$(python3 -B $path/miscale/miscale_ble.py | awk 'END{print}')
@@ -81,16 +79,15 @@ while [ $loop_count -eq 0 ] || [ $i -lt $loop_count ] ; do
 						echo "$(timenow) MISCALE * Again, no BLE devices found to scan"
 					else echo "$(timenow) MISCALE * No BLE devices found to scan, restarting bluetooth service" 2>&1 | tee /dev/shm/temp.log
 						sudo systemctl restart bluetooth.service
-						miscale_read=`python3 -B $path/miscale/miscale_ble.py | awk 'END{print}'`
-						miscale_unixtime=`echo $miscale_read | awk -F ";" '{print $1}'`
+						miscale_read=$(python3 -B $path/miscale/miscale_ble.py | awk 'END{print}')
+						miscale_unixtime=$(echo $miscale_read | awk -F ";" '{print $1}')
 					fi
 				fi
-
 			fi
 		fi
 
 		# Checking raw data and time, save correct raw data to miscale_backup.csv file
-		if [ ! -z $miscale_unixtime ] ; then
+		if [[ -n $miscale_unixtime ]] ; then
   			source <(grep miscale_offset $path/user/export2garmin.cfg)
 			miscale_time_zone=$(date +%z | awk '{print substr($1,1,3)}')
 			miscale_offset_unixtime=$(( $miscale_unixtime + $miscale_time_zone * 3600 + $miscale_offset ))
@@ -136,7 +133,7 @@ while [ $loop_count -eq 0 ] || [ $i -lt $loop_count ] ; do
 		fi
 
 		# Handling errors, save calculated data to miscale_backup.csv file
-		if [ -z $miscale_import ] ; then
+		if [[ -z $miscale_import ]] ; then
 			echo "$(timenow) MISCALE * There is no new data to upload to Garmin Connect"
 		else echo "$(timenow) MISCALE * Calculating data from import $miscale_import, upload to Garmin Connect"
 			if grep -q "MISCALE \* There" /dev/shm/temp.log ; then
@@ -153,7 +150,7 @@ while [ $loop_count -eq 0 ] || [ $i -lt $loop_count ] ; do
 				sed -i "s/failed;$miscale_import_data/uploaded;$miscale_import;$miscale_calc_data;$miscale_time_shift/; s/to_import;$miscale_import_data/uploaded;$miscale_import;$miscale_calc_data;$miscale_time_shift/" $miscale_backup
 				miscale_import_diff=$(echo $miscale_calc_data | awk -F ";" '{print $1 ";" $2 ";" $3}')
 				miscale_check_line=$(wc -l < $miscale_backup)
-				if [ $miscale_check_line == "2" ] ; then
+				if [[ $miscale_check_line == "2" ]] ; then
 					sed -i "s/$miscale_import;$miscale_import_diff/$miscale_import;$miscale_import_diff;0.0/" $miscale_backup
 				else miscale_email_user=$(echo $miscale_calc_data | awk -F ";" '{print $18}')
 					miscale_weight_last=$(grep $miscale_email_user $miscale_backup | sed -n 'x;$p' | awk -F ";" '{print $5}')
@@ -168,23 +165,23 @@ while [ $loop_count -eq 0 ] || [ $i -lt $loop_count ] ; do
 	fi
 
 	# Omron blood pressure
-	if [ $switch_omron == "on" ] ; then
+	if [[ $switch_omron == "on" ]] ; then
 		source <(grep omron_ $path/user/export2garmin.cfg)
 		omron_backup=$path/user/omron_backup.csv
 		echo "$(timenow) OMRON * Module is on"
 
 		# Creating omron_backup.csv and temp.log file
-		if [ ! -f $omron_backup ] ; then
+		if [[ ! -f $omron_backup ]] ; then
 			echo "Data Status;Unix Time;Email User;Date [dd.mm.yyyy];Time [hh:mm:ss];Systolic [mmHg];Diastolic [mmHg];Heart Rate [bpm];MOV;IHB;Upload Date [dd.mm.yyyy];Upload Time [hh:mm:ss];Difference Time [s]" > $omron_backup
 			echo "$(timenow) OMRON * Creating omron_backup.csv file, check if temp.log exists"
 		else echo "$(timenow) OMRON * omron_backup.csv file exists, check if temp.log exists"
 		fi
-		if [ ! -f /dev/shm/temp.log ] ; then
+		if [[ ! -f /dev/shm/temp.log ]] ; then
 			echo "$(timenow) OMRON * Creating temp.log file, checking for new data"
 			echo > /dev/shm/temp.log
 		else echo "$(timenow) OMRON * temp.log file exists, checking for new data"
 		fi
-		if [ -z $(hcitool dev | awk 'NR>1 {print $2}') ] ; then
+		if [[ -z $(hcitool dev | awk 'NR>1 {print $2}') ]] ; then
 			echo "$(timenow) OMRON * No BLE device detected, skip scanning"
 
 		# Importing raw data from source (BLE)
@@ -193,9 +190,9 @@ while [ $loop_count -eq 0 ] || [ $i -lt $loop_count ] ; do
 			while true ; do
 				timeout 10s python3 -B $path/omron/omblepy.py -p -d $omron_omblepy_model > /dev/shm/omron_users.csv 2>&1
 				if grep -q $omron_omblepy_mac /dev/shm/omron_users.csv ; then
-					if [ $omron_omblepy_debug == "on" ] ; then
+					if [[ $omron_omblepy_debug == "on" ]] ; then
 						python3 -B $path/omron/omblepy.py -n -t -d $omron_omblepy_model --loggerDebug -m $omron_omblepy_mac
-					elif [ $omron_omblepy_all == "on" ] ; then
+					elif [[ $omron_omblepy_all == "on" ]] ; then
 						python3 -B $path/omron/omblepy.py -t -d $omron_omblepy_model -m $omron_omblepy_mac > /dev/null 2>&1
 					else
 						python3 -B $path/omron/omblepy.py -n -t -d $omron_omblepy_model -m $omron_omblepy_mac > /dev/null 2>&1
@@ -206,15 +203,12 @@ while [ $loop_count -eq 0 ] || [ $i -lt $loop_count ] ; do
 					break
 				fi
 			done
-			if [ -f "/dev/shm/omron_user1.csv" ] || [ -f "/dev/shm/omron_user2.csv" ] ; then
+			if [[ -f "/dev/shm/omron_user1.csv" ]] || [[ -f "/dev/shm/omron_user2.csv" ]] ; then
 				echo "$(timenow) OMRON * Prepare data for omron_backup.csv file"
 				awk -F ';' 'NR==FNR{a[$2];next}!($2 in a)' $omron_backup /dev/shm/omron_user1.csv > /dev/shm/omron_users.csv
 				awk -F ';' 'NR==FNR{a[$2];next}!($2 in a)' $omron_backup /dev/shm/omron_user2.csv >> /dev/shm/omron_users.csv
 				sed -i "s/ /;/g; s/user1/$omron_export_user1/; s/user2/$omron_export_user2/" /dev/shm/omron_users.csv
-				if grep -q "email@email.com" /dev/shm/omron_users.csv ; then
-					echo "$(timenow) OMRON * Deleting records with undefined user email@email.com, check users section in export2garmin.cfg"
-					sed -i "/email@email\.com/d" /dev/shm/omron_users.csv
-				fi
+				grep -q "email@email.com" /dev/shm/omron_users.csv && echo "$(timenow) OMRON * Deleting records with undefined user email@email.com, check users section in export2garmin.cfg" && sed -i "/email@email\.com/d" /dev/shm/omron_users.csv
 				cat /dev/shm/omron_users.csv >> $omron_backup
 				rm /dev/shm/omron_user*.csv
 			else echo "$(timenow) OMRON * No BLE data from Omron, check BLE scanner"
@@ -224,11 +218,11 @@ while [ $loop_count -eq 0 ] || [ $i -lt $loop_count ] ; do
 
 		# Upload to Garmin Connect, print to temp.log file
 		if grep -q "failed\|to_import" $omron_backup ; then
-			if [ $switch_miscale == "on" ] ; then
+			if [[ $switch_miscale == "on" ]] ; then
 				python3 -B $path/omron/omron_export.py >> /dev/shm/temp.log 2>&1
 				omron_import=$(awk -F ": " '/OMRON /*/ Import data:/{print substr($2,1,10)}' /dev/shm/temp.log)
 			else python3 -B $path/omron/omron_export.py > /dev/shm/temp.log 2>&1
-				if [ $omron_omblepy_all == "on" ] || [ $switch_mqtt == "on" ] ; then
+				if [[ $omron_omblepy_all == "on" ]] || [[ $switch_mqtt == "on" ]] ; then
 					omron_import=$(awk -F ": " '/OMRON /*/ Import data:/{print substr($2,1,10)}' /dev/shm/temp.log)
 					sleep 10
 				else
@@ -238,7 +232,7 @@ while [ $loop_count -eq 0 ] || [ $i -lt $loop_count ] ; do
 		fi
 
 		# Handling errors, save data to miscale_backup.csv file
-		if [ -z $omron_import ] ; then
+		if [[ -z $omron_import ]] ; then
 			echo "$(timenow) OMRON * There is no new data Omron to upload to Garmin Connect"
 		else echo "$(timenow) OMRON * Data from import $omron_import upload to Garmin Connect"
 			if grep -q "Err" /dev/shm/temp.log ; then
@@ -269,5 +263,5 @@ while [ $loop_count -eq 0 ] || [ $i -lt $loop_count ] ; do
 		unset $(compgen -v | grep '^omron_')
 	else echo "$(timenow) OMRON * Module is off"
 	fi
-    [ $loop_count -eq 1 ] && break
+    [[ $loop_count -eq 1 ]] && break
 done
