@@ -33,17 +33,15 @@ while [ $loop_count -eq 0 ] || [ $i -lt $loop_count ] ; do
 
 	# Mi Body Composition Scale 2
 	if [ $switch_miscale == "on" ] ; then
+		miscale_backup=$path/user/miscale_backup.csv
 		echo "$(timenow) MISCALE * Module is on"
 
 		# Creating miscale_backup.csv and temp.log file
-		miscale_backup=$path/user/miscale_backup.csv
 		if [ ! -f $miscale_backup ] ; then
-			header="Data Status;Unix Time;Date [dd.mm.yyyy];Time [hh:mm:ss];Weight [kg];Change [kg];BMI;Body Fat [%];Skeletal Muscle Mass [kg];Bone Mass [kg];Body Water [%];Physique Rating;Visceral Fat;Metabolic Age [years];BMR [kCal];LBM [kg];Ideal Wieght [kg];Fat Mass To Ideal [type:mass kg];Protein [%];Impedance;Login e-mail;Upload Date [dd.mm.yyyy];Upload Time [hh:mm:ss];Difference Time [s]"
+			miscale_header="Data Status;Unix Time;Date [dd.mm.yyyy];Time [hh:mm:ss];Weight [kg];Change [kg];BMI;Body Fat [%];Skeletal Muscle Mass [kg];Bone Mass [kg];Body Water [%];Physique Rating;Visceral Fat;Metabolic Age [years];BMR [kCal];LBM [kg];Ideal Wieght [kg];Fat Mass To Ideal [type:mass kg];Protein [%];Impedance;Login e-mail;Upload Date [dd.mm.yyyy];Upload Time [hh:mm:ss];Difference Time [s]"
+			[ $switch_mqtt == "on" ] && miscale_header="$miscale_header;Battery [V];Battery [%]"
 			echo "$(timenow) MISCALE * Creating miscale_backup.csv file, check if temp.log exists"
-			if [ $switch_mqtt == "on" ] ; then
-				echo "$header;Battery [V];Battery [%]" > $miscale_backup
-			else echo "$header" > $miscale_backup
-			fi
+			echo $miscale_header > $miscale_backup
 		else echo "$(timenow) MISCALE * miscale_backup.csv file exists, check if temp.log exists"
 		fi
 		if [ ! -f /dev/shm/temp.log ] ; then
@@ -109,7 +107,7 @@ while [ $loop_count -eq 0 ] || [ $i -lt $loop_count ] ; do
 				else miscale_absolute_shift=$(echo ${miscale_time_shift#-})
 					if (( $miscale_absolute_shift > 1200 )) ; then
 						echo "$(timenow) MISCALE * $miscale_time_shift s time difference, synchronize date and time scale"
-						echo "$(timenow) MISCALE * Time offset is set to $offset s"
+						echo "$(timenow) MISCALE * Time offset is set to $miscale_offset s"
 						echo "$(timenow) MISCALE * Deleting import $miscale_offset_unixtime from miscale_backup.csv file"
 						sed -i "/$miscale_offset_unixtime/d" $miscale_backup
 					else echo "$(timenow) MISCALE * Saving import $miscale_offset_unixtime to miscale_backup.csv file"
@@ -119,7 +117,7 @@ while [ $loop_count -eq 0 ] || [ $i -lt $loop_count ] ; do
 			else miscale_absolute_shift=$(echo ${miscale_time_shift#-})
 				if (( $miscale_absolute_shift > 1200 )) ; then
 					echo "$(timenow) MISCALE * $miscale_time_shift s time difference, synchronize date and time scale"
-					echo "$(timenow) MISCALE * Time offset is set to $offset s"
+					echo "$(timenow) MISCALE * Time offset is set to $miscale_offset s"
 				else echo "$(timenow) MISCALE * Saving import $miscale_offset_unixtime to miscale_backup.csv file"
 					echo $miscale_offset >> $miscale_backup
 				fi
@@ -172,10 +170,10 @@ while [ $loop_count -eq 0 ] || [ $i -lt $loop_count ] ; do
 	# Omron blood pressure
 	if [ $switch_omron == "on" ] ; then
 		source <(grep omron_ $path/user/export2garmin.cfg)
+		omron_backup=$path/user/omron_backup.csv
 		echo "$(timenow) OMRON * Module is on"
 
 		# Creating omron_backup.csv and temp.log file
-		omron_backup=$path/user/omron_backup.csv
 		if [ ! -f $omron_backup ] ; then
 			echo "Data Status;Unix Time;Email User;Date [dd.mm.yyyy];Time [hh:mm:ss];Systolic [mmHg];Diastolic [mmHg];Heart Rate [bpm];MOV;IHB;Upload Date [dd.mm.yyyy];Upload Time [hh:mm:ss];Difference Time [s]" > $omron_backup
 			echo "$(timenow) OMRON * Creating omron_backup.csv file, check if temp.log exists"
