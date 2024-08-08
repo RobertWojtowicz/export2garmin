@@ -29,7 +29,7 @@ while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 	((i++))
 
 	# Cleaning temp.log file after last startup
-    [[ -s /dev/shm/temp.log ]] && > /dev/shm/temp.log
+	[[ -s /dev/shm/temp.log ]] && > /dev/shm/temp.log
 
 	# Mi Body Composition Scale 2
 	if [[ $switch_miscale == "on" ]] ; then
