@@ -23,7 +23,7 @@ source <(grep switch_ $path/user/export2garmin.cfg)
 
 # Create a loop, "-l" parameter executes loop indefinitely
 loop_count=1
-[[ "$1" == "-l" ]] && loop_count=0
+[[ $1 == "-l" ]] && loop_count=0
 i=0
 while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 	((i++))
