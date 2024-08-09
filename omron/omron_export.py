@@ -17,7 +17,6 @@ emailuser = ""
 diastolic = 0
 systolic = 0
 pulse = 0
-
 with open(path + '/user/omron_backup.csv', 'r') as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=';')
     for row in csv_reader:
