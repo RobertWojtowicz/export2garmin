@@ -20,9 +20,6 @@ lockfile -r 0 -l 60 "/dev/shm/export.lock" || another_instance
 trap remove_lock EXIT
 
 # Create a loop, "-l" parameter executes loop indefinitely
-path=$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
-source <(grep switch_ $path/user/export2garmin.cfg)
-temp_path=/dev/shm/
 loop_count=1
 found_count=0
 [[ $1 == "-l" ]] && loop_count=0
@@ -31,6 +28,8 @@ while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 	((i++))
 
 	# Restart WiFi if it crashed (problem with Raspberry Pi 5)
+	path=$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
+	source <(grep switch_ $path/user/export2garmin.cfg)
 	if [[ $switch_wifi_watchdog == "on" ]] ; then
 		if nmcli -t -f WIFI g | grep -q "enabled" && nmcli -t -f ACTIVE dev wifi | grep -q "^yes" ; then
 			echo "$(timenow) SYSTEM * WiFi adapter working, go to verify BLE adapter"
@@ -43,6 +42,7 @@ while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 	fi
 	
 	# Print location of variables for temp and user files
+	temp_path=/dev/shm/
 	echo "$(timenow) SYSTEM * Default path to temp.log file: $temp_path"
 	echo "$(timenow) SYSTEM * Default path to export2garmin.cfg and *_backup.csv files: $path/user/"
 	
