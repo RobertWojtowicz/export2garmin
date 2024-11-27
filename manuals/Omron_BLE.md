@@ -81,7 +81,7 @@ $ /home/robert/export2garmin-master/import_data.sh
 Export 2 Garmin Connect v2.4 (import_data.sh)
 =============================================
 
-18.07.2024-16:56:01 SYSTEM * Default path to temp.log file: /dev/shm/
+18.07.2024-16:56:01 SYSTEM * Default path to export.lock and temp.log files: /dev/shm/
 18.07.2024-16:56:01 SYSTEM * Default path to export2garmin.cfg and *_backup.csv files: /home/robert/export2garmin-master/user/
 18.07.2024-16:56:01 SYSTEM * BLE adapter is ON in export2garmin.cfg file, check if available
 18.07.2024-16:56:01 SYSTEM * BLE adapter hci0(00:00:00:00:00:00) working, check if temp.log file exists

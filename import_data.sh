@@ -9,14 +9,15 @@ echo -e "=============================================\n"
 timenow() {
     date +%d.%m.%Y-%H:%M:%S
 }
+temp_path=/dev/shm/
 remove_lock() {
-    rm -f "/dev/shm/export.lock"
+    rm -f "${temp_path}export.lock"
 }
 another_instance() {
 	echo "$(timenow) SYSTEM * Another import_data.sh instance running"
 	exit 1
 }
-lockfile -r 0 -l 60 "/dev/shm/export.lock" || another_instance
+lockfile -r 0 -l 60 "${temp_path}export.lock" || another_instance
 trap remove_lock EXIT
 
 # Create a loop, "-l" parameter executes loop indefinitely
@@ -42,8 +43,7 @@ while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 	fi
 	
 	# Print location of variables for temp and user files
-	temp_path=/dev/shm/
-	echo "$(timenow) SYSTEM * Default path to temp.log file: $temp_path"
+	echo "$(timenow) SYSTEM * Default path to export.lock and temp.log files: $temp_path"
 	echo "$(timenow) SYSTEM * Default path to export2garmin.cfg and *_backup.csv files: $path/user/"
 	
 	# Verifying correct working of BLE, restart bluetooth service and device via miscale_ble.py
