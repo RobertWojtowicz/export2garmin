@@ -23,7 +23,6 @@ trap remove_lock EXIT
 path=$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
 source <(grep switch_ $path/user/export2garmin.cfg)
 temp_path=/dev/shm/
-temp_log=${temp_path}temp.log
 loop_count=1
 found_count=0
 [[ $1 == "-l" ]] && loop_count=0
@@ -63,6 +62,7 @@ while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 
 	# Create temp.log file if it exists cleanup after last startup
 	if [[ $switch_miscale == "on" ]] || [[ $switch_omron == "on" ]] ; then
+		temp_log=${temp_path}temp.log
 		if [[ ! -f $temp_log ]] ; then
 			echo "$(timenow) SYSTEM * Creating temp.log file, go to modules"
 			echo > $temp_log
