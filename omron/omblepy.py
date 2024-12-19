@@ -2,7 +2,7 @@
 
 # Version info
 # ================================================
-# Export 2 Garmin Connect v2.2 (omblepy.py)
+# Export 2 Garmin Connect v2.5 (omblepy.py)
 # ================================================
 
 import asyncio                                                      #avoid wait on bluetooth stack stalling the application
@@ -29,6 +29,12 @@ logger              = logging.getLogger("omblepy")
 
 # Code change for Export2Garmin
 path = os.path.dirname(os.path.dirname(__file__))
+with open(path + '/user/export2garmin.cfg', 'r') as file:
+    for line in file:
+        line = line.strip()
+        if line.startswith('switch_temp_path'):
+            name, value = line.split('=')
+            globals()[name.strip()] = value.strip()
 
 def convertByteArrayToHexString(array):
     return (bytes(array).hex())
@@ -269,14 +275,14 @@ def readCsv(filename):
     return records
 def appendCsv(allRecords):
     for userIdx in range(len(allRecords)):
-        oldCsvFile = pathlib.Path(f"/dev/shm/omron_user{userIdx+1}.csv")
+        oldCsvFile = pathlib.Path(f"{switch_temp_path}/omron_user{userIdx+1}.csv")
         datesOfNewRecords = [record["datetime"] for record in allRecords[userIdx]]
         if(oldCsvFile.is_file()):
-            records = readCsv(f"/dev/shm/omron_user{userIdx+1}.csv")
+            records = readCsv(f"{switch_temp_path}/omron_user{userIdx+1}.csv")
             allRecords[userIdx].extend(filter(lambda x: x["datetime"] not in datesOfNewRecords,records))
         allRecords[userIdx] = sorted(allRecords[userIdx], key = lambda x: x["datetime"])
         logger.info(f"writing data to omron_user{userIdx+1}.csv")
-        with open(f"/dev/shm/omron_user{userIdx+1}.csv", mode='w', newline='', encoding='utf-8') as outfile:
+        with open(f"{switch_temp_path}/omron_user{userIdx+1}.csv", mode='w', newline='', encoding='utf-8') as outfile:
             writer = csv.DictWriter(outfile, delimiter=';', fieldnames = ["Data Status", "Unix Time", "datetime", "sys", "dia", "bpm", "mov", "ihb", "User"])
             writer.writeheader()
             for recordDict in allRecords[userIdx]:

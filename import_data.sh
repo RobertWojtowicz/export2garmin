@@ -2,22 +2,22 @@
 
 # Version Info
 echo -e "\n============================================="
-echo -e "Export 2 Garmin Connect v2.4 (import_data.sh)"
+echo -e "Export 2 Garmin Connect v2.5 (import_data.sh)"
 echo -e "=============================================\n"
 
 # Blocking multiple instances of same script process
 timenow() {
     date +%d.%m.%Y-%H:%M:%S
 }
-temp_path=/dev/shm/
+source <(grep switch_ $path/user/export2garmin.cfg)
 remove_lock() {
-    rm -f "${temp_path}export.lock"
+    rm -f "$switch_temp_path/export.lock"
 }
 another_instance() {
 	echo "$(timenow) SYSTEM * Another import_data.sh instance running"
 	exit 1
 }
-lockfile -r 0 -l 60 "${temp_path}export.lock" || another_instance
+lockfile -r 0 -l 60 "$switch_temp_path/export.lock" || another_instance
 trap remove_lock EXIT
 
 # Create a loop, "-l" parameter executes loop indefinitely
@@ -30,7 +30,6 @@ while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 
 	# Restart WiFi if it crashed (problem with Raspberry Pi 5)
 	path=$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
-	source <(grep switch_ $path/user/export2garmin.cfg)
 	if [[ $switch_wifi_watchdog == "on" ]] ; then
 		if nmcli -t -f WIFI g | grep -q "enabled" && nmcli -t -f ACTIVE dev wifi | grep -q "^yes" ; then
 			echo "$(timenow) SYSTEM * WiFi adapter working, go to verify BLE adapter"
@@ -43,8 +42,8 @@ while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 	fi
 	
 	# Print location of variables for temp and user files
-	echo "$(timenow) SYSTEM * Default path to export.lock and temp.log files: $temp_path"
-	echo "$(timenow) SYSTEM * Default path to export2garmin.cfg and *_backup.csv files: $path/user/"
+	echo "$(timenow) SYSTEM * Path to temp files: $switch_temp_path/"
+	echo "$(timenow) SYSTEM * Path to export2garmin.cfg and *_backup.csv files: $path/user/"
 	
 	# Verifying correct working of BLE, restart bluetooth service and device via miscale_ble.py
 	if [[ $switch_miscale == "on" && $switch_mqtt == "off" ]] || [[ $switch_omron == "on" ]] ; then
@@ -62,7 +61,7 @@ while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 
 	# Create temp.log file if it exists cleanup after last startup
 	if [[ $switch_miscale == "on" ]] || [[ $switch_omron == "on" ]] ; then
-		temp_log=${temp_path}temp.log
+		temp_log=$switch_temp_path/temp.log
 		if [[ ! -f $temp_log ]] ; then
 			echo "$(timenow) SYSTEM * Creating temp.log file, go to modules"
 			echo > $temp_log
@@ -216,15 +215,15 @@ while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 					break
 				fi
 			done
-			if [[ -f "/dev/shm/omron_user1.csv" ]] || [[ -f "/dev/shm/omron_user2.csv" ]] ; then
+			if [[ -f "$switch_temp_path/omron_user1.csv" ]] || [[ -f "$switch_temp_path/omron_user2.csv" ]] ; then
 				source <(grep omron_export_user $path/user/export2garmin.cfg)
 				echo "$(timenow) OMRON * Prepare data for omron_backup.csv file"
-				awk -F ';' 'NR==FNR{a[$2];next}!($2 in a)' $omron_backup /dev/shm/omron_user1.csv > /dev/shm/omron_users.csv
-				awk -F ';' 'NR==FNR{a[$2];next}!($2 in a)' $omron_backup /dev/shm/omron_user2.csv >> /dev/shm/omron_users.csv
-				sed -i "s/ /;/g; s/user1/$omron_export_user1/; s/user2/$omron_export_user2/" /dev/shm/omron_users.csv
-				grep -q "email@email.com" /dev/shm/omron_users.csv && echo "$(timenow) OMRON * Deleting records with undefined user email@email.com, check users section in export2garmin.cfg file" && sed -i "/email@email\.com/d" /dev/shm/omron_users.csv
-				cat /dev/shm/omron_users.csv >> $omron_backup
-				rm /dev/shm/omron_user*.csv
+				awk -F ';' 'NR==FNR{a[$2];next}!($2 in a)' $omron_backup $switch_temp_path/omron_user1.csv > $switch_temp_path/omron_users.csv
+				awk -F ';' 'NR==FNR{a[$2];next}!($2 in a)' $omron_backup $switch_temp_path/omron_user2.csv >> $switch_temp_path/omron_users.csv
+				sed -i "s/ /;/g; s/user1/$omron_export_user1/; s/user2/$omron_export_user2/" $switch_temp_path/omron_users.csv
+				grep -q "email@email.com" $switch_temp_path/omron_users.csv && echo "$(timenow) OMRON * Deleting records with undefined user email@email.com, check users section in export2garmin.cfg file" && sed -i "/email@email\.com/d" $switch_temp_path/omron_users.csv
+				cat $switch_temp_path/omron_users.csv >> $omron_backup
+				rm $switch_temp_path/omron_user*.csv
 			fi
 		fi
 
