@@ -109,11 +109,11 @@ $ cd export2garmin-master && sudo chmod 755 import_data.sh
 $ /home/robert/export2garmin-master/import_data.sh
 
 =============================================
-Export 2 Garmin Connect v2.3 (import_data.sh)
+Export 2 Garmin Connect v2.5 (import_data.sh)
 =============================================
 
-18.07.2024-16:56:01 SYSTEM * Default path to export.lock and temp.log files: /dev/shm/
-18.07.2024-16:56:01 SYSTEM * Default path to export2garmin.cfg and *_backup.csv files: /home/robert/export2garmin-master/user/
+18.07.2024-16:56:01 SYSTEM * Path to temp files: /dev/shm/
+18.07.2024-16:56:01 SYSTEM * Path to user files: /home/robert/export2garmin-master/user/
 18.07.2024-16:56:01 SYSTEM * BLE adapter OFF or incorrect configuration in export2garmin.cfg file, check if temp.log file exists
 18.07.2024-16:56:01 SYSTEM * temp.log file exists, go to modules
 18.07.2024-16:56:07 MISCALE * Module is ON in export2garmin.cfg file

@@ -43,7 +43,7 @@ while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 	
 	# Print location of variables for temp and user files
 	echo "$(timenow) SYSTEM * Path to temp files: $switch_temp_path/"
-	echo "$(timenow) SYSTEM * Path to export2garmin.cfg and *_backup.csv files: $path/user/"
+	echo "$(timenow) SYSTEM * Path to user files: $path/user/"
 	
 	# Verifying correct working of BLE, restart bluetooth service and device via miscale_ble.py
 	if [[ $switch_miscale == "on" && $switch_mqtt == "off" ]] || [[ $switch_omron == "on" ]] ; then
