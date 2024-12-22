@@ -29,6 +29,7 @@ $ cd export2garmin-master && sudo chmod 755 import_data.sh omron/omron_pairing.s
 - First script is `user/import_tokens.py` is used to export Oauth1 and Oauth2 tokens of your account from Garmin Connect:
   - Script has support for login with or without MFA;
   - Once a year, tokens must be exported again, due to their expiration;
+  - Repeat tokens export process for each user (if we have multiple users);
   - When you run `user/import_tokens.py`, you need to provide a login and password and possibly a code from MFA:
 	```
 	$ python3 /home/robert/export2garmin-master/user/import_tokens.py
