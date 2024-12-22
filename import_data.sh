@@ -9,6 +9,7 @@ echo -e "=============================================\n"
 timenow() {
     date +%d.%m.%Y-%H:%M:%S
 }
+path=$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
 source <(grep switch_ $path/user/export2garmin.cfg)
 remove_lock() {
     rm -f "$switch_temp_path/export.lock"
@@ -29,22 +30,21 @@ while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 	((i++))
 
 	# Restart WiFi if it crashed (problem with Raspberry Pi 5)
-	path=$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
 	if [[ $switch_wifi_watchdog == "on" ]] ; then
 		if nmcli -t -f WIFI g | grep -q "enabled" && nmcli -t -f ACTIVE dev wifi | grep -q "^yes" ; then
 			echo "$(timenow) SYSTEM * WiFi adapter working, go to verify BLE adapter"
-		else 
+		else
 			echo "$(timenow) SYSTEM * WiFi adapter not working, restarting via nmcli"
 			sudo nmcli radio wifi off
 			sleep 1
 			sudo nmcli radio wifi on
 		fi
 	fi
-	
+
 	# Print location of variables for temp and user files
 	echo "$(timenow) SYSTEM * Path to temp files: $switch_temp_path/"
 	echo "$(timenow) SYSTEM * Path to user files: $path/user/"
-	
+
 	# Verifying correct working of BLE, restart bluetooth service and device via miscale_ble.py
 	if [[ $switch_miscale == "on" && $switch_mqtt == "off" ]] || [[ $switch_omron == "on" ]] ; then
 		unset $(compgen -v | grep '^ble_')
