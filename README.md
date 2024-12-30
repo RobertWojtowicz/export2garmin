@@ -129,6 +129,6 @@ I don't plan to create a mobile app, but I encourage you to take advantage of an
 - iOS | iPadOS: https://github.com/lswiderski/WebBodyComposition.
 
 ## If you like my work, you can buy me a coffee 
-(e.g. if you want it to add support for Xiaomi Mi Body Composition Scale S400)
+e.g. if you want it to add support for Xiaomi Mi Body Composition Scale S400
 
 <a href="https://www.buymeacoffee.com/RobertWojtowicz" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
