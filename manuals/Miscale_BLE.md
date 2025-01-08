@@ -82,7 +82,7 @@ Export 2 Garmin Connect v2.5 (import_data.sh)
 18.07.2024-16:56:01 SYSTEM * Path to temp files: /dev/shm/
 18.07.2024-16:56:01 SYSTEM * Path to user files: /home/robert/export2garmin-master/user/
 18.07.2024-16:56:01 SYSTEM * BLE adapter is ON in export2garmin.cfg file, check if available
-18.07.2024-16:56:01 SYSTEM * BLE adapter hci0(00:00:00:00:00:00) working, check if /dev/shm/temp.log file exists
+18.07.2024-16:56:01 SYSTEM * BLE adapter hci0(00:00:00:00:00:00) working, check if temp.log file exists
 18.07.2024-16:56:01 SYSTEM * temp.log file exists, go to modules
 18.07.2024-16:56:07 MISCALE * Module is ON in export2garmin.cfg file
 18.07.2024-16:56:07 MISCALE * miscale_backup.csv file exists, checking for new data
