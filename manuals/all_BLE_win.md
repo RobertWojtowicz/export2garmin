@@ -9,7 +9,7 @@ PS> Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All
 ```
 PS> winget install usbipd
 ```
-- Describing solution will **only work with USB adapters**, buy cheap USB bluetooth:
+- Describing solution will **only work with USB adapters**, buy cheap bluetooth adapter:
   - 5.0/5.1 (tested on RTL8761B chipset, manufacturer Zexmte, works with Miscale and Omron module);
   - 5.3 (tested on ATS2851 chipset, manufacturer Zexmte, works only with Miscale module).
 - Bluetooth adapter should have a removable RP-SMA antenna;

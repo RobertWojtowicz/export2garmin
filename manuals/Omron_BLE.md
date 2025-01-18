@@ -135,12 +135,12 @@ $ sudo systemctl enable export2garmin.service && sudo systemctl start export2gar
 - You can check if export2garmin service works `sudo systemctl status export2garmin.service` or temporarily stop it with command `sudo systemctl stop export2garmin.service`.
 
 ### 2.3.4. How to increase BLE range
-- Purchase a cheap USB bluetooth 5.0/5.1 (tested on RTL8761B chipset, manufacturer Zexmte, works with Miscale and Omron module);
-- Does not work with USB bluetooth 5.3 based on ATS2851 chipset;
+- Purchase a cheap USB bluetooth adapter:
+  - 5.0/5.1 (tested on RTL8761B chipset, manufacturer Zexmte, works with Miscale and Omron module);
+  - 5.3 (tested on ATS2851 chipset, manufacturer Zexmte, works with Miscale module, **does not work with Omron module**).
 - Bluetooth adapter should have a removable RP-SMA antenna;
 - You will have option to change if standard RP-SMA antenna included with bluetooth adapter gives too little range;
-- If you are using a virtual machine add USB chipset using passthrough mechanism (for performance and stability), connect USB bluetooth adapter;
-- Assign USB chipset to virtual machine from hypevisor (tested on VMware ESXi 7/8);
+- If you are using a virtual machine, assign bluetooth adapter from tab Hardware > Add: USB device > Use USB Vendor/Device ID > Choose Device: > Passthrough a specific device (tested on Proxmox VE 8.3);
 - RTL8761B chipset requires driver (for Raspberry Pi OS skip this step), install Realtek package and restart virtual machine:
 ```
 sudo apt install -y firmware-realtek
