@@ -10,7 +10,7 @@ from garminconnect import Garmin, GarminConnectAuthenticationError
 # Version info
 print("""
 ===============================================
-Export 2 Garmin Connect v2.6 (import_tokens.py)
+Export 2 Garmin Connect v2.7 (import_tokens.py)
 ===============================================
 """)
 
@@ -36,8 +36,11 @@ def get_mfa():
 def init_api():
     try:
         email, password = get_credentials()
-        garmin = Garmin(email, password, is_cn=tokens_is_cn, prompt_mfa=get_mfa)
-        garmin.login()
+        garmin = Garmin(email, password, is_cn=tokens_is_cn, return_on_mfa=True)
+        result1, result2 = garmin.login()
+        if result1 == "needs_mfa":
+            mfa_code = get_mfa()
+            garmin.resume_login(result2, mfa_code)
 
 # Create Oauth1 and Oauth2 tokens as base64 encoded string
         tokenstore_base64 = os.path.dirname(os.path.abspath(__file__))

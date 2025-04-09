@@ -92,7 +92,7 @@ $ cd export2garmin-master && sudo chmod 755 import_data.sh
 	$ python3 /home/robert/export2garmin-master/user/import_tokens.py
 
 	===============================================
-	Export 2 Garmin Connect v2.6 (import_tokens.py)
+	Export 2 Garmin Connect v2.7 (import_tokens.py)
 	===============================================
 
 	28.04.2024-11:58:44 * Login e-mail: email@email.com
