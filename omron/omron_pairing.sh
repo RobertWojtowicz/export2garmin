@@ -12,7 +12,7 @@ path=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." &> /dev/null && pwd)
 
 # Verifying correct working of BLE, restart bluetooth service and device via miscale_ble.py
 echo "$(timenow) SYSTEM * BLE adapter check if available"
-ble_check=$(python3 -B $path/miscale/miscale_ble.py)
+ble_check=$($path/bin/python3 -B $path/miscale/miscale_ble.py)
 if echo $ble_check | grep -q "failed" ; then
 	echo "$(timenow) SYSTEM * BLE adapter not working, skip pairing"
 else ble_status=ok
@@ -26,8 +26,8 @@ if [[ $ble_status == "ok" ]] ; then
 	omron_hci=$(echo $ble_check | grep -o 'hci.' | head -n 1)
 	coproc bluetoothctl
 	if [ $omron_omblepy_debug == "on" ] ; then
-        python3 -B $path/omron/omblepy.py -a $omron_hci -p -d $omron_omblepy_model --loggerDebug
+        $path/bin/python3 -B $path/omron/omblepy.py -a $omron_hci -p -d $omron_omblepy_model --loggerDebug
 	else
-        python3 -B $path/omron/omblepy.py -a $omron_hci -p -d $omron_omblepy_model
+        $path/bin/python3 -B $path/omron/omblepy.py -a $omron_hci -p -d $omron_omblepy_model
 	fi
 fi

@@ -49,7 +49,7 @@ while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 	if [[ $switch_miscale == "on" && $switch_mqtt == "off" ]] || [[ $switch_omron == "on" ]] ; then
 		unset $(compgen -v | grep '^ble_')
 		echo "$(timenow) SYSTEM * BLE adapter is ON in export2garmin.cfg file, check if available"
-		ble_check=$(python3 -B $path/miscale/miscale_ble.py)
+		ble_check=$($path/bin/python3 -B $path/miscale/miscale_ble.py)
 		if echo $ble_check | grep -q "failed" ; then
 			echo "$(timenow) SYSTEM * BLE adapter  not working, skip scanning check if temp.log file exists"
 		else ble_status=ok
@@ -139,7 +139,7 @@ while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 
 		# Calculating data and upload to Garmin Connect, print to temp.log file
 		if grep -q "failed\|to_import" $miscale_backup ; then
-			python3 -B $path/miscale/miscale_export.py > $temp_log 2>&1
+			$path/bin/python3 -B $path/miscale/miscale_export.py > $temp_log 2>&1
 			miscale_import=$(awk -F ": " '/MISCALE /*/ Import data:/{print substr($2,1,10)}' $temp_log)
 			echo "$(timenow) MISCALE * Calculating data from import $miscale_import, upload to Garmin Connect"
 		fi
@@ -195,7 +195,7 @@ while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 			while true ; do
 				source <(grep omron_omblepy_ $path/user/export2garmin.cfg)
 				omron_hci=$(echo $ble_check | grep -o 'hci.' | head -n 1)
-				omron_omblepy_check=$(timeout ${omron_omblepy_time}s python3 -B $path/omron/omblepy.py -a $omron_hci -p -d $omron_omblepy_model 2> /dev/null)
+				omron_omblepy_check=$(timeout ${omron_omblepy_time}s $path/bin/python3 -B $path/omron/omblepy.py -a $omron_hci -p -d $omron_omblepy_model 2> /dev/null)
 				if echo $omron_omblepy_check | grep -q $omron_omblepy_mac ; then
 
 					# Adding an exception for selected models
@@ -204,10 +204,10 @@ while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 					else omron_omblepy_flags="-n -t"
 					fi
 					if [[ $omron_omblepy_debug == "on" ]] ; then
-						python3 -B $path/omron/omblepy.py -a $omron_hci -d $omron_omblepy_model --loggerDebug -m $omron_omblepy_mac
+						$path/bin/python3 -B $path/omron/omblepy.py -a $omron_hci -d $omron_omblepy_model --loggerDebug -m $omron_omblepy_mac
 					elif [[ $omron_omblepy_all == "on" ]] ; then
-						python3 -B $path/omron/omblepy.py -a $omron_hci -d $omron_omblepy_model -m $omron_omblepy_mac >/dev/null 2>&1
-					else python3 -B $path/omron/omblepy.py $omron_omblepy_flags -a $omron_hci -d $omron_omblepy_model -m $omron_omblepy_mac >/dev/null 2>&1
+						$path/bin/python3 -B $path/omron/omblepy.py -a $omron_hci -d $omron_omblepy_model -m $omron_omblepy_mac >/dev/null 2>&1
+					else $path/bin/python3 -B $path/omron/omblepy.py $omron_omblepy_flags -a $omron_hci -d $omron_omblepy_model -m $omron_omblepy_mac >/dev/null 2>&1
 					fi
 				else exec {ble[0]}>&-
 					exec {ble[1]}>&-
@@ -230,8 +230,8 @@ while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 		# Upload to Garmin Connect, print to temp.log file
 		if grep -q "failed\|to_import" $omron_backup ; then
 			if [[ $switch_miscale == "on" ]] ; then
-				python3 -B $path/omron/omron_export.py >> $temp_log 2>&1
-			else python3 -B $path/omron/omron_export.py > $temp_log 2>&1
+				$path/bin/python3 -B $path/omron/omron_export.py >> $temp_log 2>&1
+			else $path/bin/python3 -B $path/omron/omron_export.py > $temp_log 2>&1
 			fi
 			omron_import=$(awk -F ": " '/OMRON /*/ Import data:/{print substr($2,1,10)}' $temp_log)
 			echo "$(timenow) OMRON * Calculating data from import $omron_import, upload to Garmin Connect"

@@ -8,7 +8,6 @@
 - Update your system and then install following packages:
 ```
 $ sudo apt update && sudo apt full-upgrade -y && sudo apt install -y wget python3 bc bluetooth python3-pip libglib2.0-dev procmail
-$ sudo pip3 install --upgrade bluepy garminconnect bleak terminaltables --break-system-packages
 ```
 - Modify file `sudo nano /etc/systemd/system/bluetooth.target.wants/bluetooth.service`:
 ```
@@ -19,6 +18,13 @@ ExecStart=/usr/libexec/bluetooth/bluetoothd --experimental
 $ wget https://github.com/RobertWojtowicz/export2garmin/archive/refs/heads/master.tar.gz -O - | tar -xz
 $ cd export2garmin-master && sudo chmod 755 import_data.sh omron/omron_pairing.sh && sudo chmod 555 /etc/bluetooth
 ```
+
+- Create a python virtual environment, to avoid breaking system packages, and install dependencies:
+```
+python3 -m venv export2garmin
+bin/pip3 install --upgrade bluepy garminconnect bleak terminaltables
+```
+
 ### 2.3.2. Disabling Auto Sync of Omron device
 - After measuring blood pressure, Omron allows you to download measurement data once;
 - If you have OMRON connect app, you must disable Auto Sync;
