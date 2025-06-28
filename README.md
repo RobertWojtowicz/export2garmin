@@ -106,6 +106,10 @@ Export 2 Garmin Connect v3.0 (import_data.sh)
 - Processed data are sent to Garmin Connect;
 - Raw and calculated data from scale is backed up on server in miscale_backup.csv file.
 
+**Select your platform and go to instructions:**
+- [Debian 12 | Raspberry Pi OS (based on Debian 12)](https://github.com/RobertWojtowicz/export2garmin/blob/master/manuals/Miscale_ESP32.md);
+- [Windows 11](https://github.com/RobertWojtowicz/export2garmin/blob/master/manuals/Miscale_ESP32_win.md).
+
 ### 2.3. Miscale module | Xiaomi Body Composition Scale S400 | BLE VERSION
 - After weighing, Xiaomi Body Composition Scale S400 transmits weight data for a short while on bluetooth transmission;
 - A USB Bluetooth adapter or internal module scans BLE devices continuously to acquire data from scale;
