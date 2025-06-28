@@ -48,7 +48,7 @@ Devices found for server "de" @ home "000000000000":
   - x86: 1vCPU, 1024MB RAM, 8GB disk space, network connection, Debian 12 operating system;
   - ARM: 1CPU, 512MB RAM, 8GB disk space, network connection, Raspberry Pi OS (based on Debian 12) | Debian 12 operating system;
   - In some cases of Raspberry Pi when using internal WiFi and bluetooth, you should connect internal WiFi on **_5GHz_**, because on 2,4GHz there may be a problem with connection stability (sharing same antenna);
-- Purchase, a cheap USB bluetooth adapter:
+- Purchase a cheap USB bluetooth adapter:
   - 4.0 (tested on CSR8510 A10 chipset, Cambridge Silicon Radio, works with Mi Body Composition Scale 2, Xiaomi Body Composition Scale S400 and Omron module);
   - 5.0/5.1 (tested on RTL8761B chipset, manufacturer Zexmte, works with Mi Body Composition Scale 2, **does not work with Xiaomi Body Composition Scale S400**).
 - Modify file `sudo nano /etc/systemd/system/bluetooth.target.wants/bluetooth.service`:
