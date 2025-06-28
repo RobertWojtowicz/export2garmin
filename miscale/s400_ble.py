@@ -32,8 +32,8 @@ with open(path + '/user/export2garmin.cfg', 'r') as file:
         if line.startswith('ble_miscale_'):
             name, value = line.split('=')
             globals()[name.strip()] = value.strip()
-ble_token = bytes.fromhex(ble_miscale_token)
-parser = XiaomiBluetoothDeviceData(bindkey=ble_token)
+ble_key = bytes.fromhex(ble_miscale_key)
+parser = XiaomiBluetoothDeviceData(bindkey=ble_key)
 stop_event = asyncio.Event()
 mac_seen_event = asyncio.Event()
 
