@@ -6,7 +6,7 @@
   - https://github.com/PiotrMachowski/Xiaomi-cloud-tokens-extractor;
   - https://github.com/Bluetooth-Devices/xiaomi-ble.
 
-### 2.3.1. Getting MAC address and cloud token of Xiaomi Body Composition Scale S400
+### 2.3.1. Getting MAC address and BLE KEY of Xiaomi Body Composition Scale S400
 - Install Xiaomi Home App on your mobile device from Play Store;
 - Create an account and register your scale in app (tested on Android 15);
 - Take a measurement with scale using app (scale will then go into mode to send desired BLE advertisements);
