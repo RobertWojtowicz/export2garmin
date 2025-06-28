@@ -2,7 +2,7 @@
 
 ## 1. Introduction
 ### 1.1. Miscale module (once known as miscale2garmin):
-- Allows fully automatic synchronization of Mi Body Composition Scale 2 (tested on XMTZC05HM) or Xiaomi Body Composition Scale S400 directly to Garmin Connect, with following parameters:
+- Allows fully automatic synchronization of Mi Body Composition Scale 2 (tested on XMTZC05HM) or Xiaomi Body Composition Scale S400 (MJTZC01YM) directly to Garmin Connect, with following parameters:
   - Date and Time (measurement, from device);
   - Weight (**_NOTE:_ lbs is automatically converted to kg**);
   - BMI (Body Mass Index);
