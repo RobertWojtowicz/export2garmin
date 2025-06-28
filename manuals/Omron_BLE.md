@@ -1,5 +1,10 @@
 ## Omron_BLE VERSION
-
+- This module is based on following projects:
+  - https://github.com/cyberjunky/python-garminconnect;
+  - https://github.com/wiecosystem/Bluetooth;
+  - https://github.com/lolouk44/xiaomi_mi_scale;
+  - https://github.com/userx14/omblepy;
+  
 ### 2.4.1. Preparing operating system
 - Minimum hardware and software requirements are:
   - x86: 1vCPU, 1024MB RAM, 8GB disk space, network connection, Debian 12 operating system;

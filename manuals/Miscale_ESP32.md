@@ -1,4 +1,9 @@
 ## 2.2. Miscale_ESP32 VERSION
+- This module is based on following projects:
+  - https://github.com/cyberjunky/python-garminconnect;
+  - https://github.com/wiecosystem/Bluetooth;
+  - https://github.com/lolouk44/xiaomi_mi_scale;
+  - https://github.com/rando-calrissian/esp32_xiaomi_mi_2_hass.
 
 ### 2.2.1. Getting MAC address of Mi Body Composition Scale 2 / disable weigh small object
 - Install Zepp Life App on your mobile device from Play Store;

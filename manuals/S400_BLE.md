@@ -1,4 +1,10 @@
 ## 2.3. S400_BLE VERSION
+- This module is based on following projects:
+  - https://github.com/cyberjunky/python-garminconnect;
+  - https://github.com/wiecosystem/Bluetooth;
+  - https://github.com/lolouk44/xiaomi_mi_scale;
+  - https://github.com/PiotrMachowski/Xiaomi-cloud-tokens-extractor;
+  - https://github.com/Bluetooth-Devices/xiaomi-ble.
 
 ### 2.3.1. Getting MAC address and cloud token of Xiaomi Body Composition Scale S400
 - Install Xiaomi Home App on your mobile device from Play Store;
