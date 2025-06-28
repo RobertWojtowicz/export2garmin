@@ -20,6 +20,28 @@ $ cd token_extractor
 $ sudo pip3 install -r requirements.txt --upgrade bluepy garminconnect bleak --break-system-packages
 $ python3 /home/robert/token_extractor/token_extractor.py
 ```
+- Complete data according to script, acquire BLE KEY and MAC:
+```
+Username (email or user ID):
+email@email.com
+Password:
+
+Server (one of: cn, de, us, ru, tw, sg, in, i2) Leave empty to check all available:
+de
+
+Logging in...
+Logged in.
+
+Devices found for server "de" @ home "000000000000":
+   ---------
+   NAME:     Xiaomi Body Composition Scale S400
+   ID:       000.0.0000000090000
+   BLE KEY:  00000000000000000000000000000000
+   MAC:      00:00:00:00:00:00
+   TOKEN:    000000000000000000000000
+   MODEL:    yunmai.scales.ms104
+   ---------
+```
 
 ### 2.3.2. Preparing operating system
 - Minimum hardware and software requirements are:
