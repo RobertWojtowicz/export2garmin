@@ -90,6 +90,7 @@ Export 2 Garmin Connect v3.0 (import_data.sh)
 ### 2.1. Miscale module | Mi Body Composition Scale 2 | BLE VERSION
 - After weighing, Mi Body Composition Scale 2 is active for 15 minutes on bluetooth transmission;
 - USB Bluetooth adapter or internal module scans BLE devices for 10 seconds to acquire data from scale;
+- Data from scale is decrypted and parsed into a readable form;
 - Body weight and impedance data on server are appropriately processed by scripts;
 - Processed data are sent to Garmin Connect;
 - Raw and calculated data from scale is backed up on server in miscale_backup.csv file.
