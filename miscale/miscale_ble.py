@@ -83,7 +83,6 @@ class miScale(btle.DefaultDelegate):
                     ble_adapter_hci_read = ble_adapter_hci
                     ble_adapter_mac_read = os.popen(f"hcitool dev | awk '/hci{ble_adapter_hci}/ {{print $2}}'").read().strip()
                     ble_success = True
-
             if ble_success == False:
                 os.system("sudo modprobe btusb >/dev/null 2>&1")
                 time.sleep(1)
@@ -92,7 +91,6 @@ class miScale(btle.DefaultDelegate):
             else:
                 print(f"{dt.now().strftime('%d.%m.%Y-%H:%M:%S')} * BLE adapter hci{ble_adapter_hci_read}({ble_adapter_mac_read}) detected, check BLE adapter connection")
                 break
-
         if ble_error == 3 and not ble_success:
             if ble_adapter_switch == "on":
                 print(f"{dt.now().strftime('%d.%m.%Y-%H:%M:%S')} * BLE adapter {ble_adapter_mac} failed to be found, not detected by {ble_error} attempts")
