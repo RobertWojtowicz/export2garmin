@@ -20,7 +20,7 @@ $ cd token_extractor
 $ sudo pip3 install -r requirements.txt --upgrade bluepy garminconnect bleak --break-system-packages
 $ python3 /home/robert/token_extractor/token_extractor.py
 ```
-- Complete data according to script, acquire BLE KEY and MAC:
+- Complete data according to script, get BLE KEY and MAC:
 ```
 Username (email or user ID):
 email@email.com
