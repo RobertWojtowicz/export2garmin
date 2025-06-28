@@ -138,7 +138,7 @@ sudo systemctl enable export2garmin.service && sudo systemctl start export2garmi
 ### 2.1.5. How to increase BLE range
 - Purchase a cheap USB bluetooth adapter:
   - 4.0 (tested on CSR8510 A10 chipset, Cambridge Silicon Radio, works with Mi Body Composition Scale 2, Xiaomi Body Composition Scale S400 and Omron module);
-  - 5.0/5.1 (tested on RTL8761B chipset, manufacturer Zexmte, works with Mi Body Composition Scale 2, **does not work with Xiaomi Body Composition Scale S400 and Omron module**);
+  - 5.0/5.1 (tested on RTL8761B chipset, manufacturer Zexmte, works with Mi Body Composition Scale 2 and Omron module, **does not work with Xiaomi Body Composition Scale S400**);
   - 5.3 (tested on ATS2851 chipset, manufacturer Zexmte, works with Mi Body Composition Scale 2, **does not work with Omron module**).
 - Bluetooth adapter should have a removable RP-SMA antenna;
 - You will have option to change if standard RP-SMA antenna included with bluetooth adapter gives too little range;
