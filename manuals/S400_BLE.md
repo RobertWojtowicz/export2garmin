@@ -62,7 +62,7 @@ $ cd export2garmin-master && sudo chmod 755 import_data.sh && sudo chmod 555 /et
 $ sudo setcap 'cap_net_raw,cap_net_admin+eip' /usr/local/lib/python3.11/dist-packages/bluepy/bluepy-helper
 ```
 
-### 2.3.4. Configuring scripts
+### 2.3.3. Configuring scripts
 - First script is `user/import_tokens.py` is used to export Oauth1 and Oauth2 tokens of your account from Garmin Connect:
   - Script has support for login with or without MFA;
   - Once a year, tokens must be exported again, due to their expiration;
@@ -158,7 +158,7 @@ sudo systemctl enable export2garmin.service && sudo systemctl start export2garmi
 ```
 - You can check if export2garmin service works `sudo systemctl status export2garmin.service` or temporarily stop it with command `sudo systemctl stop export2garmin.service`.
 
-### 2.3.5. Using multiple BLE adapters
+### 2.3.4. Using multiple BLE adapters
 - If you are using multiple BLE adapters, select appropriate one by HCI number or MAC address (recommended) and set in `user/export2garmin.cfg` file;
 - Use command `sudo hciconfig -a` to locate BLE adapter, and then select type of identification:
 	- By HCI number, set parameter "ble_adapter_hci";
