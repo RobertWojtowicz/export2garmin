@@ -58,6 +58,7 @@ def detection_callback(device, advertisement_data):
                 stop_event.set()
 
 async def main():
+    # Searching for scale, 5 attempts
     print(f"{datetime.now().strftime('%d.%m.%Y-%H:%M:%S')} * Starting scan with BLE adapter {ble_adapter_hci}({ble_adapter_mac}):")
     attempts = 0
     while attempts < 5 and not stop_event.is_set():
