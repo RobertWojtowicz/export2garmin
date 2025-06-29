@@ -33,7 +33,7 @@ with open(path + '/user/export2garmin.cfg', 'r') as file:
             name, value = line.split('=')
             globals()[name.strip()] = value.strip()
 ble_key = bytes.fromhex(ble_miscale_key)
-parser = XiaomiBluetoothDeviceData(bindkey=ble_key)
+xiaomi_parser = XiaomiBluetoothDeviceData(bindkey=ble_key)
 stop_event = asyncio.Event()
 mac_seen_event = asyncio.Event()
 
@@ -47,8 +47,8 @@ def detection_callback(device, advertisement_data):
     if not service_data:
         return
     service_info = BluetoothServiceInfo(name=device.name,address=device.address,rssi=advertisement_data.rssi,manufacturer_data=advertisement_data.manufacturer_data,service_data=advertisement_data.service_data,service_uuids=advertisement_data.service_uuids,source=device.address)
-    if parser.supported(service_info):
-        update = parser.update(service_info)
+    if xiaomi_parser.supported(service_info):
+        update = xiaomi_parser.update(service_info)
         if update and update.entity_values:
             fields = {'Mass','Impedance','Impedance Low','Heart Rate'}
             values = {v.name: v.native_value for v in update.entity_values.values() if v.name in fields}
