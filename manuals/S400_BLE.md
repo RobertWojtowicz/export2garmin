@@ -81,7 +81,7 @@ $ sudo setcap 'cap_net_raw,cap_net_admin+eip' /usr/local/lib/python3.11/dist-pac
 - Configuration is stored in `user/export2garmin.cfg` file (make changes e.g. via `sudo nano`):
   - Complete data in "miscale_export_user*" parameter sex, height in cm, birthdate in dd-mm-yyyy, Login e-mail, max_weight in kg, min_weight in kg;
   - To enable Miscale module, set "on" in "switch_s400" parameter;
-  - Complete data in "ble_miscale_mac" and "ble_miscale_key" parameter, which is related to MAC address and BLE KEY of scale, if you don't know MAC address or token read section [2.3.1.](https://github.com/RobertWojtowicz/export2garmin/blob/master/manuals/S400_BLE.md#231-getting-mac-address-and-cloud-token-of-xiaomi-body-composition-scale-s400);
+  - Complete data in "ble_miscale_mac" and "ble_miscale_key" parameter, which is related to MAC address and BLE KEY of scale, if you don't know MAC address or BLE KEY read section [2.3.1.](https://github.com/RobertWojtowicz/export2garmin/blob/master/manuals/S400_BLE.md#231-getting-mac-address-and-cloud-token-of-xiaomi-body-composition-scale-s400);
   - Configuration file contains many **other options**, check descriptions and use for your configuration.
 - Second script `miscale/s400_ble.py` has implemented debug mode, you can verify if everything is working properly, just execute it from console:
 ```
