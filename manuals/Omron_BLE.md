@@ -13,7 +13,7 @@
 - Update your system and then install following packages:
 ```
 $ sudo apt update && sudo apt full-upgrade -y && sudo apt install -y wget python3 bc bluetooth python3-pip libglib2.0-dev procmail
-$ sudo pip3 install --upgrade bluepy garminconnect bleak terminaltables --break-system-packages
+$ sudo pip3 install --upgrade bluepy garminconnect bleak==0.22.3 terminaltables --break-system-packages
 ```
 - Modify file `sudo nano /etc/systemd/system/bluetooth.target.wants/bluetooth.service`:
 ```

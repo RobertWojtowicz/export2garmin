@@ -18,7 +18,7 @@ $ sudo apt update && sudo apt full-upgrade -y && sudo apt install -y wget python
 $ wget https://github.com/PiotrMachowski/Xiaomi-cloud-tokens-extractor/releases/latest/download/token_extractor.zip
 $ unzip token_extractor.zip && rm token_extractor.zip
 $ cd token_extractor
-$ sudo pip3 install --upgrade bluepy garminconnect bleak xiaomi-ble requests pycryptodome charset-normalizer --break-system-packages
+$ sudo pip3 install --upgrade bluepy garminconnect bleak==0.22.3 xiaomi-ble requests pycryptodome charset-normalizer --break-system-packages
 $ python3 /home/robert/token_extractor/token_extractor.py
 ```
 - Complete data according to script, get BLE KEY and MAC:
