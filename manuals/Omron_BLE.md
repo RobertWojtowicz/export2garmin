@@ -1,7 +1,7 @@
 ## Omron_BLE VERSION
 - This module is based on following projects:
   - https://github.com/cyberjunky/python-garminconnect;
-  - https://github.com/userx14/omblepy;
+  - https://github.com/userx14/omblepy.
   
 ### 2.4.1. Preparing operating system
 - Minimum hardware and software requirements are:
