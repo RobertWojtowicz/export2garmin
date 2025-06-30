@@ -13,13 +13,13 @@
 - Update your system and then install following packages:
 ```
 $ sudo apt update && sudo apt full-upgrade -y && sudo apt install -y wget python3 bc bluetooth python3-pip libglib2.0-dev procmail
+$ sudo pip3 install --upgrade bluepy garminconnect bleak==0.22.3 xiaomi-ble requests pycryptodome charset-normalizer --break-system-packages
 ```
 - Download and extract to your home directory and run token_extractor.py (e.g. "/home/robert/"):
 ```
 $ wget https://github.com/PiotrMachowski/Xiaomi-cloud-tokens-extractor/releases/latest/download/token_extractor.zip
 $ unzip token_extractor.zip && rm token_extractor.zip
 $ cd token_extractor
-$ sudo pip3 install --upgrade bluepy garminconnect bleak==0.22.3 xiaomi-ble requests pycryptodome charset-normalizer --break-system-packages
 $ python3 /home/robert/token_extractor/token_extractor.py
 ```
 - Complete data according to script, use email address and password from your registered account in Xiaomi Home app, get BLE KEY and MAC:
