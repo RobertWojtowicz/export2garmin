@@ -1,6 +1,6 @@
-## 2.4. Miscale_ESP32_WIN VERSION
+## 2.5. Miscale_ESP32_WIN VERSION
 
-### 2.4.1. Preparing host operating system
+### 2.5.3. Preparing host operating system
 - It is possible to run Linux as a virtual machine in Windows 11 by installing Hyper-V with powershell:
 ```
 PS> Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All
@@ -33,7 +33,7 @@ IPAddresses
 {192.168.4.118, fe80::215:5dff:fe04:c801}
 ```
 
-### 2.4.2. Preparing guest operating system
+### 2.5.4. Preparing guest operating system
 - Log in via SSH with IP address (in this example 192.168.4.118) and install following package:
 ```
 $ su -

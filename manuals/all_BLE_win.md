@@ -1,8 +1,8 @@
-## 2.4. all_BLE_WIN VERSION
+## 2.5. all_BLE_WIN VERSION
 - This module is based on following projects:
   - https://github.com/dorssel/usbipd-win.
 
-### 2.4.1. Preparing host operating system
+### 2.5.1. Preparing host operating system
 - It is possible to run Linux as a virtual machine in Windows 11 by installing Hyper-V with powershell:
 ```
 PS> Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All
@@ -54,7 +54,7 @@ IPAddresses
 {172.17.76.18, fe80::215:5dff:fe04:c801}
 ```
 
-### 2.4.2. Preparing guest operating system
+### 2.5.2. Preparing guest operating system
 - Log in via SSH with IP address (in this example 172.17.76.18) and install following packages:
 ```
 $ su -
