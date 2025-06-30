@@ -138,7 +138,7 @@ $ sudo systemctl enable export2garmin.service && sudo systemctl start export2gar
 - You can check if export2garmin service works `sudo systemctl status export2garmin.service` or temporarily stop it with command `sudo systemctl stop export2garmin.service`.
 
 ### 2.4.4. How to increase BLE range
-- Purchase a cheap USB bluetooth adapter:
+- Purchase a low-cost USB bluetooth adapter:
   - 4.0 (tested on CSR8510 A10 chipset, Cambridge Silicon Radio, works with Mi Body Composition Scale 2, Xiaomi Body Composition Scale S400 and Omron module);
   - 5.0/5.1 (tested on RTL8761B chipset, manufacturer Zexmte, works with Mi Body Composition Scale 2 and Omron module, **does not work with Xiaomi Body Composition Scale S400**);
   - 5.3 (tested on ATS2851 chipset, manufacturer Zexmte, works with Miscale module, **does not work with Omron module**).

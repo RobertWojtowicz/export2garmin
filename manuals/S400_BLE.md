@@ -10,16 +10,19 @@
 - Take a measurement with scale using app (scale starts sending requested BLE advertisements);
 - You should also synchronize scale using app after **replacing batteries**;
 - A full measurement (weighing and heart rate) is required, otherwise the scale will **not send data**;
-- Download and extract to your home directory and run token_extractor.py (e.g. "/home/robert/"):
+- Update your system and then install following packages:
 ```
 $ sudo apt update && sudo apt full-upgrade -y && sudo apt install -y wget python3 bc bluetooth python3-pip libglib2.0-dev procmail
+```
+- Download and extract to your home directory and run token_extractor.py (e.g. "/home/robert/"):
+```
 $ wget https://github.com/PiotrMachowski/Xiaomi-cloud-tokens-extractor/releases/latest/download/token_extractor.zip
 $ unzip token_extractor.zip && rm token_extractor.zip
 $ cd token_extractor
 $ sudo pip3 install --upgrade bluepy garminconnect bleak==0.22.3 xiaomi-ble requests pycryptodome charset-normalizer --break-system-packages
 $ python3 /home/robert/token_extractor/token_extractor.py
 ```
-- Complete data according to script, get BLE KEY and MAC:
+- Complete data according to script, use email address and password from your registered account in Xiaomi Home app, get BLE KEY and MAC:
 ```
 Username (email or user ID):
 email@email.com
@@ -46,7 +49,7 @@ Devices found for server "de" @ home "000000000000":
 - Minimum hardware and software requirements are:
   - x86: 1vCPU, 1024MB RAM, 8GB disk space, network connection, Debian 12 operating system;
   - ARM: 1CPU, 512MB RAM, 8GB disk space, network connection, Raspberry Pi OS (based on Debian 12) | Debian 12 operating system;
-- Purchase a cheap USB bluetooth adapter:
+- Purchase a low-cost USB bluetooth adapter, **currently required** for synchronization to work:
   - 4.0 (tested on CSR8510 A10 chipset, Cambridge Silicon Radio, works with Mi Body Composition Scale 2, Xiaomi Body Composition Scale S400 and Omron module);
   - 5.0/5.1 (tested on RTL8761B chipset, manufacturer Zexmte, works with Mi Body Composition Scale 2 and Omron module, **does not work with Xiaomi Body Composition Scale S400**).
 - Modify file `sudo nano /etc/systemd/system/bluetooth.target.wants/bluetooth.service`:
