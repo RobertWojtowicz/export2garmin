@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# WARNING use bleak library version 0.22.3, newer is unstable
 
 import os
 import sys

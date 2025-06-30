@@ -7,9 +7,9 @@
 ### 2.3.1. Getting MAC address and BLE KEY of Xiaomi Body Composition Scale S400
 - Install Xiaomi Home App on your mobile device from Play Store;
 - Create an account and register your scale in app (tested on Android 15);
-- Take a measurement with scale using app (scale will then go into mode to send desired BLE advertisements);
-- You should also synchronize scale using app after **replacing batteries** (scale will then go into mode to send desired BLE advertisements);
-- A full measurement (weighing and heart rate) must be completed otherwise scale will **not send data**;
+- Take a measurement with scale using app (scale starts sending requested BLE advertisements);
+- You should also synchronize scale using app after **replacing batteries**;
+- A full measurement (weighing and heart rate) is required, otherwise the scale will **not send data**;
 - Download and extract to your home directory and run token_extractor.py (e.g. "/home/robert/"):
 ```
 $ sudo apt update && sudo apt full-upgrade -y && sudo apt install -y wget python3 bc bluetooth python3-pip libglib2.0-dev procmail

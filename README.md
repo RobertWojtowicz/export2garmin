@@ -54,7 +54,7 @@
 ## 2. How does this work
 - Miscale and Omron modules can be activated individually or run together:
 	- Devices can run together (Mi Body Composition Scale 2 and Omron);
-	- Devices can't work together (Xiaomi Body Composition Scale S400).
+	- Devices can't work together (Xiaomi Body Composition Scale S400, requires constant scanning).
 
 ```
 $ /home/robert/export2garmin-master/import_data.sh
