@@ -11,9 +11,10 @@ PS> Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All
 ```
 PS> winget install usbipd
 ```
-- Describing solution will **only work with USB adapters**, buy cheap bluetooth adapter:
-  - 5.0/5.1 (tested on RTL8761B chipset, manufacturer Zexmte, works with Miscale and Omron module);
-  - 5.3 (tested on ATS2851 chipset, manufacturer Zexmte, works only with Miscale module).
+- Describing solution will **only work with USB adapters**, purchase a low-cos bluetooth adapter:
+  - 4.0 (tested on CSR8510 A10 chipset, Cambridge Silicon Radio, works with Mi Body Composition Scale 2, Xiaomi Body Composition Scale S400 and Omron module);
+  - 5.0/5.1 (tested on RTL8761B chipset, manufacturer Zexmte, works with Mi Body Composition Scale 2 and Omron module, does not work with Xiaomi Body Composition Scale S400);
+  - 5.3 (tested on ATS2851 chipset, manufacturer Zexmte, works with Mi Body Composition Scale 2, does not work with Omron module).
 - Bluetooth adapter should have a removable RP-SMA antenna;
 - List devices in powershell that you can share:
 ```
