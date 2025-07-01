@@ -121,7 +121,8 @@ Export 2 Garmin Connect v3.0 (import_data.sh)
 18.07.2024-16:56:40 MISCALE|S400 * Saving calculated data from import 1721314552 to miscale_backup.csv file
 18.07.2024-16:56:40 OMRON * Module is OFF in export2garmin.cfg file
 ```
-- If there is an error upload to Garmin Connect, data will be sent again on next execution, upload errors and other operations are saved in temp.log file:
+- If there is an error upload to Garmin Connect, data will be sent again on next execution (required disable BLE scanning, set miscale_skip=on parameter in ```user/export2garmin.cfg file```)
+- Upload errors and other operations are saved in temp.log file:
 ```
 $ cat /dev/shm/temp.log
 
