@@ -13,7 +13,7 @@
 - Update your system and then install following packages:
 ```
 $ sudo apt update && sudo apt full-upgrade -y && sudo apt install -y wget python3 bc bluetooth python3-pip libglib2.0-dev procmail
-$ sudo pip3 install --upgrade bluepy garminconnect bleak==0.22.3 xiaomi-ble requests pycryptodome charset-normalizer --break-system-packages
+$ sudo pip3 install --upgrade bluepy garminconnect bleak xiaomi-ble requests pycryptodome charset-normalizer --break-system-packages
 ```
 - Download and extract to your home directory and run token_extractor.py (e.g. "/home/robert/"):
 ```
