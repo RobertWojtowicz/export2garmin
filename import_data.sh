@@ -47,7 +47,7 @@ while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 
 	# Verifying correct working of BLE, restart bluetooth service and device via miscale_ble.py
 	if [[ $switch_bt == "on" ]]; then
-		if [[ $switch_miscale == "on" && $switch_mqtt == "off" ]] || [[ $switch_omron == "on" ]] || [[ $switch_s400 == "on" ]]; then
+		if [[ $switch_miscale == "on" && $switch_mqtt == "off" ]] || [[ $switch_omron == "on" ]] || [[ $switch_s400 == "on" ]] ; then
 			unset $(compgen -v | grep '^ble_')
 			echo "$(timenow) SYSTEM * BLE adapter is ON in export2garmin.cfg file, check if available"
 			ble_check=$(python3 -B $path/miscale/miscale_ble.py)
@@ -63,7 +63,7 @@ while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 	fi
 
 	# Create temp.log file if it exists cleanup after last startup
-	if [[ $switch_miscale == "on" ]] || [[ $switch_omron == "on" ]] || [[ $switch_s400 == "on" ]]; then
+	if [[ $switch_miscale == "on" ]] || [[ $switch_omron == "on" ]] || [[ $switch_s400 == "on" ]] ; then
 		temp_log=$switch_temp_path/temp.log
 		if [[ ! -f $temp_log ]] ; then
 			echo "$(timenow) SYSTEM * Creating temp.log file, go to modules"
