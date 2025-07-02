@@ -108,7 +108,7 @@ while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 			fi
 
 		# Importing raw data from BLE (Xiaomi Body Composition Scale S400)
-		else [[ $ble_status == "ok" && $switch_s400 == "on" ]] ; then
+		elif [[ $ble_status == "ok" && $switch_s400 == "on" ]] ; then
 			echo "$(timenow) MISCALE|S400 * Importing data from a BLE adapter"
 			miscale_hci=$(echo $ble_check | grep -o 'hci.' | head -n 1)
 			miscale_s400_ble=$(python3 -B $path/miscale/s400_ble.py -a $miscale_hci)
