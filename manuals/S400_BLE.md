@@ -99,7 +99,7 @@ Export 2 Garmin Connect v3.0 (s400_ble.py)
 28.06.2025-12:57:01 S400 * Reading BLE data complete, finished BLE scan
 to_import;1751108221;58.1;509;468;79
 ```
-- Third script "import_data.sh" has implemented debug mode, you can verify if everything is working properly, just execute it from console:
+- Third script `import_data.sh` has implemented debug mode, you can verify if everything is working properly, just execute it from console:
 ```
 $ /home/robert/export2garmin-master/import_data.sh
 

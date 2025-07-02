@@ -75,7 +75,7 @@ Export 2 Garmin Connect v3.0 (miscale_ble.py)
 18.11.2023-23:23:34 MISCALE * Reading BLE data complete, finished BLE scan
 1672412076;58.4;521
 ```
-- Third script "import_data.sh" has implemented debug mode, you can verify if everything is working properly, just execute it from console:
+- Third script `import_data.sh` has implemented debug mode, you can verify if everything is working properly, just execute it from console:
 ```
 $ /home/robert/export2garmin-master/import_data.sh
 
