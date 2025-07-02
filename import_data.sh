@@ -46,7 +46,7 @@ while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 	echo "$(timenow) SYSTEM * Path to user files: $path/user/"
 
 	# Verifying correct working of BLE, restart bluetooth service and device via miscale_ble.py
-	if [[ $switch_bt == "on" ]]; then
+	if [[ $switch_bt == "on" ]] ; then
 		if [[ $switch_miscale == "on" && $switch_mqtt == "off" ]] || [[ $switch_omron == "on" ]] || [[ $switch_s400 == "on" ]] ; then
 			unset $(compgen -v | grep '^ble_')
 			echo "$(timenow) SYSTEM * BLE adapter is ON in export2garmin.cfg file, check if available"
