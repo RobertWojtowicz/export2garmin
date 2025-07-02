@@ -112,7 +112,7 @@ Export 2 Garmin Connect v3.0 (import_data.sh)
 
 ### 2.3. Miscale module | Xiaomi Body Composition Scale S400 | BLE VERSION
 - After weighing, Xiaomi Body Composition Scale S400 transmits weight data for a short while on bluetooth transmission;
-- A USB Bluetooth adapter or internal module scans BLE devices continuously to acquire data from scale;
+- A USB Bluetooth adapter scans BLE devices continuously to acquire data from scale;
 - Data from scale is decrypted and parsed into a readable form;
 - Body weight and impedance data on server are appropriately processed by scripts;
 - Processed data are sent to Garmin Connect;
