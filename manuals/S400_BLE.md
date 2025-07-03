@@ -10,7 +10,8 @@
 - Take a measurement with scale using app (scale starts sending requested BLE advertisements);
 - You should also synchronize scale using app after **replacing batteries**;
 - A full measurement (weighing and heart rate) is required, otherwise scale will **not send data**;
-- Update your system and then install following packages:
+- For Windows download latest version and run: https://github.com/PiotrMachowski/Xiaomi-cloud-tokens-extractor/releases/latest/download/token_extractor.exe
+- For Linux update your system and then install following packages:
 ```
 $ sudo apt update && sudo apt full-upgrade -y && sudo apt install -y wget python3 bc bluetooth python3-pip libglib2.0-dev procmail
 $ sudo pip3 install --upgrade bluepy garminconnect bleak xiaomi-ble requests pycryptodome charset-normalizer pillow --break-system-packages
@@ -44,6 +45,7 @@ Devices found for server "de" @ home "000000000000":
    MODEL:    yunmai.scales.ms104
    ---------
 ```
+- In some cases Xiaomi Cloud Tokens Extractor may ask you to enter a captcha code, ***requires a graphical interface and a web browser***
 
 ### 2.3.2. Preparing operating system
 - Minimum hardware and software requirements are:
@@ -52,6 +54,11 @@ Devices found for server "de" @ home "000000000000":
 - Purchase a low-cost USB bluetooth adapter, **currently required** for synchronization to work:
   - 4.0 (tested on CSR8510 A10 chipset, Cambridge Silicon Radio, works with Mi Body Composition Scale 2, Xiaomi Body Composition Scale S400 and Omron module);
   - 5.0/5.1 (tested on RTL8761B chipset, manufacturer Zexmte, works with Mi Body Composition Scale 2 and Omron module, **does not work with Xiaomi Body Composition Scale S400**).
+- Update your system and then install following packages:
+```
+$ sudo apt update && sudo apt full-upgrade -y && sudo apt install -y wget python3 bc bluetooth python3-pip libglib2.0-dev procmail
+$ sudo pip3 install --upgrade bluepy garminconnect bleak xiaomi-ble requests pycryptodome charset-normalizer pillow --break-system-packages
+```
 - Modify file `sudo nano /etc/systemd/system/bluetooth.target.wants/bluetooth.service`:
 ```
 ExecStart=/usr/libexec/bluetooth/bluetoothd --experimental
