@@ -45,7 +45,7 @@ Devices found for server "de" @ home "000000000000":
    MODEL:    yunmai.scales.ms104
    ---------
 ```
-- In some cases Xiaomi Cloud Tokens Extractor may ask you to enter a captcha code, ***requires a graphical interface and a web browser***
+- In some cases Xiaomi Cloud Tokens Extractor may ask you to enter a captcha code, **requires a graphical interface and a web browser**
 
 ### 2.3.2. Preparing operating system
 - Minimum hardware and software requirements are:
