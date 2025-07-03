@@ -57,7 +57,7 @@ Devices found for server "de" @ home "000000000000":
 - Update your system and then install following packages (if you have not done so in section [2.3.1.](https://github.com/RobertWojtowicz/export2garmin/blob/master/manuals/S400_BLE.md#231-getting-mac-address-and-ble-key-of-xiaomi-body-composition-scale-s400));
 ```
 $ sudo apt update && sudo apt full-upgrade -y && sudo apt install -y wget python3 bc bluetooth python3-pip libglib2.0-dev procmail
-$ sudo pip3 install --upgrade bluepy garminconnect bleak xiaomi-ble requests pycryptodome charset-normalizer pillow --break-system-packages
+$ sudo pip3 install --upgrade bluepy garminconnect bleak xiaomi-ble --break-system-packages
 ```
 - Modify file `sudo nano /etc/systemd/system/bluetooth.target.wants/bluetooth.service`:
 ```
