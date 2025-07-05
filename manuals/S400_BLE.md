@@ -10,13 +10,10 @@
 - Take a measurement with scale using app (scale starts sending requested BLE advertisements);
 - You should also synchronize scale using app after **replacing batteries**;
 - A full measurement (weighing and heart rate) is required, otherwise scale will **not send data**;
-<<<<<<< HEAD
 - Don't turn off heart rate measurement in app, otherwise scale will **not send data**;
 - Update your system and then install following packages:
-=======
 - For Windows download latest version and run: https://github.com/PiotrMachowski/Xiaomi-cloud-tokens-extractor/releases/latest/download/token_extractor.exe
 - For Linux update your system and then install following packages:
->>>>>>> 5e39b11d6a48171b3f7d5d6d68a227253a509cff
 ```
 $ sudo apt update && sudo apt full-upgrade -y && sudo apt install -y wget python3 bc bluetooth python3-pip libglib2.0-dev procmail
 $ sudo pip3 install --upgrade bluepy garminconnect bleak xiaomi-ble requests pycryptodome charset-normalizer pillow --break-system-packages
