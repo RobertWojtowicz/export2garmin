@@ -11,7 +11,6 @@
 - You should also synchronize scale using app after **replacing batteries**;
 - A full measurement (weighing and heart rate) is required, otherwise scale will **not send data**;
 - Don't turn off heart rate measurement in app, otherwise scale will **not send data**;
-- Update your system and then install following packages:
 - For Windows download latest version and run: https://github.com/PiotrMachowski/Xiaomi-cloud-tokens-extractor/releases/latest/download/token_extractor.exe
 - For Linux update your system and then install following packages:
 ```
