@@ -10,8 +10,13 @@
 - Take a measurement with scale using app (scale starts sending requested BLE advertisements);
 - You should also synchronize scale using app after **replacing batteries**;
 - A full measurement (weighing and heart rate) is required, otherwise scale will **not send data**;
+<<<<<<< HEAD
 - Don't turn off heart rate measurement in app, otherwise scale will **not send data**;
 - Update your system and then install following packages:
+=======
+- For Windows download latest version and run: https://github.com/PiotrMachowski/Xiaomi-cloud-tokens-extractor/releases/latest/download/token_extractor.exe
+- For Linux update your system and then install following packages:
+>>>>>>> 5e39b11d6a48171b3f7d5d6d68a227253a509cff
 ```
 $ sudo apt update && sudo apt full-upgrade -y && sudo apt install -y wget python3 bc bluetooth python3-pip libglib2.0-dev procmail
 $ sudo pip3 install --upgrade bluepy garminconnect bleak xiaomi-ble requests pycryptodome charset-normalizer pillow --break-system-packages
@@ -45,6 +50,7 @@ Devices found for server "de" @ home "000000000000":
    MODEL:    yunmai.scales.ms104
    ---------
 ```
+- In some cases Xiaomi Cloud Tokens Extractor may ask you to enter a captcha code, **requires a graphical interface and a web browser**.
 
 ### 2.3.2. Preparing operating system
 - Minimum hardware and software requirements are:
@@ -53,6 +59,11 @@ Devices found for server "de" @ home "000000000000":
 - Purchase a low-cost USB bluetooth adapter, **currently required** for synchronization to work:
   - 4.0 (tested on CSR8510 A10 chipset, Cambridge Silicon Radio, works with Mi Body Composition Scale 2, Xiaomi Body Composition Scale S400 and Omron module);
   - 5.0/5.1 (tested on RTL8761B chipset, manufacturer Zexmte, works with Mi Body Composition Scale 2 and Omron module, **does not work with Xiaomi Body Composition Scale S400**).
+- Update your system and then install following packages (if you have not done so in section [2.3.1.](https://github.com/RobertWojtowicz/export2garmin/blob/master/manuals/S400_BLE.md#231-getting-mac-address-and-ble-key-of-xiaomi-body-composition-scale-s400));
+```
+$ sudo apt update && sudo apt full-upgrade -y && sudo apt install -y wget python3 bc bluetooth python3-pip libglib2.0-dev procmail
+$ sudo pip3 install --upgrade bluepy garminconnect bleak xiaomi-ble --break-system-packages
+```
 - Modify file `sudo nano /etc/systemd/system/bluetooth.target.wants/bluetooth.service`:
 ```
 ExecStart=/usr/libexec/bluetooth/bluetoothd --experimental
@@ -85,7 +96,7 @@ $ sudo setcap 'cap_net_raw,cap_net_admin+eip' /usr/local/lib/python3.11/dist-pac
 - Configuration is stored in `user/export2garmin.cfg` file (make changes e.g. via `sudo nano`):
   - Complete data in "miscale_export_user*" parameter sex, height in cm, birthdate in dd-mm-yyyy, Login e-mail, max_weight in kg, min_weight in kg;
   - To enable Miscale module, set "on" in "switch_s400" parameter;
-  - Complete data in "ble_miscale_mac" and "ble_miscale_key" parameter, which is related to MAC address and BLE KEY of scale, if you don't know MAC address or BLE KEY read section [2.3.1.](https://github.com/RobertWojtowicz/export2garmin/blob/master/manuals/S400_BLE.md#231-getting-mac-address-and-cloud-token-of-xiaomi-body-composition-scale-s400);
+  - Complete data in "ble_miscale_mac" and "ble_miscale_key" parameter, which is related to MAC address and BLE KEY of scale, if you don't know MAC address or BLE KEY read section [2.3.1.](https://github.com/RobertWojtowicz/export2garmin/blob/master/manuals/S400_BLE.md#231-getting-mac-address-and-ble-key-of-xiaomi-body-composition-scale-s400);
   - Configuration file contains many **other options**, check descriptions and use for your configuration.
 - Second script `miscale/s400_ble.py` has implemented debug mode, you can verify if everything is working properly, just execute it from console:
 ```
