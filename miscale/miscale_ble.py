@@ -8,7 +8,7 @@ from bluepy import btle
 # Version info
 print("""
 =============================================
-Export 2 Garmin Connect v3.0 (miscale_ble.py)
+Export 2 Garmin Connect v3.1 (miscale_ble.py)
 =============================================
 """)
 
@@ -84,6 +84,8 @@ class miScale(btle.DefaultDelegate):
                     ble_adapter_mac_read = os.popen(f"hcitool dev | awk '/hci{ble_adapter_hci}/ {{print $2}}'").read().strip()
                     ble_success = True
             if ble_success == False:
+                os.system("sudo rfkill unblock bluetooth >/dev/null 2>&1")
+                time.sleep(1)
                 os.system("sudo modprobe btusb >/dev/null 2>&1")
                 time.sleep(1)
                 os.system("sudo systemctl restart bluetooth.service >/dev/null 2>&1")

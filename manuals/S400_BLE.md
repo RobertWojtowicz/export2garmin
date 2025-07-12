@@ -51,8 +51,8 @@ Devices found for server "de" @ home "000000000000":
 ### 2.3.2. Preparing operating system
 - Minimum hardware and software requirements are:
   - x86: 1vCPU, 1024MB RAM, 8GB disk space, network connection, Debian 12 operating system;
-  - ARM: 1CPU, 512MB RAM, 8GB disk space, network connection, Raspberry Pi OS (based on Debian 12) | Debian 12 operating system;
-- Purchase a low-cost USB bluetooth adapter, **currently required** for stable synchronization to work:
+  - ARM: Minimum Raspberry Pi Zero 2 W, 8GB disk space, Raspberry Pi OS operating system;
+- Purchase a low-cost USB bluetooth adapter, **currently required** for synchronization to work:
   - 4.0 (tested on CSR8510 A10 chipset, Cambridge Silicon Radio, works with Mi Body Composition Scale 2, Xiaomi Body Composition Scale S400 and Omron module);
   - 5.0/5.1 (tested on RTL8761B chipset, manufacturer Zexmte, works with Mi Body Composition Scale 2 and Omron module, **does not work with Xiaomi Body Composition Scale S400**).
 - Update your system and then install following packages (if you have not done so in section [2.3.1.](https://github.com/RobertWojtowicz/export2garmin/blob/master/manuals/S400_BLE.md#231-getting-mac-address-and-ble-key-of-xiaomi-body-composition-scale-s400));

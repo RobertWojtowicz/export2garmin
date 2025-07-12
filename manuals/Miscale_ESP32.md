@@ -68,7 +68,7 @@
 ### 2.2.4. Preparing operating system
 - Minimum hardware and software requirements are:
   - x86: 1vCPU, 1024MB RAM, 8GB disk space, network connection, Debian 12 operating system;
-  - ARM: 1CPU, 512MB RAM, 8GB disk space, network connection, Raspberry Pi OS (based on Debian 12) | Debian 12 operating system.
+  - ARM: Minimum Raspberry Pi Zero 2 W, 8GB disk space, Raspberry Pi operating system;
 - Update your system and then install following packages:
 ```
 $ sudo apt update && sudo apt full-upgrade -y && sudo apt install -y wget python3 bc mosquitto mosquitto-clients python3-pip procmail libssl-dev

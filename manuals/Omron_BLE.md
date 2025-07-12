@@ -6,7 +6,7 @@
 ### 2.4.1. Preparing operating system
 - Minimum hardware and software requirements are:
   - x86: 1vCPU, 1024MB RAM, 8GB disk space, network connection, Debian 12 operating system;
-  - ARM: 1CPU, 512MB RAM, 8GB disk space, network connection, Raspberry Pi OS (based on Debian 12) | Debian 12 operating system;
+  - ARM: Minimum Raspberry Pi Zero 2 W, 8GB disk space, Raspberry Pi operating system;
   - In some cases of Raspberry Pi when using internal WiFi and bluetooth, you should connect internal WiFi on **_5GHz_**, because on 2,4GHz there may be a problem with connection stability (sharing same antenna).
 - Update your system and then install following packages:
 ```

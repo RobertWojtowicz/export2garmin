@@ -19,7 +19,7 @@
 ### 2.1.3. Preparing operating system
 - Minimum hardware and software requirements are:
   - x86: 1vCPU, 1024MB RAM, 8GB disk space, network connection, Debian 12 operating system;
-  - ARM: 1CPU, 512MB RAM, 8GB disk space, network connection, Raspberry Pi OS (based on Debian 12) | Debian 12 operating system;
+  - ARM: Minimum Raspberry Pi Zero 2 W, 8GB disk space, Raspberry Pi operating system;
   - In some cases of Raspberry Pi when using internal WiFi and bluetooth, you should connect internal WiFi on **_5GHz_**, because on 2,4GHz there may be a problem with connection stability (sharing same antenna).
 - Update your system and then install following packages:
 ```
@@ -154,9 +154,6 @@ sudo reboot
 - Use command `sudo hciconfig -a` to locate BLE adapter, and then select type of identification:
 	- By HCI number, set parameter "ble_adapter_hci";
 	- By MAC address, set parameter "ble_adapter_switch" to "on" and specify MAC addres in parameter "ble_adapter_mac".
-- Sample photo with test configuration, on left Raspberry Pi 0W, on right server with virtual machine (stronger antenna added):
-
-![alt text](https://github.com/RobertWojtowicz/export2garmin/blob/master/manuals/usb.jpg)
 - Back to [README](https://github.com/RobertWojtowicz/export2garmin/blob/master/README.md).
 
 ## If you like my work, you can buy me a coffee
