@@ -179,7 +179,7 @@ while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 			sed -i "s/to_import;$miscale_import/failed;$miscale_import/" $miscale_backup
 		else echo "$(timenow) MISCALE|S400 * Data upload to Garmin Connect is complete"
 
-			# Save calculated data to $miscale_backup file
+			# Save calculated data to miscale_backup file
 			echo "$(timenow) MISCALE|S400 * Saving calculated data from import $miscale_import to miscale_backup.csv file"
 			miscale_import_data=$(awk -F ": " '/MISCALE /*/ Import data:/{print $2}' $temp_log)
 			miscale_calc_data=$(awk -F ": " '/MISCALE /*/ Calculated data:/{print $2}' $temp_log)
