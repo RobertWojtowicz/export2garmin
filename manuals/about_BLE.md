@@ -3,7 +3,7 @@
 ### 2.6.1 BLE adapters support matrix
 | BT version | Chipset/Brand | Alterative name/Model | Type | Range | External antenna | Mi Body Composition Scale 2 | Xiaomi Body Composition Scale S400 | Omron | Testers |
 | ----- | ----- | ----- | ----- | -----  | ----- | ----- | ----- | ----- | ----- |
-| 4.0 | CSR8510 A10 | Cambridge Silicon Radio | USB | medium | ❌ | ✔️ | ✔️ | ✔️ | RobertWojtowicz |
+| 4.0 | CSR8510 A10 | Cambridge Silicon Radio | USB | medium | ❌ | ✔️ | ✔️ | ❓ | RobertWojtowicz |
 | 4.1 | Broadcom/Raspberry Pi | Zero W | Internal | low | ❌ | ❌ | ❌ | ❌ | RobertWojtowicz |
 | 4.2 | Broadcom/Raspberry Pi | Zero 2W | Internal | low | ❌ | ✔️ | ❌ | ✔️ | RobertWojtowicz |
 | 5.0 | Broadcom/Raspberry Pi | 4B** | Internal | low | ❌ | ✔️ | ❌ | ✔️ | RobertWojtowicz |
