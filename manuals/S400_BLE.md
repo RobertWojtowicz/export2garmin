@@ -165,7 +165,8 @@ WantedBy=multi-user.target
 ```
 sudo systemctl enable export2garmin.service && sudo systemctl start export2garmin.service
 ```
-- You can check if export2garmin service works `sudo systemctl status export2garmin.service` or temporarily stop it with command `sudo systemctl stop export2garmin.service`.
+- You can check if export2garmin service works `sudo systemctl status export2garmin.service` or temporarily stop it with command `sudo systemctl stop export2garmin.service`;
+- Checking running export2garmin service in a continuous loop: `sudo journalctl -u export2garmin.service -f` (process exit is Ctrl+C);
 - Back to [README](https://github.com/RobertWojtowicz/export2garmin/blob/master/README.md).
 
 ## If you like my work, you can buy me a coffee
