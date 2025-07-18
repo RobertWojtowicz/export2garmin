@@ -18,7 +18,7 @@ another_instance() {
 	echo "$(timenow) SYSTEM * Another import_data.sh instance running"
 	exit 1
 }
-lockfile -r 0 -l 60 "$switch_temp_path/export.lock" || another_instance
+lockfile -r 0 "$switch_temp_path/export.lock" || another_instance
 trap remove_lock EXIT
 
 # Create a loop, "-l" parameter executes loop indefinitely
