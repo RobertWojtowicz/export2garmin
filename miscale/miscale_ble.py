@@ -13,24 +13,24 @@ Export 2 Garmin Connect v3.3 (miscale_ble.py)
 =============================================
 """)
 
-# Arguments to pass in script
-parser = argparse.ArgumentParser()
-parser.add_argument("-a", default='0')
-parser.add_argument("-bt", default='off')
-parser.add_argument("-mac", default=None)
-args = parser.parse_args()
-ble_arg_hci = args.a
-ble_arg_hci2mac = args.bt
-ble_arg_mac = args.mac
-
 # Importing bluetooth variables from a file
 path = os.path.dirname(os.path.dirname(__file__))
 with open(path + '/user/export2garmin.cfg', 'r') as file:
     for line in file:
         line = line.strip()
-        if line.startswith('ble_adapter_') or line.startswith('switch_') or line.startswith('ble_miscale_mac'):
+        if line.startswith('ble_') or line.startswith('switch_'):
             name, value = line.split('=')
             globals()[name.strip()] = value.strip()
+
+# Arguments to pass in script
+parser = argparse.ArgumentParser()
+parser.add_argument("-a", default=ble_arg_hci)
+parser.add_argument("-bt", default=ble_arg_hci2mac)
+parser.add_argument("-mac", default=ble_arg_mac)
+args = parser.parse_args()
+ble_arg_hci = args.a
+ble_arg_hci2mac = args.bt
+ble_arg_mac = args.mac
 
 # Reading data from a scale using a BLE adapter
 class miScale(btle.DefaultDelegate):

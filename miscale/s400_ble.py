@@ -16,25 +16,25 @@ Export 2 Garmin Connect v3.3 (s400_ble.py)
 ==========================================
 """)
 
-# Arguments to pass in script
-parser = argparse.ArgumentParser()
-parser.add_argument("-a", default='0')
-args = parser.parse_args()
-ble_arg_hci = args.a
-ble_arg_mac = os.popen(f"hcitool dev | awk '/hci{ble_arg_hci}/ {{print $2}}'").read().strip()
-
 # Importing bluetooth variables from a file
 path = os.path.dirname(os.path.dirname(__file__))
 with open(path + '/user/export2garmin.cfg', 'r') as file:
     for line in file:
         line = line.strip()
-        if line.startswith('ble_miscale_'):
+        if line.startswith('ble_miscale_') or line.startswith('ble_arg_hci'):
             name, value = line.split('=')
             globals()[name.strip()] = value.strip()
 ble_key = bytes.fromhex(ble_miscale_key)
 xiaomi_parser = XiaomiBluetoothDeviceData(bindkey=ble_key)
 stop_event = asyncio.Event()
 mac_seen_event = asyncio.Event()
+
+# Arguments to pass in script
+parser = argparse.ArgumentParser()
+parser.add_argument("-a", default=ble_arg_hci)
+args = parser.parse_args()
+ble_arg_hci = args.a
+ble_arg_mac = os.popen(f"hcitool dev | awk '/hci{ble_arg_hci}/ {{print $2}}'").read().strip()
 
 # Detecting an incorrect BLE KEY
 logger = logging.getLogger("xiaomi_ble.parser")
