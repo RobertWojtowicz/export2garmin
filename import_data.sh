@@ -2,7 +2,7 @@
 
 # Version Info
 echo -e "\n============================================="
-echo -e "Export 2 Garmin Connect v3.1 (import_data.sh)"
+echo -e "Export 2 Garmin Connect v3.3 (import_data.sh)"
 echo -e "=============================================\n"
 
 # Blocking multiple instances of same script process
@@ -49,8 +49,9 @@ while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 	if [[ $switch_bt == "on" ]] ; then
 		if [[ $switch_miscale == "on" && $switch_mqtt == "off" ]] || [[ $switch_omron == "on" ]] || [[ $switch_s400 == "on" ]] ; then
 			unset $(compgen -v | grep '^ble_')
+			source <(grep ble_arg_ $path/user/export2garmin.cfg)
 			echo "$(timenow) SYSTEM * BLE adapter is ON in export2garmin.cfg file, check if available"
-			ble_check=$(python3 -B $path/miscale/miscale_ble.py)
+			ble_check=$(python3 -B $path/miscale/miscale_ble.py -a $ble_arg_hci -bt $ble_arg_hci2mac -mac $ble_arg_mac)
 			if echo $ble_check | grep -q "failed" ; then
 				echo "$(timenow) SYSTEM * BLE adapter  not working, skip scanning check if temp.log file exists"
 			else ble_status=ok

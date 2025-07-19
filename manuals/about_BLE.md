@@ -40,8 +40,8 @@ sudo reboot
 ### 2.6.3 Using multiple BLE adapters
 - If you are using multiple BLE adapters, select appropriate one by HCI number or MAC address (recommended) and set in `user/export2garmin.cfg` file;
 - Use command `sudo hciconfig -a` to locate BLE adapter, and then select type of identification:
-	- By HCI number, set parameter "ble_adapter_hci";
-	- By MAC address, set parameter "ble_adapter_switch" to "on" and specify MAC addres in parameter "ble_adapter_mac".
+	- By HCI number, set parameter "ble_arg_hci";
+	- By MAC address, set parameter "ble_arg_hci2mac" to "on" and specify MAC addres in parameter "ble_arg_mac".
 - Go to next part of instructions, select module:
   - [Miscale | Mi Body Composition Scale 2 - Debian 12](https://github.com/RobertWojtowicz/export2garmin/blob/master/manuals/Miscale_BLE.md);
   - [Miscale | Xiaomi Body Composition Scale S400 - Debian 12](https://github.com/RobertWojtowicz/export2garmin/blob/master/manuals/S400_BLE.md);

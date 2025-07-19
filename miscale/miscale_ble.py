@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import os
+import argparse
 import time
 from datetime import datetime as dt
 from bluepy import btle
@@ -8,16 +9,26 @@ from bluepy import btle
 # Version info
 print("""
 =============================================
-Export 2 Garmin Connect v3.1 (miscale_ble.py)
+Export 2 Garmin Connect v3.3 (miscale_ble.py)
 =============================================
 """)
+
+# Arguments to pass in script
+parser = argparse.ArgumentParser()
+parser.add_argument("-a", default='0')
+parser.add_argument("-bt", default='off')
+parser.add_argument("-mac", default=None)
+args = parser.parse_args()
+ble_arg_hci = args.a
+ble_arg_hci2mac = args.bt
+ble_arg_mac = args.mac
 
 # Importing bluetooth variables from a file
 path = os.path.dirname(os.path.dirname(__file__))
 with open(path + '/user/export2garmin.cfg', 'r') as file:
     for line in file:
         line = line.strip()
-        if line.startswith('ble_') or line.startswith('switch_'):
+        if line.startswith('ble_adapter_') or line.startswith('switch_') or line.startswith('ble_miscale_mac'):
             name, value = line.split('=')
             globals()[name.strip()] = value.strip()
 
@@ -69,35 +80,35 @@ class miScale(btle.DefaultDelegate):
         ble_success = False
         while ble_error < 3:
             ble_error += 1
-            if ble_adapter_switch == "on":
-                if not os.popen(f"hcitool dev | awk '/{ble_adapter_mac}/ {{print $1}}'").read():
-                    print(f"{dt.now().strftime('%d.%m.%Y-%H:%M:%S')} * BLE adapter {ble_adapter_mac} not detected, restarting bluetooth service")
+            if ble_arg_hci2mac == "on":
+                if not os.popen(f"hcitool dev | awk '/{ble_arg_mac}/ {{print $1}}'").read():
+                    print(f"{dt.now().strftime('%d.%m.%Y-%H:%M:%S')} * BLE adapter {ble_arg_mac} not detected, restarting bluetooth service")
                 else:
-                    ble_adapter_hci_read = os.popen(f"hcitool dev | awk '/{ble_adapter_mac}/ {{print $1}}' | cut -c4").read().strip()
-                    ble_adapter_mac_read = ble_adapter_mac
+                    ble_arg_hci_read = os.popen(f"hcitool dev | awk '/{ble_arg_mac}/ {{print $1}}' | cut -c4").read().strip()
+                    ble_arg_mac_read = ble_arg_mac
                     ble_success = True
             else:
-                if not os.popen(f"hcitool dev | awk '/hci{ble_adapter_hci}/ {{print $2}}'").read():
-                    print(f"{dt.now().strftime('%d.%m.%Y-%H:%M:%S')} * BLE adapter hci{ble_adapter_hci} not detected, restarting bluetooth service")
+                if not os.popen(f"hcitool dev | awk '/hci{ble_arg_hci}/ {{print $2}}'").read():
+                    print(f"{dt.now().strftime('%d.%m.%Y-%H:%M:%S')} * BLE adapter hci{ble_arg_hci} not detected, restarting bluetooth service")
                 else:
-                    ble_adapter_hci_read = ble_adapter_hci
-                    ble_adapter_mac_read = os.popen(f"hcitool dev | awk '/hci{ble_adapter_hci}/ {{print $2}}'").read().strip()
+                    ble_arg_hci_read = ble_arg_hci
+                    ble_arg_mac_read = os.popen(f"hcitool dev | awk '/hci{ble_arg_hci}/ {{print $2}}'").read().strip()
                     ble_success = True
+
             if ble_success == False:
-                os.system("sudo rfkill unblock bluetooth >/dev/null 2>&1")
-                time.sleep(1)
                 os.system("sudo modprobe btusb >/dev/null 2>&1")
                 time.sleep(1)
                 os.system("sudo systemctl restart bluetooth.service >/dev/null 2>&1")
                 time.sleep(1)
             else:
-                print(f"{dt.now().strftime('%d.%m.%Y-%H:%M:%S')} * BLE adapter hci{ble_adapter_hci_read}({ble_adapter_mac_read}) detected, check BLE adapter connection")
+                print(f"{dt.now().strftime('%d.%m.%Y-%H:%M:%S')} * BLE adapter hci{ble_arg_hci_read}({ble_arg_mac_read}) detected, check BLE adapter connection")
                 break
+
         if ble_error == 3 and not ble_success:
-            if ble_adapter_switch == "on":
-                print(f"{dt.now().strftime('%d.%m.%Y-%H:%M:%S')} * BLE adapter {ble_adapter_mac} failed to be found, not detected by {ble_error} attempts")
+            if ble_arg_hci2mac == "on":
+                print(f"{dt.now().strftime('%d.%m.%Y-%H:%M:%S')} * BLE adapter {ble_arg_mac} failed to be found, not detected by {ble_error} attempts")
             else:
-                print(f"{dt.now().strftime('%d.%m.%Y-%H:%M:%S')} * BLE adapter hci{ble_adapter_hci} failed to be found, not detected by {ble_error} attempts")
+                print(f"{dt.now().strftime('%d.%m.%Y-%H:%M:%S')} * BLE adapter hci{ble_arg_hci} failed to be found, not detected by {ble_error} attempts")
             print(f"{dt.now().strftime('%d.%m.%Y-%H:%M:%S')} * Finished BLE scan")
             return
 
@@ -107,21 +118,21 @@ class miScale(btle.DefaultDelegate):
         while con_error < 3 and ble_success:
             con_error += 1
             try:
-                scanner = btle.Scanner(ble_adapter_hci_read)
+                scanner = btle.Scanner(ble_arg_hci_read)
                 scanner.withDelegate(self)
                 scanner.start()
                 scanner.stop()
                 con_success = True
-                print(f"{dt.now().strftime('%d.%m.%Y-%H:%M:%S')} * Connection to BLE adapter hci{ble_adapter_hci_read}({ble_adapter_mac_read}) works, starting BLE scan:")
+                print(f"{dt.now().strftime('%d.%m.%Y-%H:%M:%S')} * Connection to BLE adapter hci{ble_arg_hci_read}({ble_arg_mac_read}) works, starting BLE scan:")
                 break
             except btle.BTLEManagementError:
-                print(f"{dt.now().strftime('%d.%m.%Y-%H:%M:%S')} * Connection error, restarting BLE adapter hci{ble_adapter_hci_read}({ble_adapter_mac_read})")
-                os.system(f"sudo hciconfig hci{ble_adapter_hci_read} down >/dev/null 2>&1")
+                print(f"{dt.now().strftime('%d.%m.%Y-%H:%M:%S')} * Connection error, restarting BLE adapter hci{ble_arg_hci_read}({ble_arg_mac_read})")
+                os.system(f"sudo hciconfig hci{ble_arg_hci_read} down >/dev/null 2>&1")
                 time.sleep(1)
-                os.system(f"sudo hciconfig hci{ble_adapter_hci_read} up >/dev/null 2>&1")
+                os.system(f"sudo hciconfig hci{ble_arg_hci_read} up >/dev/null 2>&1")
                 time.sleep(1)
         if con_error == 3 and not con_success:
-            print(f"{dt.now().strftime('%d.%m.%Y-%H:%M:%S')} * Failed to connect to BLE adapter hci{ble_adapter_hci_read}({ble_adapter_mac_read}) by {con_error} attempts")
+            print(f"{dt.now().strftime('%d.%m.%Y-%H:%M:%S')} * Failed to connect to BLE adapter hci{ble_arg_hci_read}({ble_arg_mac_read}) by {con_error} attempts")
             print(f"{dt.now().strftime('%d.%m.%Y-%H:%M:%S')} * Finished BLE scan")
             return
 
@@ -137,8 +148,6 @@ class miScale(btle.DefaultDelegate):
                     print(f"{dt.now().strftime('%d.%m.%Y-%H:%M:%S')} * No devices around")
                 elif dev_around == self.ble_adapter_repeat:
                     print(f"{dt.now().strftime('%d.%m.%Y-%H:%M:%S')} * No devices around, restarting bluetooth service")
-                    os.system("sudo rfkill unblock bluetooth >/dev/null 2>&1")
-                    time.sleep(1)
                     os.system("sudo modprobe btusb >/dev/null 2>&1")
                     time.sleep(1)
                     os.system("sudo systemctl restart bluetooth.service >/dev/null 2>&1")

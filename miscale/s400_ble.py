@@ -12,16 +12,16 @@ from bluetooth_sensor_state_data import BluetoothServiceInfo
 
 print("""
 ==========================================
-Export 2 Garmin Connect v3.2 (s400_ble.py)
+Export 2 Garmin Connect v3.3 (s400_ble.py)
 ==========================================
 """)
 
-# BLE adapter support by MAC or by HCI number
+# Arguments to pass in script
 parser = argparse.ArgumentParser()
-parser.add_argument("-a", default='hci0')
+parser.add_argument("-a", default='0')
 args = parser.parse_args()
-ble_adapter_hci = args.a
-ble_adapter_mac = os.popen(f"hcitool dev | awk '/{ble_adapter_hci}/ {{print $2}}'").read().strip()
+ble_arg_hci = args.a
+ble_arg_mac = os.popen(f"hcitool dev | awk '/hci{ble_arg_hci}/ {{print $2}}'").read().strip()
 
 # Importing bluetooth variables from a file
 path = os.path.dirname(os.path.dirname(__file__))
@@ -75,7 +75,7 @@ def detection_callback(device, advertisement_data):
 
 async def main():
     # Searching for scale, 5 attempts
-    print(f"{datetime.now().strftime('%d.%m.%Y-%H:%M:%S')} * Starting scan with BLE adapter {ble_adapter_hci}({ble_adapter_mac}):")
+    print(f"{datetime.now().strftime('%d.%m.%Y-%H:%M:%S')} * Starting scan with BLE adapter hci{ble_arg_hci}({ble_arg_mac}):")
     attempts = 0
     while attempts < 5 and not stop_event.is_set():
         mac_seen_event.clear()
