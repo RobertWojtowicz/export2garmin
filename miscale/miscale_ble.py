@@ -70,7 +70,7 @@ class miScale(btle.DefaultDelegate):
                             print(f"{dt.now().strftime('%d.%m.%Y-%H:%M:%S')} MISCALE/OMRON * Reading BLE data incomplete, finished BLE scan")
                         exit()
             else:
-                print(f"{dt.now().strftime('%d.%m.%Y-%H:%M:%S')} MISCALE/S400/OMRON * Incorrect configuration in export2garmin.cfg file, finished BLE scan"
+                print(f"{dt.now().strftime('%d.%m.%Y-%H:%M:%S')} MISCALE/S400/OMRON * Incorrect configuration in export2garmin.cfg file, finished BLE scan")
                 exit()
 
     def run(self):
