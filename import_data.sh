@@ -109,7 +109,7 @@ while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 			fi
 
 		# Importing raw data from BLE, within same process and hci (Xiaomi Body Composition Scale S400)
-		elif [[ $ble_status == "ok" && $switch_s400 == "on" && $switch_s400_hci == "off" ]] ; then	
+		elif [[ $ble_status == "ok" && $switch_s400 == "on" && $switch_s400_hci == "off" ]] ; then
 			echo "$(timenow) MISCALE|S400 * Importing data from a BLE adapter"
 			miscale_hci=$(echo $ble_check | grep -o 'hci.' | head -n 1)
 			miscale_s400_ble=$(python3 -B $path/miscale/s400_ble.py -a $miscale_hci)
@@ -140,7 +140,7 @@ while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 							hci_mac=$(echo $ble_check | grep -o 'h.\{21\})' | head -n 1)
 						echo "$(timenow) S400 * BLE adapter $hci_mac working"
 					fi
-					if [[ $ble_status == "ok" ]] ; then	
+					if [[ $ble_status == "ok" ]] ; then
 						echo "$(timenow) MISCALE|S400 * Importing data from a BLE adapter"
 						miscale_hci=$(echo $ble_check | grep -o 'hci.' | head -n 1)
 						miscale_s400_ble=$(python3 -B $path/miscale/s400_ble.py -a $miscale_hci)
@@ -156,7 +156,7 @@ while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 				else echo "$(timenow) S400 * Import already in progress, skipping this run"
 				fi
 			}
-			process_s400 & PID_S400=$!			
+			process_s400 & PID_S400=$!
 		fi
 
 		# Check time synchronization between scale and OS (Mi Body Composition Scale 2)
@@ -328,7 +328,8 @@ while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 	else echo "$(timenow) OMRON * Module is OFF in export2garmin.cfg file"
 	fi
     if [[ $loop_count -eq 1 ]] ; then
-		kill $PID_S400 2>/dev/null
+		kill $PID_S400 2> /dev/null
 		rm -f "$switch_temp_path/s400.lock"
 		break
+	fi
 done
