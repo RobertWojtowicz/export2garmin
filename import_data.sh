@@ -47,7 +47,7 @@ while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 
 	# Verifying correct working of BLE, restart bluetooth service and device via miscale_ble.py
 	if [[ $switch_bt == "on" ]] ; then
-		if [[ $switch_miscale == "on" && $switch_mqtt == "off" ]] || [[ $switch_omron == "on" ]] || [[ $switch_s400 == "on" ]] ; then
+		if [[ $switch_miscale == "on" && $switch_mqtt == "off" ]] || [[ $switch_omron == "on" ]] || [[ $switch_s400 == "on" && $switch_s400_hci == "off" ]] ; then
 			unset $(compgen -v | grep '^ble_')
 			source <(grep ble_arg_ $path/user/export2garmin.cfg)
 			echo "$(timenow) SYSTEM * BLE adapter is ON in export2garmin.cfg file, check if available"
@@ -108,8 +108,8 @@ while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 				miscale_unixtime=$(echo $miscale_read | cut -d ";" -f 1)
 			fi
 
-		# Importing raw data from BLE (Xiaomi Body Composition Scale S400)
-		elif [[ $ble_status == "ok" && $switch_s400 == "on" ]] ; then
+		# Importing raw data from BLE, within same process and hci (Xiaomi Body Composition Scale S400)
+		elif [[ $ble_status == "ok" && $switch_s400 == "on" && $switch_s400_hci == "off" ]] ; then	
 			echo "$(timenow) MISCALE|S400 * Importing data from a BLE adapter"
 			miscale_hci=$(echo $ble_check | grep -o 'hci.' | head -n 1)
 			miscale_s400_ble=$(python3 -B $path/miscale/s400_ble.py -a $miscale_hci)
@@ -122,6 +122,41 @@ while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 				echo "$(timenow) MISCALE|S400 * Saving import $miscale_unixtime to miscale_backup.csv file"
 				echo $miscale_read >> $miscale_backup
 			fi
+
+		# Importing raw data from BLE, within another process and hci (Xiaomi Body Composition Scale S400)
+		elif [[ $switch_bt == "on" && $switch_s400 == "on" && $switch_s400_hci == "on" ]] ; then
+			process_s400() {
+				if lockfile -r 0 "$switch_temp_path/s400.lock" ; then
+					trap 'rm -f "$switch_temp_path/s400.lock"' EXIT
+
+					# Verifying correct working of BLE, restart bluetooth service and device via miscale_ble.py
+					unset $(compgen -v | grep '^ble_')
+					source <(grep ble_arg_ $path/user/export2garmin.cfg)
+					echo "$(timenow) S400 * BLE adapter is ON in export2garmin.cfg file, check if available"
+					ble_check=$(python3 -B $path/miscale/miscale_ble.py -a $s400_arg_hci -bt $s400_arg_hci2mac -mac $s400_arg_mac)
+					if echo $ble_check | grep -q "failed" ; then
+						echo "$(timenow) S400 * BLE adapter  not working, skip scanning"
+					else ble_status=ok
+							hci_mac=$(echo $ble_check | grep -o 'h.\{21\})' | head -n 1)
+						echo "$(timenow) S400 * BLE adapter $hci_mac working"
+					fi
+					if [[ $ble_status == "ok" ]] ; then	
+						echo "$(timenow) MISCALE|S400 * Importing data from a BLE adapter"
+						miscale_hci=$(echo $ble_check | grep -o 'hci.' | head -n 1)
+						miscale_s400_ble=$(python3 -B $path/miscale/s400_ble.py -a $miscale_hci)
+						if echo $miscale_s400_ble | grep -q "failed" ; then
+							echo "$(timenow) MISCALE|S400 * Reading BLE data failed, check configuration"
+						else miscale_read=$(echo $miscale_s400_ble | awk '{sub(/.*BLE scan/, ""); print substr($1,1)}')
+							# Save raw data to miscale_backup file (Xiaomi Body Composition Scale S400)
+							miscale_unixtime=$(echo $miscale_read | awk -F';' '{print $2}')
+							echo "$(timenow) MISCALE|S400 * Saving import $miscale_unixtime to miscale_backup.csv file"
+							echo $miscale_read >> $miscale_backup
+						fi
+					fi	
+				else echo "$(timenow) S400 * Import already in progress, skipping this run"
+				fi
+			}
+			process_s400 & PID_S400=$!			
 		fi
 
 		# Check time synchronization between scale and OS (Mi Body Composition Scale 2)
@@ -292,5 +327,8 @@ while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 		unset $(compgen -v | grep '^omron_')
 	else echo "$(timenow) OMRON * Module is OFF in export2garmin.cfg file"
 	fi
-    [[ $loop_count -eq 1 ]] && break
+    if [[ $loop_count -eq 1 ]] ; then
+		kill $PID_S400 2>/dev/null
+		rm -f "$switch_temp_path/s400.lock"
+		break
 done
