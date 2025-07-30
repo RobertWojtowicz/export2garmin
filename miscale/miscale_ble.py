@@ -72,6 +72,7 @@ class miScale(btle.DefaultDelegate):
             else:
                 print(f"{dt.now().strftime('%d.%m.%Y-%H:%M:%S')} MISCALE/S400/OMRON * Incorrect configuration in export2garmin.cfg file, finished BLE scan"
                 exit()
+
     def run(self):
         # Verifying correct working of BLE adapter, max 3 times
         print(f"{dt.now().strftime('%d.%m.%Y-%H:%M:%S')} * Checking if a BLE adapter is detected")
