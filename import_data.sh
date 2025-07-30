@@ -2,7 +2,7 @@
 
 # Version Info
 echo -e "\n============================================="
-echo -e "Export 2 Garmin Connect v3.3 (import_data.sh)"
+echo -e "Export 2 Garmin Connect v3.4 (import_data.sh)"
 echo -e "=============================================\n"
 
 # Blocking multiple instances of same script process

@@ -9,7 +9,7 @@ from bluepy import btle
 # Version info
 print("""
 =============================================
-Export 2 Garmin Connect v3.3 (miscale_ble.py)
+Export 2 Garmin Connect v3.4 (miscale_ble.py)
 =============================================
 """)
 
@@ -45,13 +45,10 @@ class miScale(btle.DefaultDelegate):
             self.unique_dev_addresses.append(dev.addr)
             print(f"  BLE device found with address: {dev.addr}" + (" <= target device" if dev.addr == self.address else ", non-target device"))
         if dev.addr == self.address:
-            if switch_s400 == 'on':
-                print(f"{dt.now().strftime('%d.%m.%Y-%H:%M:%S')} S400 * BLE scan test completed successfully")
+            if switch_miscale == 'off' and (switch_s400 == 'on' or switch_omron == 'on'):
+                print(f"{dt.now().strftime('%d.%m.%Y-%H:%M:%S')} S400/OMRON * BLE scan test completed successfully")
                 exit()
-            elif switch_omron == 'on':
-                print(f"{dt.now().strftime('%d.%m.%Y-%H:%M:%S')} OMRON * BLE scan test completed successfully")
-                exit()
-            else:
+            if switch_miscale == 'on' and (switch_s400 == 'off' or switch_omron == 'on'):
                 for (adType, desc, value) in dev.getScanData():
                     if adType == 22:
                         data = bytes.fromhex(value[4:])
@@ -67,12 +64,14 @@ class miScale(btle.DefaultDelegate):
                                 weight = (((data[12] & 0xFF) << 8) | (data[11] & 0xFF)) * 0.005
                             impedance = ((data[10] & 0xFF) << 8) | (data[9] & 0xFF)
                             unix_time = int(dt.timestamp(dt.strptime(f"{int((data[3] << 8) | data[2])},{int(data[4])},{int(data[5])},{int(data[6])},{int(data[7])},{int(data[8])}","%Y,%m,%d,%H,%M,%S")))
-                            print(f"{dt.now().strftime('%d.%m.%Y-%H:%M:%S')} MISCALE * Reading BLE data complete, finished BLE scan")
+                            print(f"{dt.now().strftime('%d.%m.%Y-%H:%M:%S')} MISCALE/OMRON * Reading BLE data complete, finished BLE scan")
                             print(f"{unix_time};{weight:.1f};{impedance:.0f}")
                         else:
-                            print(f"{dt.now().strftime('%d.%m.%Y-%H:%M:%S')} MISCALE * Reading BLE data incomplete, finished BLE scan")
+                            print(f"{dt.now().strftime('%d.%m.%Y-%H:%M:%S')} MISCALE/OMRON * Reading BLE data incomplete, finished BLE scan")
                         exit()
-
+            else:
+                print(f"{dt.now().strftime('%d.%m.%Y-%H:%M:%S')} MISCALE/S400/OMRON * Incorrect configuration in export2garmin.cfg file, finished BLE scan"
+                exit()
     def run(self):
         # Verifying correct working of BLE adapter, max 3 times
         print(f"{dt.now().strftime('%d.%m.%Y-%H:%M:%S')} * Checking if a BLE adapter is detected")
