@@ -153,7 +153,7 @@ while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 							echo "$(timenow) MISCALE|S400 * Saving import $miscale_unixtime to miscale_backup.csv file"
 							echo $miscale_read >> $miscale_backup
 						fi
-					fi	
+					fi
 				else miscale_s400_pid=$(cat "$switch_temp_path/s400.pid" 2>/dev/null)
 					echo "$(timenow) S400 * Import already in progress, skipping this run, PID is $miscale_s400_pid"
 				fi
