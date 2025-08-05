@@ -6,11 +6,9 @@ echo -e "Export 2 Garmin Connect v3.4 (import_data.sh)"
 echo -e "=============================================\n"
 
 # Blocking multiple instances of same script process
-timenow() {
-	date +%d.%m.%Y-%H:%M:%S
-}
 path=$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
 source <(grep switch_ $path/user/export2garmin.cfg)
+timenow() { date +%d.%m.%Y-%H:%M:%S;}
 if lockfile -r 0 "$switch_temp_path/import.lock" 2>/dev/null ; then
 	echo $BASHPID > "$switch_temp_path/import.pid"
 	trap 'rm -f "$switch_temp_path/import.lock" "$switch_temp_path/import.pid"' EXIT

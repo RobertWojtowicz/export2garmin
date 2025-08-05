@@ -42,6 +42,39 @@ sudo reboot
 - Use command `sudo hciconfig -a` to locate BLE adapter, and then select type of identification:
 	- By HCI number, set parameter "ble_arg_hci";
 	- By MAC address, set parameter "ble_arg_hci2mac" to "on" and specify MAC addres in parameter "ble_arg_mac".
+
+### 2.6.4. Using two BLE adapters in parallel (EXPERIMENTAL VERSION)
+- Miscale and Omron modules can be activated individually or run together:
+	- Devices can run together (Mi Body Composition Scale 2 and Omron);
+	- Devices can run together but there must be a sequence, first measuring blood pressure and then weighing (Xiaomi Body Composition Scale S400 and Omron);
+	  This is because Xiaomi Body Composition Scale S400 requires continuous scanning, importing data from scale will allow you to go to Omron module.
+	- Devices can run together but you need two USB bluetooth adapters, one is for Xiaomi Body Composition Scale S400 scan only.
+- In this last case, set parameter switch_s400_hci to "on" in `user/export2garmin.cfg`;
+- Use command `sudo hciconfig -a` to locate BLE adapter for Xiaomi Body Composition Scale, and then select type of identification:
+	- By HCI number, set parameter "s400_arg_hci";
+	- By MAC address, set parameter "s400_arg_hci2mac" to "on" and specify MAC addres in parameter "s400_arg_mac".
+- From this point on, Xiaomi Body Composition Scale S400 data scanning is done in a separate process and individuall BLE adapter:
+```
+$ /home/robert/export2garmin-master/import_data.sh
+
+=============================================
+Export 2 Garmin Connect v3.4 (import_data.sh)
+=============================================
+
+05.08.2025-10:21:19 SYSTEM * Path to temp files: /dev/shm/
+05.08.2025-10:21:19 SYSTEM * Path to user files: /home/robert/export2garmin-master/user/
+05.08.2025-10:21:19 SYSTEM * BLE adapter is ON in export2garmin.cfg file, check if available
+05.08.2025-10:21:22 SYSTEM * BLE adapter hci1(00:00:00:00:00:00) working, check if temp.log file exists
+05.08.2025-10:21:22 SYSTEM * temp.log file exists, go to modules
+05.08.2025-10:21:22 MISCALE|S400 * Module is ON in export2garmin.cfg file
+05.08.2025-10:21:22 MISCALE|S400 * miscale_backup.csv file exists, checking for new data
+05.08.2025-10:21:22 MISCALE|S400 * There is no new data to upload to Garmin Connect
+05.08.2025-10:21:22 S400 * BLE adapter is ON in export2garmin.cfg file, check if available
+05.08.2025-10:21:22 OMRON * Module is ON in export2garmin.cfg file
+05.08.2025-10:21:22 OMRON * omron_backup.csv file exists, checking for new data
+05.08.2025-10:21:22 OMRON * Importing data from a BLE adapter
+05.08.2025-10:21:22 S400 * BLE adapter hci0(00:00:00:00:00:00) working
+```
 - Go to next part of instructions, select module:
   - [Miscale | Mi Body Composition Scale 2 - Debian 12](https://github.com/RobertWojtowicz/export2garmin/blob/master/manuals/Miscale_BLE.md);
   - [Miscale | Xiaomi Body Composition Scale S400 - Debian 12](https://github.com/RobertWojtowicz/export2garmin/blob/master/manuals/S400_BLE.md);
