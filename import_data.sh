@@ -8,7 +8,7 @@ echo -e "=============================================\n"
 # Blocking multiple instances of same script process
 path=$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
 source <(grep switch_ $path/user/export2garmin.cfg)
-timenow() { date +%d.%m.%Y-%H:%M:%S;}
+timenow() { date +%d.%m.%Y-%H:%M:%S; }
 if lockfile -r 0 "$switch_temp_path/import.lock" 2>/dev/null ; then
 	echo $BASHPID > "$switch_temp_path/import.pid"
 	trap 'rm -f "$switch_temp_path/import.lock" "$switch_temp_path/import.pid"' EXIT
@@ -45,9 +45,8 @@ while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 	if [[ $switch_bt == "on" ]] ; then
 		if [[ $switch_miscale == "on" && $switch_mqtt == "off" ]] || [[ $switch_omron == "on" ]] || [[ $switch_s400 == "on" && $switch_s400_hci == "off" ]] ; then
 			unset $(compgen -v | grep '^ble_')
-			source <(grep ble_arg_ $path/user/export2garmin.cfg)
 			echo "$(timenow) SYSTEM * BLE adapter is ON in export2garmin.cfg file, check if available"
-			ble_check=$(python3 -B $path/miscale/miscale_ble.py -a $ble_arg_hci -bt $ble_arg_hci2mac -mac $ble_arg_mac)
+			ble_check=$(python3 -B $path/miscale/miscale_ble.py)
 			if echo $ble_check | grep -q "failed" ; then
 				echo "$(timenow) SYSTEM * BLE adapter  not working, skip scanning check if temp.log file exists"
 			else ble_status=ok

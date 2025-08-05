@@ -5,12 +5,9 @@ echo -e "\n==============================================="
 echo -e "Export 2 Garmin Connect v3.0 (omron_pairing.sh)"
 echo -e "===============================================\n"
 
-timenow() {
-    date +%d.%m.%Y-%H:%M:%S
-}
-path=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." &> /dev/null && pwd)
-
 # Verifying correct working of BLE, restart bluetooth service and device via miscale_ble.py
+path=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." &> /dev/null && pwd)
+timenow() { date +%d.%m.%Y-%H:%M:%S; }
 echo "$(timenow) SYSTEM * BLE adapter check if available"
 ble_check=$(python3 -B $path/miscale/miscale_ble.py)
 if echo $ble_check | grep -q "failed" ; then
