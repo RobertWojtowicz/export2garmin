@@ -54,7 +54,7 @@
 ## 2. How does this work
 - Miscale and Omron modules can be activated individually or run together:
 	- Devices can run together (Mi Body Composition Scale 2 and Omron);
-	- Devices can run together but there must be a sequence, first measuring blood pressure and then weighing (Xiaomi Body Composition Scale S400 and Omron);
+	- Devices can run together but there must be a sequence, first measuring blood pressure and then weighing (Xiaomi Body Composition Scale S400 and Omron);<br>
 	  This is because Xiaomi Body Composition Scale S400 requires continuous scanning, importing data from scale will allow you to go to Omron module.
 	- Devices can run together but you need two USB bluetooth adapters, one is for Xiaomi Body Composition Scale S400 scan only;<br>
 	  This is an **experimental version** using separate processes.
