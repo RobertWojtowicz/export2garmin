@@ -57,7 +57,7 @@
 	- Devices can run together but there must be a sequence, first measuring blood pressure and then weighing (Xiaomi Body Composition Scale S400 and Omron);<br>
 	  This is because Xiaomi Body Composition Scale S400 requires continuous scanning, importing data from scale will allow you to go to Omron module.
 	- Devices can run together but you need two USB bluetooth adapters, one is for Xiaomi Body Composition Scale S400 scan only;<br>
-	  This is an **experimental version** using separate processes.
+	  This is an **experimental version** using separate processes, view section [2.6.4.](https://github.com/RobertWojtowicz/export2garmin/blob/master/manuals/about_BLE.md#264-using-two-ble-adapters-in-parallel-experimental-version).
 ```
 $ /home/robert/export2garmin-master/import_data.sh
 
