@@ -1,6 +1,6 @@
 ## 2.6. about_BLE VERSION
 
-### 2.6.1 BLE adapters support matrix
+### 2.6.1. BLE adapters support matrix
 | BT version | Chipset/Brand | Alterative name/Model | Type | Range | External antenna | Mi Body Composition Scale 2 | Xiaomi Body Composition Scale S400 | Omron | Testers |
 | ----- | ----- | ----- | ----- | -----  | ----- | ----- | ----- | ----- | ----- |
 | 4.0 | CSR8510 A10/LogiLink | Cambridge Silicon Radio | USB | medium | ❌ | ✔️ | ✔️ | ✔️ | RobertWojtowicz |
@@ -14,7 +14,7 @@
 
 ✔️=tested working, ❓=not tested, ❌=not supported
 
-### 2.6.2 Troubleshooting BLE adapters
+### 2.6.2. Troubleshooting BLE adapters
 - Bluetooth adapter should have a removable RP-SMA antenna if you want a long range*;
 - ATS2851 chipset has native support in Debian 12 operating system | Raspberry Pi OS no additional driver needed;
 - If you have a lot of bluetooth devices in area, it's a good idea to set an additional check, set ble_adapter_check parameter to "on" in `user/export2garmin.cfg`;
@@ -37,7 +37,7 @@ sudo reboot
   sudo reboot
   ```
 
-### 2.6.3 Using multiple BLE adapters
+### 2.6.3. Using multiple BLE adapters
 - If you are using multiple BLE adapters, select appropriate one by HCI number or MAC address (recommended) and set in `user/export2garmin.cfg` file;
 - Use command `sudo hciconfig -a` to locate BLE adapter, and then select type of identification:
 	- By HCI number, set parameter "ble_arg_hci";
