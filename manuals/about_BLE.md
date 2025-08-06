@@ -15,7 +15,7 @@
 ✔️=tested working, ❓=not tested, ❌=not supported
 
 ### 2.6.2. Troubleshooting BLE adapters
-- Bluetooth adapter should have a removable RP-SMA antenna if you want a long range*;
+- * Bluetooth adapter should have a removable RP-SMA antenna if you want a long range;
 - ATS2851 chipset has native support in Debian 12 operating system | Raspberry Pi OS no additional driver needed;
 - If you have a lot of bluetooth devices in area, it's a good idea to set an additional check, set ble_adapter_check parameter to "on" in `user/export2garmin.cfg`;
 - Script `miscale/miscale_ble.py` has implemented debug mode and recovery mechanisms for bluetooth, you can verify if everything is working properly;
@@ -26,8 +26,8 @@ sudo apt install -y firmware-realtek
 sudo reboot
 ```
 - In some cases of **Raspberry Pi** when using internal bluetooth and WiFi:
-  - You should connect WiFi on 5GHz, because on 2,4GHz there may be a problem with connection stability (sharing same antenna)**;
-  - WiFi may freeze in 5 version, set switch_wifi_watchdog parameter to "on" in `user/export2garmin.cfg`***;
+  - ** You should connect WiFi on 5GHz, because on 2,4GHz there may be a problem with connection stability (sharing same antenna);
+  - *** WiFi may freeze in 5 version, set switch_wifi_watchdog parameter to "on" in `user/export2garmin.cfg`;
   - If you only use an external BLE adapter, it is recommended to disable internal module `sudo nano /boot/firmware/config.txt` and restart:
   ```
   [all]
