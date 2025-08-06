@@ -28,7 +28,6 @@ def get_credentials():
     email = input(datetime.datetime.now().strftime("%d.%m.%Y-%H:%M:%S") + " * Login e-mail: ")
     password = getpass(datetime.datetime.now().strftime("%d.%m.%Y-%H:%M:%S") + " * Enter password: ")
     return email, password
-
 def get_mfa():
     return input(datetime.datetime.now().strftime("%d.%m.%Y-%H:%M:%S") + " * MFA/2FA one-time code: ")
 
