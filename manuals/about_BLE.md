@@ -44,13 +44,13 @@ sudo reboot
 	- By MAC address, set parameter "ble_arg_hci2mac" to "on" and specify MAC addres in parameter "ble_arg_mac".
 
 ### 2.6.4. Using two BLE adapters in parallel (EXPERIMENTAL VERSION)
+- First, you need to complete installation steps for Omron and Xiaomi Body Composition Scale S400;
 - Miscale and Omron modules can be activated individually or run together:
-	- Devices can run together (Mi Body Composition Scale 2 and Omron);
+	- Devices can run together (Mi Body Composition Scale 2 and Omron without any changes);
 	- Devices can run together but there must be a sequence, first measuring blood pressure and then weighing (Xiaomi Body Composition Scale S400 and Omron);<br>
 	  This is because Xiaomi Body Composition Scale S400 requires continuous scanning, importing data from scale will allow you to go to Omron module.
 	- Devices can run together but you need two USB bluetooth adapters, one is for Xiaomi Body Composition Scale S400 scan only and second for Omron;
 - In this last case, set parameter switch_s400_hci to "on" in `user/export2garmin.cfg`;
-- First, you need to complete installation steps for Omron and Xiaomi Body Composition Scale S400;
 - Use command `sudo hciconfig -a` to locate BLE adapter for Xiaomi Body Composition Scale, and then select type of identification:
 	- By HCI number, set parameter "s400_arg_hci";
 	- By MAC address, set parameter "s400_arg_hci2mac" to "on" and specify MAC addres in parameter "s400_arg_mac".
