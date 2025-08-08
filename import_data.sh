@@ -121,8 +121,8 @@ while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 		# EXPERIMENTAL VERSION
 		# Importing raw data from BLE, within another process and hci (Xiaomi Body Composition Scale S400)
 		elif [[ $switch_bt == "on" && $switch_s400 == "on" && $switch_s400_hci == "on" ]] ; then
-			s400_proc() {
-				if lockfile -r 0 "$switch_temp_path/s400.lock" 2>/dev/null ; then
+			if lockfile -r 0 "$switch_temp_path/s400.lock" 2>/dev/null ; then
+				s400_proc() {
 					echo $BASHPID > "$switch_temp_path/s400.pid"
 					trap 'rm -f "$switch_temp_path/s400.lock" "$switch_temp_path/s400.pid"' EXIT
 
@@ -151,11 +151,11 @@ while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 							echo $miscale_read >> $miscale_backup
 						fi
 					fi
-				else miscale_s400_pid=$(cat "$switch_temp_path/s400.pid" 2>/dev/null)
-					echo "$(timenow) S400 * Import already in progress, skipping this run, PID is $miscale_s400_pid"
-				fi
-			}
-			s400_proc & s400_pid=$!
+				}
+				s400_proc & s400_pid=$!
+			else miscale_s400_pid=$(cat "$switch_temp_path/s400.pid" 2>/dev/null)
+				echo "$(timenow) S400 * Import already in progress, skipping this run, PID is $miscale_s400_pid"
+			fi
 		fi
 
 		# Check time synchronization between scale and OS (Mi Body Composition Scale 2)
