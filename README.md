@@ -12,7 +12,8 @@
   - Body Water;
   - Physique Rating;
   - Visceral Fat;
-  - Metabolic Age.
+  - Metabolic Age;
+  - Heart rate (Xiaomi Body Composition Scale S400 only, upload to blood pressure section).
 - Miscale_backup.csv file also contains other parameters (can be imported e.g. for analysis into Excel):
   - BMR (Basal Metabolic Rate);
   - LBM (Lean Body Mass);
@@ -24,10 +25,9 @@
   - Email User (used account for Garmin Connect);
   - Upload Date and Upload Time (to Garmin Connect);
   - Difference Time (between measuring and uploading);
-  - Battery status in V and % (ESP32-Mi Body Composition Scale 2 only);
+  - Battery status in V and % (ESP32 - Mi Body Composition Scale 2 only);
   - Impedance;
-  - Impedance Low (Xiaomi Body Composition Scale S400 only);
-  - Heart rate (Xiaomi Body Composition Scale S400 only).
+  - Impedance Low (Xiaomi Body Composition Scale S400 only).
 - Supports multiple users with individual weights ranges, we can link multiple accounts with Garmin Connect.
 
 ### 1.2. Omron module: 

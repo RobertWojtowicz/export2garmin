@@ -9,7 +9,7 @@ from garminconnect import Garmin
 # Version info
 print("""
 ================================================
-Export 2 Garmin Connect v3.0 (miscale_export.py)
+Export 2 Garmin Connect v3.5 (miscale_export.py)
 ================================================
 """)
 
@@ -35,7 +35,7 @@ users = []
 with open(path + '/user/export2garmin.cfg', 'r') as file:
     for line in file:
         line = line.strip()
-        if line.startswith('miscale_export_'):
+        if line.startswith('miscale_export_') or line.startswith('s400_pulse'):
             user_data = eval(line.split('=')[1].strip())
             users.append(User(*user_data))
 
@@ -47,6 +47,8 @@ with open(path + '/user/miscale_backup.csv', 'r') as csv_file:
             mitdatetime = int(row[1])
             weight = float(row[2])
             miimpedance = float(row[3])
+            if s400_pulse == 'on':
+                pulse = float(row[5])
             break
 
 # Matching Garmin Connect account to weight
@@ -82,6 +84,8 @@ if selected_user is not None and 'email@email.com' not in selected_user.email:
 
         # Upload data to Garmin Connect
         garmin.add_body_composition(dt.fromtimestamp(mitdatetime).isoformat(),weight=weight,bmi=bmi,percent_fat=percent_fat,muscle_mass=muscle_mass,bone_mass=bone_mass,percent_hydration=percent_hydration,physique_rating=physique_rating,visceral_fat_rating=visceral_fat_rating,metabolic_age=metabolic_age,basal_met=basal_met)
+        if s400_pulse == 'on':
+            garmin.set_blood_pressure(dt.fromtimestamp(mitdatetime).isoformat(),diastolic=30,systolic=40,pulse=pulse)
         print("MISCALE * Upload status: OK")
 else:
 
