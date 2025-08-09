@@ -62,6 +62,7 @@ $ /home/robert/export2garmin-master/import_data.sh
 Export 2 Garmin Connect v3.4 (import_data.sh)
 =============================================
 
+05.08.2025-10:21:19 SYSTEM * Main process runs on PID: 000
 05.08.2025-10:21:19 SYSTEM * Path to temp files: /dev/shm/
 05.08.2025-10:21:19 SYSTEM * Path to user files: /home/robert/export2garmin-master/user/
 05.08.2025-10:21:19 SYSTEM * BLE adapter is ON in export2garmin.cfg file, check if available
