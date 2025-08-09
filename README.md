@@ -137,9 +137,13 @@ Export 2 Garmin Connect v3.4 (import_data.sh)
 - [Windows 11](https://github.com/RobertWojtowicz/export2garmin/blob/master/manuals/all_BLE_win.md).
 
 ## 3. Mobile App
-I don't plan to create a mobile app, but I encourage you to take advantage of another projects (applies to Mi Body Composition Scale / Mi Scale / S400 support only):
+I don't plan to create a mobile app, but I encourage you to take advantage of another projects (applies to Mi Body Composition Scale / Mi Scale / S400):
 - Android: https://github.com/lswiderski/mi-scale-exporter;
 - iOS | iPadOS: https://github.com/lswiderski/WebBodyComposition.
+
+## 4. Synchronizing data between different ecosystems
+A very interesting project called SmartScaleConnect synchronizes scale data (applies to Mi Body Composition Scale 2/ S400) from Xiaomi cloud to Garmin:
+- Linux | MacOS | Windows: https://github.com/AlexxIT/SmartScaleConnect.
 
 ## If you like my work, you can buy me a coffee
 <a href="https://www.buymeacoffee.com/RobertWojtowicz" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
