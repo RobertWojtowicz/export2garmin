@@ -37,7 +37,8 @@ while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 		fi
 	fi
 
-	# Print location of variables for temp and user files
+	# Print location of variables for PID, temp and user files
+	echo "$(timenow) SYSTEM * Main process runs on PID: $import_pid"
 	echo "$(timenow) SYSTEM * Path to temp files: $switch_temp_path/"
 	echo "$(timenow) SYSTEM * Path to user files: $path/user/"
 
