@@ -103,7 +103,7 @@ Export 2 Garmin Connect v3.4 (import_data.sh)
 $ cat /dev/shm/temp.log
 
 ================================================
-Export 2 Garmin Connect v3.0 (miscale_export.py)
+Export 2 Garmin Connect v3.5 (miscale_export.py)
 ================================================
 
 MISCALE * Import data: 1721076654;55.2;508
