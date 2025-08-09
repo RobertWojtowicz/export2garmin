@@ -49,7 +49,7 @@ sudo reboot
 	- Devices can run together (Mi Body Composition Scale 2 and Omron without any changes);
 	- Devices can run together but there must be a sequence, first measuring blood pressure and then weighing (Xiaomi Body Composition Scale S400 and Omron);<br>
 	  This is because Xiaomi Body Composition Scale S400 requires continuous scanning, importing data from scale will allow you to go to Omron module.
-	- Devices can run together but you need two USB bluetooth adapters, one is for Xiaomi Body Composition Scale S400 scan only and second for Omron;
+	- Devices can run together in parallel but two USB Bluetooth adapters are required, one for scanning Xiaomi Body Composition Scale S400 and other for Omron;
 - In this last case, set parameter switch_s400_hci to "on" in `user/export2garmin.cfg`;
 - Use command `sudo hciconfig -a` to locate BLE adapter for Xiaomi Body Composition Scale, and then select type of identification:
 	- By HCI number, set parameter "s400_arg_hci";
