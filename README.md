@@ -142,7 +142,7 @@ I don't plan to create a mobile app, but I encourage you to take advantage of an
 - iOS | iPadOS: https://github.com/lswiderski/WebBodyComposition.
 
 ## 4. Synchronizing data between different ecosystems
-A very interesting project called SmartScaleConnect synchronizes scale data (applies to Mi Body Composition Scale 2/ S400) from Xiaomi cloud to Garmin:
+A very interesting project called SmartScaleConnect synchronizes scale data (applies to Mi Body Composition Scale 2 / S400) from Xiaomi cloud to Garmin:
 - Linux | MacOS | Windows: https://github.com/AlexxIT/SmartScaleConnect.
 
 ## If you like my work, you can buy me a coffee
