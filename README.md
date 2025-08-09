@@ -13,7 +13,7 @@
   - Physique Rating;
   - Visceral Fat;
   - Metabolic Age;
-  - Heart rate (Xiaomi Body Composition Scale S400 only, upload to blood pressure section).
+  - Heart rate (Xiaomi Body Composition Scale S400 only, optional upload to blood pressure section).
 - Miscale_backup.csv file also contains other parameters (can be imported e.g. for analysis into Excel):
   - BMR (Basal Metabolic Rate);
   - LBM (Lean Body Mass);
