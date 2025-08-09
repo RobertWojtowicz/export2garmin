@@ -156,7 +156,7 @@ while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 				}
 				s400_proc & s400_pid=$!
 			else miscale_s400_pid=$(cat "$switch_temp_path/s400.pid" 2>/dev/null)
-				echo "$(timenow) S400 * Import already in progress, skipping this run, PID is $miscale_s400_pid"
+				echo "$(timenow) S400 * Import already in progress, process runs on PID: $miscale_s400_pid"
 			fi
 		fi
 
