@@ -26,6 +26,11 @@ i=0
 while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 	((i++))
 
+	# Print location of variables for PID, temp and user files
+	echo "$(timenow) SYSTEM * Main process runs on PID: $import_pid"
+	echo "$(timenow) SYSTEM * Path to temp files: $switch_temp_path/"
+	echo "$(timenow) SYSTEM * Path to user files: $path/user/"
+
 	# Restart WiFi if it crashed
 	if [[ $switch_wifi_watchdog == "on" ]] ; then
 		if nmcli -t -f WIFI g | grep -q "enabled" && nmcli -t -f ACTIVE dev wifi | grep -q "^yes" ; then
@@ -37,11 +42,6 @@ while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 			sudo nmcli radio wifi on
 		fi
 	fi
-
-	# Print location of variables for PID, temp and user files
-	echo "$(timenow) SYSTEM * Main process runs on PID: $import_pid"
-	echo "$(timenow) SYSTEM * Path to temp files: $switch_temp_path/"
-	echo "$(timenow) SYSTEM * Path to user files: $path/user/"
 
 	# Verifying correct working of BLE, restart bluetooth service and device via miscale_ble.py
 	if [[ $switch_bt == "on" ]] ; then
