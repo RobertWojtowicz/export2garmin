@@ -8,10 +8,10 @@
 - Install Xiaomi Home App on your mobile device from Play Store;
 - Create an account and register your scale in app (tested on Android 15);
 - Take a measurement with scale using app (scale starts sending requested BLE advertisements);
+- A full measurement (weighing and heart rate) is required, otherwise scale will **not send data**;
 - You should also synchronize scale using app after **replacing batteries**;
 - Don't turn off heart rate measurement in app, otherwise scale will **not send data**;
 - In order for export2garmin to successfully download data from scale, **app must be closed**, bluetooth icon should blink;
-- A full measurement (weighing and heart rate) is required, otherwise scale will **not send data**;
 - For Windows download latest version and run: https://github.com/PiotrMachowski/Xiaomi-cloud-tokens-extractor/releases/latest/download/token_extractor.exe
 - For Linux update your system and then install following packages:
 ```
