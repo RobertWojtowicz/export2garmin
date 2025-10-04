@@ -132,7 +132,7 @@ while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 					source <(grep ble_arg_ $path/user/export2garmin.cfg)
 					source <(grep s400_arg_ $path/user/export2garmin.cfg)
 					echo "$(timenow) S400 * A seperate BLE adapter is ON in export2garmin.cfg file, check if available"
-					if [[ $ble_arg_hci == $s400_arg_hci && $ble_arg_hci2mac == "off" && $s400_arg_hci2mac == "off" ]] || [[ $ble_arg_mac == $s400_arg_mac && $ble_arg_hci2mac == "on" && $s400_arg_hci2mac == "on" ]]; then
+					if [[ $ble_arg_hci == $s400_arg_hci && $ble_arg_hci2mac == "off" && $s400_arg_hci2mac == "off" ]] || [[ $ble_arg_mac == $s400_arg_mac && $ble_arg_hci2mac == "on" && $s400_arg_hci2mac == "on" ]] ; then
 						echo "$(timenow) S400 * The same BLE adapters, check arg_hci or arg_mac parameter in export2garmin.cfg"
 					else ble_check=$(python3 -B $path/miscale/miscale_ble.py -a $s400_arg_hci -bt $s400_arg_hci2mac -mac $s400_arg_mac)
 						if [[ $ble_check == *"failed"* ]] ; then
