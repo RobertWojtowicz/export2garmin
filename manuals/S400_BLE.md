@@ -12,7 +12,7 @@
 - You should also synchronize scale using app after **replacing batteries**;
 - Don't turn off heart rate measurement in app, otherwise scale will **not send data**;
 - In order for export2garmin to successfully download data from scale, **app must be closed**, bluetooth icon should blink;
-- For Windows download latest version and run: https://github.com/PiotrMachowski/Xiaomi-cloud-tokens-extractor/releases/latest/download/token_extractor.exe
+- For Windows download latest version and run: https://github.com/PiotrMachowski/Xiaomi-cloud-tokens-extractor/releases/latest/download/token_extractor.exe;
 - For Linux update your system and then install following packages:
 ```
 $ sudo apt update && sudo apt full-upgrade -y && sudo apt install -y wget python3 bc bluetooth python3-pip libglib2.0-dev procmail libssl-dev libjpeg-dev rfkill
