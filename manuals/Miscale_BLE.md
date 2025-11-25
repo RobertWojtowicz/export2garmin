@@ -136,7 +136,7 @@ sudo systemctl enable export2garmin.service && sudo systemctl start export2garmi
 ```
 - You can check if export2garmin service works `sudo systemctl status export2garmin.service` or temporarily stop it with command `sudo systemctl stop export2garmin.service`;
 - Checking running export2garmin service in a continuous loop: `sudo journalctl -u export2garmin.service -f` (process exit is Ctrl+C);
-- [Troubleshooting BLE adapters](https://github.com/RobertWojtowicz/export2garmin/blob/master/manuals/about_BLE.md#262-troubleshooting-ble-adapters);
+- Troubleshooting BLE adapters [2.6.2.](https://github.com/RobertWojtowicz/export2garmin/blob/master/manuals/about_BLE.md#262-troubleshooting-ble-adapters);
 - Back to [README](https://github.com/RobertWojtowicz/export2garmin/blob/master/README.md).
 
 ## If you like my work, you can buy me a coffee
