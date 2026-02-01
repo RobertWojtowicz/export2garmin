@@ -2,7 +2,7 @@
 
 # Version info
 # ================================================
-# Export 2 Garmin Connect v3.0 (omblepy.py)
+# Export 2 Garmin Connect v3.6 (omblepy.py)
 # ================================================
 
 import asyncio                                                      #avoid wait on bluetooth stack stalling the application
@@ -369,7 +369,7 @@ async def main():
     try:
         logger.info(f"Attempt connecting to {bleAddr}.")
         await bleClient.connect()
-        await asyncio.sleep(0.5)
+        await asyncio.sleep(10)   #time delay for user to accept os pairing dialog on win11
         await bleClient.pair(protection_level = 2)
         #verify that the device is an omron device by checking presence of certain bluetooth services
         if parentService_UUID not in [service.uuid for service in bleClient.services]:
