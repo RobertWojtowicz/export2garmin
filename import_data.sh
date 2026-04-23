@@ -168,6 +168,30 @@ while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 				miscale_offset_unixtime=$(( $miscale_unixtime + $miscale_time_zone * 3600 + $miscale_time_offset ))
 				miscale_time_shift=$(( $miscale_os_unixtime - $miscale_offset_unixtime ))
 				miscale_absolute_shift=${miscale_time_shift#-}
+
+				# Broken scale clock override (opt-in via miscale_time_force_on_broken): the Mi Body
+				# Composition Scale 2 keeps its clock only while powered; a battery swap or a low-power
+				# reset wipes it and the scale starts advertising measurements with an absurd timestamp
+				# (typically early 1970). Without this override, every reading is rejected by the
+				# miscale_time_unsync check until the user re-syncs the scale from the Mi Fit / Zepp
+				# Life app. When enabled, and only for clearly absurd timestamps (drift > 1 year or
+				# scale timestamp before 2020), replace the measurement time with the system time and
+				# deduplicate across the ~15-minute rebroadcast window via a sentinel in $switch_temp_path.
+				miscale_skip_block=false
+				if [[ $miscale_time_force_on_broken == "on" ]] && { (( $miscale_absolute_shift > 31536000 )) || (( $miscale_unixtime < 1577836800 )); } ; then
+					miscale_broken_sentinel="$switch_temp_path/miscale_broken_last_raw"
+					if [[ -f $miscale_broken_sentinel && "$(cat $miscale_broken_sentinel)" == "$miscale_unixtime" ]] ; then
+						echo "$(timenow) MISCALE|S400 * Broken clock reading $miscale_unixtime already imported in current rebroadcast window, skipping"
+						miscale_skip_block=true
+					else
+						echo "$(timenow) MISCALE|S400 * Broken scale clock detected ($miscale_time_shift s shift), overriding measurement timestamp with system time (miscale_time_force_on_broken=on)"
+						echo "$miscale_unixtime" > $miscale_broken_sentinel
+						miscale_offset_unixtime=$miscale_os_unixtime
+						miscale_absolute_shift=0
+					fi
+				fi
+
+				if [[ $miscale_skip_block == "false" ]] ; then
 				if (( $miscale_absolute_shift < $miscale_time_unsync )) ; then
 					miscale_found_entry=false
 
@@ -192,6 +216,7 @@ while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 					fi
 				else echo "$(timenow) MISCALE|S400 * $miscale_time_shift s time difference, synchronize date and time scale"
 					echo "$(timenow) MISCALE|S400 * Time offset is set to $miscale_offset s"
+				fi
 				fi
 			fi
 		fi
