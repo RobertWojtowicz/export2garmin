@@ -7,9 +7,9 @@ from garminconnect import Garmin
 
 # Version info
 print("""
-==============================================
-Export 2 Garmin Connect v3.0 (omron_export.py)
-==============================================
+=============================================
+Export 2 Garmin Connect v3.7 (omron_export.py
+=============================================
 """)
 
 # Importing user variables from a file
@@ -63,12 +63,10 @@ with open(path + '/user/omron_backup.csv', 'r') as csv_file:
             print(f"OMRON * Calculated data: {category};{MOV:.0f};{IHB:.0f};{emailuser};{dt.now().strftime('%d.%m.%Y;%H:%M')}")
 
             # Login to Garmin Connect
-            with open(path + '/user/' + emailuser, 'r') as token_file:
-                tokenstore = token_file.read()
-                garmin = Garmin()
-                garmin.login(tokenstore)
+            token_file = os.path.join(path, "user", emailuser)
+            garmin.login(token_file)
 
-                # Upload data to Garmin Connect
-                garmin.set_blood_pressure(timestamp=dt.fromtimestamp(unixtime).isoformat(),diastolic=diastolic,systolic=systolic,pulse=pulse)
-                print("OMRON * Upload status: OK")
+            # Upload data to Garmin Connect
+            garmin.set_blood_pressure(timestamp=dt.fromtimestamp(unixtime).isoformat(),diastolic=diastolic,systolic=systolic,pulse=pulse)
+            print("OMRON * Upload status: OK")
             break

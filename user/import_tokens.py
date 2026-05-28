@@ -2,54 +2,49 @@
 
 import os
 import datetime
-import requests
 from getpass import getpass
-from garth.exc import GarthHTTPError
-from garminconnect import Garmin, GarminConnectAuthenticationError
+from garminconnect import Garmin, GarminConnectAuthenticationError, GarminConnectConnectionError, GarminConnectTooManyRequestsError
 
 # Version info
 print("""
 ===============================================
-Export 2 Garmin Connect v3.0 (import_tokens.py)
+Export 2 Garmin Connect v3.7 (import_tokens.py)
 ===============================================
 """)
 
 # Importing tokens variables from a file
 path = os.path.dirname(os.path.dirname(__file__))
-with open(path + '/user/export2garmin.cfg', 'r') as file:
+config_path = os.path.join(path, "user", "export2garmin.cfg")
+with open(config_path, "r") as file:
     for line in file:
         line = line.strip()
-        if line.startswith('tokens_is_cn'):
-            name, value = line.split('=')
-            globals()[name.strip()] = value.strip() == 'True'
+        if line.startswith("tokens_is_cn"):
+            name, value = line.split("=", 1)
+            tokens_is_cn = value.strip() == "True"
 
 # Get user credentials
+def ts():
+    return datetime.datetime.now().strftime("%d.%m.%Y-%H:%M:%S")
+    
 def get_credentials():
-    email = input(datetime.datetime.now().strftime("%d.%m.%Y-%H:%M:%S") + " * Login e-mail: ")
-    password = getpass(datetime.datetime.now().strftime("%d.%m.%Y-%H:%M:%S") + " * Enter password: ")
+    email = input(f"{ts()} * Login e-mail: ").strip()
+    password = getpass(f"{ts()} * Enter password: ")
     return email, password
+
 def get_mfa():
-    return input(datetime.datetime.now().strftime("%d.%m.%Y-%H:%M:%S") + " * MFA/2FA one-time code: ")
+    return input(f"{ts()} * MFA/2FA one-time code: ").strip()
 
 # Initialize Garmin API with your credentials without/and MFA/2FA
 def init_api():
     try:
         email, password = get_credentials()
-        garmin = Garmin(email, password, is_cn=tokens_is_cn, return_on_mfa=True)
-        result1, result2 = garmin.login()
-        if result1 == "needs_mfa":
-            mfa_code = get_mfa()
-            garmin.resume_login(result2, mfa_code)
-
-# Create Oauth1 and Oauth2 tokens as base64 encoded string
-        tokenstore_base64 = os.path.dirname(os.path.abspath(__file__))
-        token_base64 = garmin.garth.dumps()
-        dir_path = os.path.expanduser(os.path.join(tokenstore_base64, email))
-        with open(dir_path, "w") as token_file:
-            token_file.write(token_base64)
-        print(datetime.datetime.now().strftime("%d.%m.%Y-%H:%M:%S") + " * Oauth tokens saved correctly")
-    except (FileNotFoundError, GarthHTTPError, GarminConnectAuthenticationError, requests.exceptions.HTTPError) as err:
-        print(err)
+        token_file = os.path.join(path, "user", f"{email}")
+        garmin = Garmin(email, password, is_cn=tokens_is_cn, prompt_mfa=get_mfa)
+        garmin.login(token_file)
+        print(f"{ts()} * OAuth tokens saved correctly: {token_file}")
+    except (
+        FileNotFoundError, GarminConnectAuthenticationError, GarminConnectConnectionError, GarminConnectTooManyRequestsError) as err:
+        print(f"{ts()} * ERROR: {err}")
         return None
 
 # Main program loop

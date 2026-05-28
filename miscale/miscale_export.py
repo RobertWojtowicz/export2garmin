@@ -9,7 +9,7 @@ from garminconnect import Garmin
 # Version info
 print("""
 ================================================
-Export 2 Garmin Connect v3.5 (miscale_export.py)
+Export 2 Garmin Connect v3.7 (miscale_export.py)
 ================================================
 """)
 
@@ -51,9 +51,10 @@ with open(path + '/user/miscale_backup.csv', 'r') as csv_file:
             weight = float(row[2])
             miimpedance = float(row[3])
             if s400_pulse == 'on':
+                #pulse = int(row[5])
+                pulse = int(row[5])
                 diastolic = int(30)
                 systolic = int(40)
-                pulse = int(row[5])
             break
 
 # Matching Garmin Connect account to weight
@@ -82,16 +83,15 @@ if selected_user is not None and 'email@email.com' not in selected_user.email:
     print(f"MISCALE * Calculated data: {formatted_time};{weight:.1f};{bmi:.1f};{percent_fat:.1f};{muscle_mass:.1f};{bone_mass:.1f};{percent_hydration:.1f};{physique_rating:.0f};{visceral_fat_rating:.0f};{metabolic_age:.0f};{basal_met:.0f};{lib.getLBMCoefficient():.1f};{lib.getIdealWeight():.1f};{lib.getFatMassToIdeal()};{lib.getProteinPercentage():.1f};{miimpedance:.0f};{selected_user.email};{dt.now().strftime('%d.%m.%Y;%H:%M')}")
 
     # Login to Garmin Connect
-    with open(path + '/user/' + selected_user.email, 'r') as token_file:
-        tokenstore = token_file.read()
-        garmin = Garmin()
-        garmin.login(tokenstore)
+    token_file = os.path.join(path, "user", selected_user.email)
+    garmin = Garmin()
+    garmin.login(token_file)
 
-        # Upload data to Garmin Connect
-        garmin.add_body_composition(timestamp=dt.fromtimestamp(mitdatetime).isoformat(),weight=weight,bmi=bmi,percent_fat=percent_fat,muscle_mass=muscle_mass,bone_mass=bone_mass,percent_hydration=percent_hydration,physique_rating=physique_rating,visceral_fat_rating=visceral_fat_rating,metabolic_age=metabolic_age,basal_met=basal_met)
-        if s400_pulse == 'on':
-            garmin.set_blood_pressure(timestamp=dt.fromtimestamp(mitdatetime).isoformat(),diastolic=diastolic,systolic=systolic,pulse=pulse)
-        print("MISCALE * Upload status: OK")
+    # Upload data to Garmin Connect
+    garmin.add_body_composition(timestamp=dt.fromtimestamp(mitdatetime).isoformat(),weight=weight,bmi=bmi,percent_fat=percent_fat,muscle_mass=muscle_mass,bone_mass=bone_mass,percent_hydration=percent_hydration,physique_rating=physique_rating,visceral_fat_rating=visceral_fat_rating,metabolic_age=metabolic_age,basal_met=basal_met)
+    if s400_pulse == 'on':
+        garmin.set_blood_pressure(timestamp=dt.fromtimestamp(mitdatetime).isoformat(),diastolic=diastolic,systolic=systolic,pulse=pulse)
+    print("MISCALE * Upload status: OK")
 else:
 
     # Print to temp.log file
