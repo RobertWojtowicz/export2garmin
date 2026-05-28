@@ -40,20 +40,21 @@ $ sudo setcap 'cap_net_raw,cap_net_admin+eip' /usr/local/lib/python3.13/dist-pac
 ### 2.1.4. Configuring scripts
 - First script is `user/import_tokens.py` is used to export Oauth1 and Oauth2 tokens of your account from Garmin Connect:
   - Script has support for login with or without MFA;
-  - Once a year, tokens must be exported again, due to their expiration;
   - Repeat tokens export process for each user (if we have multiple users);
   - When you run `user/import_tokens.py`, you need to provide a login and password and possibly a code from MFA:
 	```
 	$ python3 /home/robert/export2garmin-master/user/import_tokens.py
 
 	===============================================
-	Export 2 Garmin Connect v3.0 (import_tokens.py)
+	Export 2 Garmin Connect v3.7 (import_tokens.py)
 	===============================================
 
-	28.04.2024-11:58:44 * Login e-mail: email@email.com
-	28.04.2024-11:58:50 * Enter password:
-	28.04.2024-11:58:57 * MFA/2FA one-time code: 000000
-	28.04.2024-11:59:17 * Oauth tokens saved correctly
+	28.05.2026-18:22:43 * Login e-mail: email@email.com
+	28.05.2026-18:22:50 * Enter password:
+	mobile+cffi returned 429: Mobile login returned 429 — IP rate limited by Garmin
+	mobile+requests returned 429: Mobile login returned 429 — IP rate limited by Garmin
+	28.05.2026-18:23:03 * MFA/2FA one-time code: 000000
+	28.05.2026-18:23:15 * OAuth tokens saved correctly in folder: /home/robert/export2garmin-master/user/email@email.com
 	```
 - Configuration is stored in `user/export2garmin.cfg` file (make changes e.g. via `sudo nano`):
   - Complete data in "miscale_export_user*" parameter sex, height in cm, birthdate in dd-mm-yyyy, Login e-mail, max_weight in kg, min_weight in kg;
@@ -103,7 +104,7 @@ Export 2 Garmin Connect v3.6 (import_data.sh)
 $ cat /dev/shm/temp.log
 
 ================================================
-Export 2 Garmin Connect v3.5 (miscale_export.py)
+Export 2 Garmin Connect v3.7 (miscale_export.py)
 ================================================
 
 MISCALE * Import data: 1721076654;55.2;508
