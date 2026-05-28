@@ -31,10 +31,10 @@ def get_credentials():
     password = getpass(f"{ts()} * Enter password: ")
     return email, password
 
+# Initialize Garmin API with your credentials without/and MFA/2FA
 def get_mfa():
     return input(f"{ts()} * MFA/2FA one-time code: ").strip()
 
-# Initialize Garmin API with your credentials without/and MFA/2FA
 def init_api():
     try:
         email, password = get_credentials()
