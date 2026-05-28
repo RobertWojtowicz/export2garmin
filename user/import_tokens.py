@@ -25,7 +25,7 @@ with open(config_path, "r") as file:
 # Get user credentials
 def ts():
     return datetime.datetime.now().strftime("%d.%m.%Y-%H:%M:%S")
-    
+
 def get_credentials():
     email = input(f"{ts()} * Login e-mail: ").strip()
     password = getpass(f"{ts()} * Enter password: ")
