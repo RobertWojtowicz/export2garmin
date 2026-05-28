@@ -42,8 +42,7 @@ def init_api():
         garmin = Garmin(email, password, is_cn=tokens_is_cn, prompt_mfa=get_mfa)
         garmin.login(token_file)
         print(f"{ts()} * OAuth tokens saved correctly: {token_file}")
-    except (
-        FileNotFoundError, GarminConnectAuthenticationError, GarminConnectConnectionError, GarminConnectTooManyRequestsError) as err:
+    except (FileNotFoundError, GarminConnectAuthenticationError, GarminConnectConnectionError, GarminConnectTooManyRequestsError) as err:
         print(f"{ts()} * ERROR: {err}")
         return None
 
