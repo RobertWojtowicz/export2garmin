@@ -38,9 +38,9 @@ class sharedDeviceDriverCode():
     async def getRecords(self, btobj, useUnreadCounter, syncTime):
         await btobj.unlockWithUnlockKey()
         await btobj.startTransmission()
-        
+
         #cache settings for time sync and for unread record counter
-        
+
         if(syncTime or useUnreadCounter):
             #initialize cached settings bytes with zeros and use bytearray so that the values are mutable
             self.cachedSettingsBytes = bytearray(b'\0' * (self.settingsWriteAddress - self.settingsReadAddress)) 
@@ -70,8 +70,8 @@ class sharedDeviceDriverCode():
                     try:
                         singleRecordDict  = self.deviceSpecific_ParseRecordFormat(singleRecordBytes)
                         perUserAnalyzedRecordsList.append(singleRecordDict)
-                    except:
-                        logger.warning(f"Error parsing record for user{userIdx+1} at offset {recordStartOffset} data {bytes(singleRecordBytes).hex()}, ignoring this record.")
+                    except Exception as e:
+                        logger.warning(f"Error parsing record for user{userIdx+1} at offset {recordStartOffset} data {bytes(singleRecordBytes).hex()}: {e}, ignoring this record.")
             allUserRecordsList.append(perUserAnalyzedRecordsList)
             
         if(useUnreadCounter):
