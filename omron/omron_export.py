@@ -7,9 +7,9 @@ from garminconnect import Garmin
 
 # Version info
 print("""
-=============================================
-Export 2 Garmin Connect v3.7 (omron_export.py
-=============================================
+==============================================
+Export 2 Garmin Connect v3.7 (omron_export.py)
+==============================================
 """)
 
 # Importing user variables from a file
@@ -64,6 +64,7 @@ with open(path + '/user/omron_backup.csv', 'r') as csv_file:
 
             # Login to Garmin Connect
             token_file = os.path.join(path, "user", emailuser)
+            garmin = Garmin()
             garmin.login(token_file)
 
             # Upload data to Garmin Connect
