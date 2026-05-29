@@ -42,9 +42,16 @@ def init_api():
         garmin = Garmin(email, password, is_cn=tokens_is_cn, prompt_mfa=get_mfa)
         garmin.login(token_file)
         print(f"{ts()} * OAuth tokens saved correctly in folder: {token_file}")
-    except (FileNotFoundError, GarminConnectAuthenticationError, GarminConnectConnectionError, GarminConnectTooManyRequestsError) as err:
-        print(f"{ts()} * ERROR: {err}")
-        return None
+        return garmin
+    except FileNotFoundError as err:
+        print(f"{ts()} * ERROR: config file not found: {err}")
+    except GarminConnectTooManyRequestsError as err:
+        print(f"{ts()} * ERROR: Garmin rate limit / too many requests: {err}")
+    except GarminConnectAuthenticationError as err:
+        print(f"{ts()} * ERROR: Garmin authentication error: {err}")
+    except GarminConnectConnectionError as err:
+        print(f"{ts()} * ERROR: Garmin connection error: {err}")
+    return None
 
 # Main program loop
 if __name__ == "__main__":
