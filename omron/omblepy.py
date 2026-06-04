@@ -2,7 +2,7 @@
 
 # Version info
 # ================================================
-# Export 2 Garmin Connect v3.7 (omblepy.py)
+# Export 2 Garmin Connect v3.8 (omblepy.py)
 # ================================================
 
 import asyncio                                                      #avoid wait on bluetooth stack stalling the application
@@ -333,7 +333,7 @@ def appendCsv(allRecords):
 async def selectBLEdevices(adapter):
     print("Select your Omron device from the list below...")
     while(True):
-        devices = await bleak.BleakScanner.discover(adapter=adapter, return_adv=True)
+        devices = await bleak.BleakScanner.discover(bluez={"adapter": adapter}, return_adv=True)
         devices = list(sorted(devices.items(), key = lambda x: x[1][1].rssi, reverse=True))
         tableEntries = []
         tableEntries.append(["ID", "MAC", "NAME", "RSSI"])
@@ -414,7 +414,7 @@ async def main():
 
         # Code change for Export2Garmin
         bleAddr = await selectBLEdevices(adapter=args.adapter)
-    bleClient = bleak.BleakClient(bleAddr, adapter=args.adapter)
+    bleClient = bleak.BleakClient(bleAddr, bluez={"adapter": args.adapter})
 
     # Linux/BlueZ workaround: BleakClient(MAC).connect() can time out even
     # when the device is advertising, because BlueZ's standard Connect path
