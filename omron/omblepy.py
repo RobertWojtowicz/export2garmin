@@ -51,7 +51,6 @@ LEGACY_DEVICE_UNLOCK_UUID = "b305b680-aee7-11e1-a730-0002a5d5c51b"
 def convertByteArrayToHexString(array):
     return (bytes(array).hex())
 
-
 class bluetoothTxRxHandler:
     def __init__(self, deviceDriver):
         self.deviceRxChannelUUIDs       = getattr(deviceDriver, "deviceRxChannelUUIDs", LEGACY_DEVICE_RX_CHANNEL_UUIDS)
@@ -95,7 +94,6 @@ class bluetoothTxRxHandler:
         else:
             rxChannelId = self.rxHandleToChannelId[BleakGATTChar.handle]
         self.rxRawChannelBuffer[rxChannelId] = rxBytes
-
         logger.debug(f"rx ch{rxChannelId} < {convertByteArrayToHexString(rxBytes)}")
         if self.rxRawChannelBuffer[0]:                               #if there is data present in the first rx buffer
             if len(self.deviceRxChannelUUIDs) == 1:
@@ -285,7 +283,6 @@ class bluetoothTxRxHandler:
         logger.info(f"Paired device successfully with new key {newKeyByteArray}.")
         logger.info("From now on you can connect omit the -p flag, even on other PCs with different bluetooth-mac-addresses.")
         return
-
     async def unlockWithUnlockKey(self, keyByteArray = pairingKey):
         if not self.requiresUnlock:
             return
@@ -454,7 +451,7 @@ async def main():
             path = details.get("path") or details.get("props", {}).get("Adapter")
             if isinstance(path, str) and "/hci" in path:
                 adapter_name = path.split("/")[3] if path.startswith("/org/bluez/") else None
-                
+
         # Code change for Export2Garmin
         adapter_name = adapter_name or args.adapter
         client_kwargs = {"bluez": {"adapter": adapter_name}} if adapter_name else {}
@@ -462,7 +459,6 @@ async def main():
         bleClient = bleak.BleakClient(found_device_holder[0], **client_kwargs)
     else:
         bleClient = bleak.BleakClient(bleAddr)
-
     try:
         logger.info(f"Attempt connecting to {bleAddr}.")
         await bleClient.connect()
