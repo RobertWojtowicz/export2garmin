@@ -454,6 +454,9 @@ async def main():
             path = details.get("path") or details.get("props", {}).get("Adapter")
             if isinstance(path, str) and "/hci" in path:
                 adapter_name = path.split("/")[3] if path.startswith("/org/bluez/") else None
+                
+        # Code change for Export2Garmin
+        adapter_name = adapter_name or args.adapter
         client_kwargs = {"bluez": {"adapter": adapter_name}} if adapter_name else {}
         logger.debug(f"Connecting via adapter: {adapter_name or 'default'}")
         bleClient = bleak.BleakClient(found_device_holder[0], **client_kwargs)
