@@ -333,7 +333,10 @@ def appendCsv(allRecords):
 async def selectBLEdevices(adapter):
     print("Select your Omron device from the list below...")
     while(True):
-        devices = await bleak.BleakScanner.discover(bluez={"adapter": adapter}, return_adv=True)
+        scanner_kwargs = {"return_adv": True}
+        if adapter:
+            scanner_kwargs["bluez"] = {"adapter": adapter}
+        devices = await bleak.BleakScanner.discover(**scanner_kwargs)
         devices = list(sorted(devices.items(), key = lambda x: x[1][1].rssi, reverse=True))
         tableEntries = []
         tableEntries.append(["ID", "MAC", "NAME", "RSSI"])
@@ -414,8 +417,6 @@ async def main():
 
         # Code change for Export2Garmin
         bleAddr = await selectBLEdevices(adapter=args.adapter)
-    bleClient = bleak.BleakClient(bleAddr, bluez={"adapter": args.adapter})
-
     # Linux/BlueZ workaround: BleakClient(MAC).connect() can time out even
     # when the device is advertising, because BlueZ's standard Connect path
     # doesn't keep the radio actively receiving for the device. Running an
