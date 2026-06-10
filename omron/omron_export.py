@@ -14,6 +14,7 @@ Export 2 Garmin Connect v3.7 (omron_export.py)
 """)
 
 path = os.path.dirname(os.path.dirname(__file__))
+backup_file = path + '/user/omron_backup.csv'
 
 # Defaults
 omron_export_category = "eu"
@@ -61,6 +62,10 @@ def bp_category(systolic, diastolic):
 def average_records(records):
     """Return one averaged record, using the latest timestamp as upload timestamp."""
     latest = max(records, key=lambda r: r["unixtime"])
+    source_indices = []
+    for record in records:
+        source_indices.extend(record["source_indices"])
+
     return {
         **latest,
         "systolic": round(sum(r["systolic"] for r in records) / len(records)),
@@ -68,6 +73,7 @@ def average_records(records):
         "pulse": round(sum(r["pulse"] for r in records) / len(records)),
         "MOV": max(r["MOV"] for r in records),
         "IHB": max(r["IHB"] for r in records),
+        "source_indices": sorted(set(source_indices)),
     }
 
 
@@ -98,7 +104,8 @@ def select_daily_record(records, mode):
     records = sorted(records, key=lambda r: r["unixtime"])
 
     if mode == "latest":
-        return records[-1]
+        selected = records[-1]
+        return {**selected, "source_indices": sorted(set(r["row_index"] for r in records))}
 
     if mode == "avg_all_raw":
         return average_records(records)
@@ -108,8 +115,15 @@ def select_daily_record(records, mode):
 
         if sessions:
             if mode == "first_truread":
-                return sessions[0]
-            return sessions[-1]
+                selected = sessions[0]
+            else:
+                selected = sessions[-1]
+
+            # Mark all pending records for that day/user as imported, not only
+            # the three rows used for the TruRead average. Otherwise the
+            # remaining rows would be retried on the next run.
+            selected["source_indices"] = sorted(set(r["row_index"] for r in records))
+            return selected
 
         # Fallback if no TruRead-like 3-reading session exists.
         return average_records(records)
@@ -141,16 +155,40 @@ def select_records_for_upload(records):
     return sorted(selected, key=lambda r: r["unixtime"])
 
 
-# Read pending import data
+def ensure_row_length(row, length=13):
+    while len(row) < length:
+        row.append("")
+    return row
+
+
+def write_backup(rows):
+    with open(backup_file, 'w', newline='', encoding='utf-8') as csv_file:
+        writer = csv.writer(csv_file, delimiter=';')
+        writer.writerows(rows)
+
+
+# Read backup data
+all_rows = []
 records = []
 
-with open(path + '/user/omron_backup.csv', 'r') as csv_file:
+with open(backup_file, 'r', newline='', encoding='utf-8') as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=';')
-    for row in csv_reader:
-        if not row or row[0] not in ["failed", "to_import"]:
+    for row_index, row in enumerate(csv_reader):
+        if not row:
+            continue
+
+        row = ensure_row_length(row)
+        all_rows.append(row)
+
+        if row_index == 0:
+            continue
+
+        if row[0] not in ["failed", "to_import"]:
             continue
 
         records.append({
+            "row_index": row_index,
+            "source_indices": [row_index],
             "status": str(row[0]),
             "unixtime": int(row[1]),
             "omrondate": str(row[2]),
@@ -168,6 +206,8 @@ records_to_upload = select_records_for_upload(records)
 if not records_to_upload:
     print("OMRON * There is no new data to upload to Garmin Connect")
 
+backup_changed = False
+
 for record in records_to_upload:
     unixtime = record["unixtime"]
     omrondate = record["omrondate"]
@@ -178,21 +218,49 @@ for record in records_to_upload:
     MOV = record["MOV"]
     IHB = record["IHB"]
     emailuser = record["emailuser"]
+    source_indices = record["source_indices"]
 
     category = bp_category(systolic, diastolic)
 
     print(f"OMRON * Import data: {unixtime};{omrondate};{omrontime};{systolic:.0f};{diastolic:.0f};{pulse:.0f};{MOV:.0f};{IHB:.0f};{emailuser}")
     print(f"OMRON * Calculated data: {category};{MOV:.0f};{IHB:.0f};{emailuser};{dt.now().strftime('%d.%m.%Y;%H:%M')}")
 
-    token_file = os.path.join(path, "user", emailuser)
-    garmin = Garmin()
-    garmin.login(token_file)
+    try:
+        token_file = os.path.join(path, "user", emailuser)
+        garmin = Garmin()
+        garmin.login(token_file)
 
-    garmin.set_blood_pressure(
-        timestamp=dt.fromtimestamp(unixtime).isoformat(),
-        diastolic=diastolic,
-        systolic=systolic,
-        pulse=pulse,
-    )
+        garmin.set_blood_pressure(
+            timestamp=dt.fromtimestamp(unixtime).isoformat(),
+            diastolic=diastolic,
+            systolic=systolic,
+            pulse=pulse,
+        )
 
-    print("OMRON * Upload status: OK")
+        print("OMRON * Upload status: OK")
+
+        upload_dt = dt.now()
+        upload_date = upload_dt.strftime("%d.%m.%Y")
+        upload_time = upload_dt.strftime("%H:%M")
+        diff_time = str(round(upload_dt.timestamp() - unixtime))
+
+        for idx in source_indices:
+            all_rows[idx] = ensure_row_length(all_rows[idx])
+            all_rows[idx][0] = "imported"
+            all_rows[idx][10] = upload_date
+            all_rows[idx][11] = upload_time
+            all_rows[idx][12] = diff_time
+
+        backup_changed = True
+
+    except Exception as exc:
+        print(f"OMRON * Upload status: FAILED - {exc}")
+
+        for idx in source_indices:
+            all_rows[idx] = ensure_row_length(all_rows[idx])
+            all_rows[idx][0] = "failed"
+
+        backup_changed = True
+
+if backup_changed:
+    write_backup(all_rows)
