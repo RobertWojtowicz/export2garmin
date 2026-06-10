@@ -124,7 +124,7 @@ def select_records_for_upload(records):
     if mode == "all":
         return sorted(records, key=lambda r: r["unixtime"])
 
-    allowed_modes = ["latest", "avg_all_raw", "first_truread", "latest_truread"]
+    allowed_modes = ["all", "latest", "avg_all_raw", "first_truread", "latest_truread"]
     if mode not in allowed_modes:
         print(f"OMRON * Unknown omron_daily_filter={mode}, falling back to all")
         mode = "all"
