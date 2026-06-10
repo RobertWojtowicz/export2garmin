@@ -18,8 +18,12 @@ class deviceSpecificDriver(sharedDeviceDriverCode):
     supportsOsBondingOnly = True
 
     deviceEndianess       = "little"
-    userStartAdressesList = [0x01C8]
+
+    # HEM-7196T1 / X4 Connect AFib modern-stack layout.
+    # Records start at 0x01C4. User id is embedded in each record.
+    userStartAdressesList = [0x01C4]
     perUserRecordsCountList = [100]
+
     recordByteSize        = 0x10
     transmissionBlockSize = 0x10
 
@@ -31,8 +35,18 @@ class deviceSpecificDriver(sharedDeviceDriverCode):
     def deviceSpecific_ParseRecordFormat(self, b):
         recordDict = {}
 
-        flags1 = b[0] | (b[1] << 8)
-        flags2 = b[2] | (b[3] << 8)
+        rawSys = b[0]
+        if rawSys > 0xE1:
+            raise ValueError("record slot is empty")
+
+        recordDict["sys"] = rawSys + 25
+        recordDict["dia"] = b[1]
+        recordDict["bpm"] = b[2]
+
+        year = 2000 + (b[3] & 0x3F)
+
+        flags1 = b[4] | (b[5] << 8)
+        flags2 = b[6] | (b[7] << 8)
 
         hour = flags1 & 0x1F
         day = (flags1 >> 5) & 0x1F
@@ -41,14 +55,23 @@ class deviceSpecificDriver(sharedDeviceDriverCode):
         second = min(flags2 & 0x3F, 59)
         minute = (flags2 >> 6) & 0x3F
 
-        recordDict["sys"] = b[12] + 25
-        recordDict["dia"] = b[13]
-        recordDict["bpm"] = b[14]
-        year = 2000 + b[15]
+        recordDict["datetime"] = datetime.datetime(
+            year,
+            month,
+            day,
+            hour,
+            minute,
+            second,
+        )
 
-        recordDict["datetime"] = datetime.datetime(year, month, day, hour, minute, second)
         recordDict["mov"] = 0
         recordDict["ihb"] = 0
+
+        # HEM-7196T1 stores both users in one shared record bank.
+        # User id is carried inside each record.
+        recordDict["user_id"] = b[13]
+        recordDict["seq"] = b[10]
+        recordDict["mode"] = b[9]
 
         return recordDict
 
