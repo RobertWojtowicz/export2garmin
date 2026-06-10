@@ -126,8 +126,8 @@ def select_records_for_upload(records):
 
     allowed_modes = ["latest", "avg_all_raw", "first_truread", "latest_truread"]
     if mode not in allowed_modes:
-        print(f"OMRON * Unknown omron_daily_filter={mode}, falling back to latest_truread")
-        mode = "latest_truread"
+        print(f"OMRON * Unknown omron_daily_filter={mode}, falling back to all")
+        mode = "all"
 
     grouped = defaultdict(list)
     for record in records:
