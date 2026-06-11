@@ -87,20 +87,6 @@ class sharedDeviceDriverCode():
             await btobj.writeContinuousEepromData(self.settingsWriteAddress + self.settingsUnreadRecordsBytes[0], bytesToWrite, btBlockSize = len(bytesToWrite))
         
         await btobj.endTransmission()
-
-        # HEM-7196T1: records are stored in one shared ringbuffer.
-        # Split into user1/user2 lists if parsed records contain user_id.
-        if len(allUserRecordsList) == 1 and any("user_id" in r for r in allUserRecordsList[0]):
-            splitUserRecordsList = [[], []]
-            for record in allUserRecordsList[0]:
-                user_id = record.get("user_id")
-                if user_id in [1, 2]:
-                    record.pop("user_id", None)
-                    record.pop("seq", None)
-                    record.pop("mode", None)
-                    splitUserRecordsList[user_id - 1].append(record)
-            allUserRecordsList = splitUserRecordsList
-
         return allUserRecordsList
     
     def calcRingBufferRecordReadLocations(self, userIdx, unreadRecords, lastWrittenSlot):

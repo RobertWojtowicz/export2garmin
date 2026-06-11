@@ -5,11 +5,11 @@
 # Export 2 Garmin Connect v3.8 (omblepy.py)
 # ================================================
 
-import asyncio                     #avoid wait on bluetooth stack stalling the application
-import terminaltables              #for pretty selection table for ble devices
-import bleak                       #bluetooth low energy package for python
-import re                          #regex to match bt mac address
-import argparse                    #to process command line arguments
+import asyncio                                                      #avoid wait on bluetooth stack stalling the application
+import terminaltables                                               #for pretty selection table for ble devices
+import bleak                                                        #bluetooth low energy package for python
+import re                                                           #regex to match bt mac address
+import argparse                                                     #to process command line arguments
 import datetime
 import time
 import sys
@@ -22,7 +22,6 @@ import os
 bleClient           = None
 pairingKey          = bytearray.fromhex("deadbeaf12341234deadbeaf12341234") #arbitrary choice
 deviceSpecific      = None                            #imported module for each device
-currentDeviceName   = None
 logger              = logging.getLogger("omblepy")
 
 # Code change for Export2Garmin
@@ -310,16 +309,11 @@ def readCsv(filename):
     return records
 def appendCsv(allRecords):
     for userIdx in range(len(allRecords)):
-        # HEM-7196T1 reads the shared ringbuffer/history on every full export.
-        # Do not merge with an existing CSV, because minute-level CSV datetime
-        # causes duplicate TruRead/3x3 measurements. Keep CSV format unchanged.
-        if currentDeviceName != "hem-7196t1":
-            oldCsvFile = pathlib.Path(f"{switch_temp_path}/omron_user{userIdx+1}.csv")
-            datesOfNewRecords = [record["datetime"] for record in allRecords[userIdx]]
-            if(oldCsvFile.is_file()):
-                records = readCsv(f"{switch_temp_path}/omron_user{userIdx+1}.csv")
-                allRecords[userIdx].extend(filter(lambda x: x["datetime"] not in datesOfNewRecords, records))
-
+        oldCsvFile = pathlib.Path(f"{switch_temp_path}/omron_user{userIdx+1}.csv")
+        datesOfNewRecords = [record["datetime"] for record in allRecords[userIdx]]
+        if(oldCsvFile.is_file()):
+            records = readCsv(f"{switch_temp_path}/omron_user{userIdx+1}.csv")
+            allRecords[userIdx].extend(filter(lambda x: x["datetime"] not in datesOfNewRecords,records))
         allRecords[userIdx] = sorted(allRecords[userIdx], key = lambda x: x["datetime"])
         logger.info(f"writing data to omron_user{userIdx+1}.csv")
         with open(f"{switch_temp_path}/omron_user{userIdx+1}.csv", mode='w', newline='', encoding='utf-8') as outfile:
@@ -354,7 +348,6 @@ async def selectBLEdevices(adapter):
 async def main():
     global bleClient
     global deviceSpecific
-    global currentDeviceName
     devSpecificDriver = None
     parser = argparse.ArgumentParser(description="python tool to read the records of omron blood pressure instruments")
     parser.add_argument('-d', "--device",     required="true",  type=ascii, help="Device name (e.g. hem-7322t, see deviceSpecific folder)")
@@ -391,7 +384,6 @@ async def main():
         raise ValueError("When not in pairing mode, please specify your device type name with -d or --device")
     if(args.device):
         deviceName = args.device.strip("'").strip('\"') #strip quotes around arg
-        currentDeviceName = deviceName.lower()
 
         # Code change for Export2Garmin
         sys.path.insert(0, export2garmin_path + "/omron/deviceSpecific")
