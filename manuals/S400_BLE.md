@@ -124,7 +124,7 @@ $ sudo setcap 'cap_net_raw,cap_net_admin+eip' /usr/local/lib/python3.13/dist-pac
 $ python3 /home/robert/export2garmin-master/miscale/s400_ble.py
 
 ==========================================
-Export 2 Garmin Connect v3.6 (s400_ble.py)
+Export 2 Garmin Connect v3.9 (s400_ble.py)
 ==========================================
 
 28.06.2025-12:56:31 * Starting scan with BLE adapter hci0(00:1A:7D:DA:71:13):

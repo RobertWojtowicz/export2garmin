@@ -25,7 +25,7 @@ def safe_print(*args, **kwargs):
 
 safe_print("""
 ==========================================
-Export 2 Garmin Connect v3.6 (s400_ble.py)
+Export 2 Garmin Connect v3.9 (s400_ble.py)
 ==========================================
 """)
 
@@ -105,11 +105,11 @@ def detection_callback(device, advertisement_data):
         if xiaomi_parser.supported(service_info):
             update = xiaomi_parser.update(service_info)
             if update and update.entity_values:
-                fields = {'Mass','Impedance','Impedance Low','Heart Rate'}
+                fields = {'Mass','Impedance Low','Impedance High','Heart Rate'}
                 values = {v.name: v.native_value for v in update.entity_values.values() if v.name in fields}
                 if fields <= values.keys():
                     safe_print(f"{datetime.now().strftime('%d.%m.%Y-%H:%M:%S')} S400 * Reading BLE data complete, finished BLE scan")
-                    safe_print(f"to_import;{int(time.time())};{values['Mass']};{values['Impedance']:.0f};{values['Impedance Low']:.0f};{values['Heart Rate']}")
+                    safe_print(f"to_import;{int(time.time())};{values['Mass']};{values['Impedance Low']:.0f};{values['Impedance High']:.0f};{values['Heart Rate']}")
                     stop_event.set()
     except Exception:
         pass
