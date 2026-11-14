@@ -8,7 +8,7 @@ from garminconnect import Garmin
 # Version info
 print("""
 =============================================
-Export 2 Garmin Connect v3.7 (omron_export.py
+Export 2 Garmin Connect v4.0 (omron_export.py
 =============================================
 """)
 
