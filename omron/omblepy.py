@@ -2,7 +2,7 @@
 
 # Version info
 # ================================================
-# Export 2 Garmin Connect v3.7 (omblepy.py)
+# Export 2 Garmin Connect v4.0 (omblepy.py)
 # ================================================
 
 import asyncio                                                      #avoid wait on bluetooth stack stalling the application
@@ -243,7 +243,9 @@ class bluetoothTxRxHandler:
         self.rxFinishedFlag = True
         return
 
-    async def writeNewUnlockKey(self, newKeyByteArray = pairingKey):
+    async def writeNewUnlockKey(self, newKeyByteArray = None):
+        if newKeyByteArray is None:
+            newKeyByteArray = pairingKey
         if not self.supportsPairing:
             raise ValueError("Pairing mode is not supported for this device in omblepy.")
         if(len(newKeyByteArray) != 16):
@@ -286,7 +288,9 @@ class bluetoothTxRxHandler:
         logger.info("From now on you can connect omit the -p flag, even on other PCs with different bluetooth-mac-addresses.")
         return
 
-    async def unlockWithUnlockKey(self, keyByteArray = pairingKey):
+    async def unlockWithUnlockKey(self, keyByteArray = None):
+        if keyByteArray is None:
+            keyByteArray = pairingKey
         if not self.requiresUnlock:
             return
         await bleClient.start_notify(self.deviceUnlock_UUID, self._callbackForUnlockChannel)
