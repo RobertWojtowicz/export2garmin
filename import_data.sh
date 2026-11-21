@@ -261,8 +261,14 @@ while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 			while true ; do
 				source <(grep omron_omblepy_ $path/user/export2garmin.cfg)
 				[[ $ble_check =~ (hci[0-9]+) ]] && omron_hci=${BASH_REMATCH[1]}
-				omron_omblepy_check=$(timeout ${omron_omblepy_time}s python3 -B $path/omron/omblepy.py -a $omron_hci -p -d $omron_omblepy_model 2> /dev/null)
+				# Cooldown for hem-7155t2: it keeps advertising for minutes after a sync, re-reading it in a loop keeps it awake
+				omron_last_read="$switch_temp_path/omron_last_read"
+				if [[ $omron_omblepy_model == "hem-7155t2" ]] && [[ -f "$omron_last_read" ]] && (( $(date +%s) - $(<"$omron_last_read") < 300 )) ; then
+					omron_omblepy_check=""
+				else omron_omblepy_check=$(timeout ${omron_omblepy_time}s python3 -B $path/omron/omblepy.py -a $omron_hci -p -d $omron_omblepy_model 2> /dev/null)
+				fi
 				if [[ $omron_omblepy_check == *"$omron_omblepy_mac"* ]] ; then
+					date +%s > "$omron_last_read"
 
 					# Adding an exception for selected models
 					if [[ $omron_omblepy_model == "hem-6232t" ]] || [[ $omron_omblepy_model == "hem-7530t" ]] ; then
@@ -284,8 +290,9 @@ while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 			if [[ -f "$switch_temp_path/omron_user1.csv" ]] || [[ -f "$switch_temp_path/omron_user2.csv" ]] ; then
 				source <(grep omron_export_user $path/user/export2garmin.cfg)
 				echo "$(timenow) OMRON * Prepare data for omron_backup.csv file"
-				awk -F ';' 'NR==FNR{a[$2];next}!($2 in a)' $omron_backup $switch_temp_path/omron_user1.csv > $switch_temp_path/omron_users.csv
-				awk -F ';' 'NR==FNR{a[$2];next}!($2 in a)' $omron_backup $switch_temp_path/omron_user2.csv >> $switch_temp_path/omron_users.csv
+				# Dedupe by date, minute and values: some devices (e.g. hem-7155t2) report varying seconds for the same record
+				awk -F ';' 'NR==FNR{k[$3" "$4";"$5";"$6";"$7];next}{key=$3";"$4";"$5";"$6}$2~/^[0-9]+$/&&!(key in k)&&!seen[key]++' $omron_backup $switch_temp_path/omron_user1.csv > $switch_temp_path/omron_users.csv
+				awk -F ';' 'NR==FNR{k[$3" "$4";"$5";"$6";"$7];next}{key=$3";"$4";"$5";"$6}$2~/^[0-9]+$/&&!(key in k)&&!seen[key]++' $omron_backup $switch_temp_path/omron_user2.csv >> $switch_temp_path/omron_users.csv
 				sed -i "s/ /;/g; s/user1/$omron_export_user1/; s/user2/$omron_export_user2/" $switch_temp_path/omron_users.csv
 				grep -q "email@email.com" $switch_temp_path/omron_users.csv && echo "$(timenow) OMRON * Deleting records with undefined user email@email.com, check users section in export2garmin.cfg file" && sed -i "/email@email\.com/d" $switch_temp_path/omron_users.csv
 				cat $switch_temp_path/omron_users.csv >> $omron_backup

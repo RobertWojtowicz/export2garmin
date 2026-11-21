@@ -31,7 +31,7 @@
 - Supports multiple users with individual weights ranges, we can link multiple accounts with Garmin Connect.
 
 ### 1.2. Omron module: 
-- Allows fully automatic synchronization of Omron blood pressure (tested on M4/HEM-7155T and M7/HEM-7322T Intelli IT) directly to Garmin Connect, with following parameters:
+- Allows fully automatic synchronization of Omron blood pressure (tested on M4/HEM-7155T, X4 Smart/HEM-7155T-ESL with newer firmware (driver "hem-7155t2") and M7/HEM-7322T Intelli IT) directly to Garmin Connect, with following parameters:
   - Date and Time (measurement, from device);
   - DIAstolic blood pressure;
   - SYStolic blood pressure;

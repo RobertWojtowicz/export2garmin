@@ -47,6 +47,9 @@ LEGACY_DEVICE_TX_CHANNEL_UUIDS = [
     "10e1ba60-aee8-11e1-89e5-0002a5d5c51b",
 ]
 LEGACY_DEVICE_UNLOCK_UUID = "b305b680-aee7-11e1-a730-0002a5d5c51b"
+SERVICE_CHANGED_UUID = "00002a05-0000-1000-8000-00805f9b34fb"
+#seconds to stay idle at session end so that the device closes the link itself
+PEER_CLOSES_SESSION_TIMEOUT_S = 5.0
 
 def convertByteArrayToHexString(array):
     return (bytes(array).hex())
@@ -59,6 +62,10 @@ class bluetoothTxRxHandler:
         self.deviceUnlock_UUID          = getattr(deviceDriver, "deviceUnlock_UUID", LEGACY_DEVICE_UNLOCK_UUID)
         self.requiresUnlock             = getattr(deviceDriver, "requiresUnlock", True)
         self.supportsPairing            = getattr(deviceDriver, "supportsPairing", True)
+        #WLD3.0 devices (e.g. HEM-7155T-ESL): 0x11/0x91 token handshake instead of a stored unlock key
+        self.requiresTokenUnlock        = getattr(deviceDriver, "requiresTokenUnlock", False)
+        #WLD3.0 devices store the CCCD configuration in the bond, disabling them at session end makes the device drop the bond
+        self.keepNotifySubscriptions    = getattr(deviceDriver, "keepNotifySubscriptions", False)
         self.currentRxNotifyStateFlag   = False
         self.rxPacketType               = None
         self.rxEepromAddress            = None
@@ -180,7 +187,8 @@ class bluetoothTxRxHandler:
             raise ValueError("invlid response to data readout end")
         if(self.rxDataBytes[0]):
             raise ValueError(f"Device reported error status code {self.rxDataBytes[0]} while sending endTransmission command.")
-        await self._disableRxChannelNotifyAndCallback()
+        if not self.keepNotifySubscriptions:
+            await self._disableRxChannelNotifyAndCallback()
 
     async def _writeBlockEeprom(self, address, dataByteArray):
         dataWriteCommand = bytearray()
@@ -288,9 +296,78 @@ class bluetoothTxRxHandler:
         logger.info("From now on you can connect omit the -p flag, even on other PCs with different bluetooth-mac-addresses.")
         return
 
+    async def tokenUnlock(self):
+        #stateless handshake: host sends 0x11 + 4 random bytes (20 byte frame), device answers 0x91 0x00 + echo of the 4 bytes
+        #without it a WLD3.0 device only serves data during the pairing (-P-) window
+        token = os.urandom(4)
+        ackReceived = asyncio.Event()
+        def _callbackForTokenUnlock(_handle, rxBytes):
+            logger.debug(f"unlock < {convertByteArrayToHexString(rxBytes)}")
+            if len(rxBytes) >= 6 and rxBytes[0] == 0x91 and rxBytes[1] == 0x00 and bytes(rxBytes[2:6]) == token:
+                ackReceived.set()
+        #same order as the official app: rx channel notify first, then the unlock channel notify
+        await self._enableRxChannelNotifyAndCallback()
+        await bleClient.start_notify(self.deviceUnlock_UUID, _callbackForTokenUnlock)
+        for useResponse in (False, True):
+            await bleClient.write_gatt_char(self.deviceUnlock_UUID, b'\x11' + token + b'\x00' * 15, response=useResponse)
+            try:
+                await asyncio.wait_for(ackReceived.wait(), timeout = 5.0)
+                logger.debug("token unlock successful")
+                break
+            except asyncio.TimeoutError:
+                logger.debug(f"no token unlock answer (write with response={useResponse})")
+        else:
+            raise ValueError("Device did not answer the token unlock. Is it bonded to this computer? Try pairing again with -p.")
+        if not self.keepNotifySubscriptions:
+            await bleClient.stop_notify(self.deviceUnlock_UUID)
+
+    async def writePairingRegistration(self, deviceDriver):
+        #WLD3.0 devices accept a fresh bond, but refuse to resume it on the next connection (HCI 0x06 "PIN or Key Missing")
+        #unless the pairing session also refreshes the settings mirror, like the official app does before closing:
+        #index region with the unread counters reset, the profile slot with its transfer counter incremented and the clock record stamped.
+        settingsRead  = deviceDriver.settingsReadAddress
+        settingsWrite = deviceDriver.settingsWriteAddress
+        clockStart, clockEnd = deviceDriver.settingsTimeSyncBytes
+        slotOffset    = deviceDriver.pairingRegistrationSlotOffset
+        slotSize      = deviceDriver.pairingRegistrationSlotSize
+        headSize      = slotOffset + slotSize
+
+        head  = bytearray(await self.readContinuousEepromData(settingsRead, headSize, deviceDriver.transmissionBlockSize))
+        clock = bytearray(await self.readContinuousEepromData(settingsRead + clockStart, clockEnd - clockStart, deviceDriver.transmissionBlockSize))
+        logger.debug(f"settings head  {convertByteArrayToHexString(head)}")
+        logger.debug(f"settings clock {convertByteArrayToHexString(clock)}")
+
+        for offset, width, idleValue in deviceDriver.pairingRegistrationUnreadCounters:
+            head[offset:offset + width] = idleValue.to_bytes(width, "little")
+        slot = head[slotOffset:slotOffset + slotSize]
+        if slot[:2] == b'\xff\xff':
+            logger.warning("Profile slot was never written, leaving it untouched. The device may not keep the bond.")
+        else:
+            transferCount = int.from_bytes(slot[4:8], "little")
+            slot[4:8] = ((transferCount + 1) & 0xFFFFFFFF).to_bytes(4, "little")
+            slot[slotSize - 2] = sum(slot[:slotSize - 2]) & 0xFF
+            head[slotOffset:slotOffset + slotSize] = slot
+
+        now = datetime.datetime.now()
+        clock[4] |= 0x01
+        clock[8:14] = bytes((now.year - 2000, now.month, now.day, now.hour, now.minute, now.second))
+        clock[-2] = sum(clock[:-2]) & 0xFF
+
+        logger.debug(f"mirror head  > {convertByteArrayToHexString(head)}")
+        logger.debug(f"mirror clock > {convertByteArrayToHexString(clock)}")
+        if os.environ.get("OMBLEPY_REGISTRATION_DRYRUN"):
+            logger.warning("OMBLEPY_REGISTRATION_DRYRUN set, pairing registration not written.")
+            return
+        await self.writeContinuousEepromData(settingsWrite, head, btBlockSize = len(head))
+        await self.writeContinuousEepromData(settingsWrite + clockStart, clock, btBlockSize = len(clock))
+        logger.info("Pairing registration written to the device.")
+
     async def unlockWithUnlockKey(self, keyByteArray = None):
         if keyByteArray is None:
             keyByteArray = pairingKey
+        if self.requiresTokenUnlock:
+            await self.tokenUnlock()
+            return
         if not self.requiresUnlock:
             return
         await bleClient.start_notify(self.deviceUnlock_UUID, self._callbackForUnlockChannel)
@@ -473,7 +550,8 @@ async def main():
             except TypeError:
                 await bleClient.pair(protection_level=2)
             logger.info("OS-level BLE bonding request completed.")
-            return
+            if not hasattr(devSpecificDriver, "pairingRegistrationSlotOffset"):
+                return
         servicesResolved = False
         parentServiceUUID = getattr(devSpecificDriver, "parentService_UUID", LEGACY_PARENT_SERVICE_UUID)
         for _ in range(20):
@@ -487,7 +565,18 @@ async def main():
                              This means that either, you connected to a wrong device,
                              or that your OS has a bug when reading BT LE device attributes (certain linux versions).""")
         bluetoothTxRxObj = bluetoothTxRxHandler(devSpecificDriver)
-        if(args.pair):
+        if(args.pair and hasattr(devSpecificDriver, "pairingRegistrationSlotOffset")):
+            #WLD3.0: subscribe Service Changed like the official app does while pairing (best effort)
+            try:
+                await bleClient.start_notify(SERVICE_CHANGED_UUID, lambda h, d: logger.debug(f"service changed < {convertByteArrayToHexString(d)}"))
+            except Exception as e:
+                logger.debug(f"Could not subscribe to Service Changed (ignored): {e}")
+            await bluetoothTxRxObj.tokenUnlock()
+            await bluetoothTxRxObj.startTransmission()
+            await bluetoothTxRxObj.writePairingRegistration(devSpecificDriver)
+            await bluetoothTxRxObj.endTransmission()
+            logger.info("Paired device successfully, from now on you can omit the -p flag.")
+        elif(args.pair):
             await bluetoothTxRxObj.writeNewUnlockKey()
             #this seems to be necessary when the device has not been paired to any device
             await bluetoothTxRxObj.startTransmission()
@@ -499,6 +588,12 @@ async def main():
             appendCsv(allRecs)
     finally:
         logger.info("disconnect")
+        if getattr(devSpecificDriver, "keepNotifySubscriptions", False):
+            #WLD3.0: let the device close the link itself (reason 0x13) like with the official app
+            waited = 0.0
+            while bleClient.is_connected and waited < PEER_CLOSES_SESSION_TIMEOUT_S:
+                await asyncio.sleep(0.5)
+                waited += 0.5
         if bleClient.is_connected:
             try:
                 await bleClient.disconnect()
